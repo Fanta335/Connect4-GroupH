@@ -1,10 +1,8 @@
 import Button from '@material-ui/core/Button';
-import Header from '../components/Header';
 import './Home.css';
 const Home = () => {
   return (
-    <div class="vh-100">
-      <Header />
+    <div>
       <h1>Connect 4!</h1>
       <div>
         <div>

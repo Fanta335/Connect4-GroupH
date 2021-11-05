@@ -1,8 +1,9 @@
-import Button from '@material-ui/core/Button';
+import {Link} from 'react-router-dom';
 const Header = () => {
   return(
     <header>
-      <Button variant="contained" color="secondary">Settings</Button>
+      <Link to="/">Home</Link>
+      <Link to="/settings">Settings</Link>
     </header>
   );
 };
