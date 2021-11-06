@@ -1,13 +1,18 @@
-import {Link} from 'react-router-dom';
-import Button from '@material-ui/core/Button';
+import React from "react";
+import { Link } from "react-router-dom";
+import Button from "@material-ui/core/Button";
 const Header = () => {
-  return(
+  return (
     <header>
       <Link to="/">
-        <Button variant="contained" color="secondary">Home</Button>
+        <Button variant="contained" color="secondary">
+          Home
+        </Button>
       </Link>
       <Link to="/settings">
-        <Button variant="contained" color="secondary">Settings</Button>
+        <Button variant="contained" color="secondary">
+          Settings
+        </Button>
       </Link>
     </header>
   );

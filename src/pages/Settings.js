@@ -1,14 +1,14 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
-import './settings.css';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormLabel from '@mui/material/FormLabel';
-import Grid from '@material-ui/core/Grid';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import "./settings.css";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormLabel from "@mui/material/FormLabel";
+import Grid from "@material-ui/core/Grid";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 const Form = (props) => {
   return (
@@ -16,16 +16,16 @@ const Form = (props) => {
       <FormLabel component="legend">{props.label}</FormLabel>
       {props.input}
     </>
-  )
-}
+  );
+};
 
 const TransitionButton = (props) => {
   return (
     <Button onClick={props.onClick} variant="contained" color="primary">
       {props.name}
     </Button>
-  )
-}
+  );
+};
 
 class Settings extends React.Component {
   constructor(props) {
@@ -42,11 +42,11 @@ class Settings extends React.Component {
 
   handleChange(event) {
     const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
 
     this.setState({
-      [name]: value
+      [name]: value,
     });
   }
 
@@ -54,7 +54,7 @@ class Settings extends React.Component {
     return (
       <Grid container alignItems="center" justifyContent="center">
         <Grid item xs={8}>
-          <Grid container alignItems="center" spacing={4} justifyContent="center" >
+          <Grid container alignItems="center" spacing={4} justifyContent="center">
             <Grid item xs={12} margin="normal">
               <h1>Setting</h1>
             </Grid>
@@ -63,10 +63,26 @@ class Settings extends React.Component {
               <Form
                 label="Border Size"
                 input={
-                <>
-                  <TextField inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} name="borderSizeHigh" value={this.state.borderSizeHigh} id="outlined-basic" label="Hight" variant="outlined" onChange={this.handleChange} />
-                  <TextField inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} name="borderSizeWidth" value={this.state.borderSizeWidth} id="outlined-basic" label="Width" variant="outlined" onChange={this.handleChange} />
-                </>
+                  <>
+                    <TextField
+                      inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                      name="borderSizeHigh"
+                      value={this.state.borderSizeHigh}
+                      id="outlined-basic"
+                      label="Hight"
+                      variant="outlined"
+                      onChange={this.handleChange}
+                    />
+                    <TextField
+                      inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                      name="borderSizeWidth"
+                      value={this.state.borderSizeWidth}
+                      id="outlined-basic"
+                      label="Width"
+                      variant="outlined"
+                      onChange={this.handleChange}
+                    />
+                  </>
                 }
               />
             </Grid>
@@ -75,11 +91,17 @@ class Settings extends React.Component {
               <Form
                 label="CPU Strength"
                 input={
-                  <RadioGroup row aria-label="cpuStrength" name="cpuStrength" value={this.state.cpuStrength} onChange={this.handleChange}>
+                  <RadioGroup
+                    row
+                    aria-label="cpuStrength"
+                    name="cpuStrength"
+                    value={this.state.cpuStrength}
+                    onChange={this.handleChange}
+                  >
                     <FormControlLabel value="easy" control={<Radio />} label="Easy" />
                     <FormControlLabel value="medium" control={<Radio />} label="Medium" />
                     <FormControlLabel value="hard" control={<Radio />} label="Hard" />
-                  </RadioGroup> 
+                  </RadioGroup>
                 }
               />
             </Grid>
@@ -88,29 +110,32 @@ class Settings extends React.Component {
               <Form
                 label="Victory Condition"
                 input={
-                <>
-                  <TextField inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} name="victoryCondition" value={this.state.victoryCondition} id="outlined-basic" variant="outlined" onChange={this.handleChange} />
-                </>
+                  <>
+                    <TextField
+                      inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                      name="victoryCondition"
+                      value={this.state.victoryCondition}
+                      id="outlined-basic"
+                      variant="outlined"
+                      onChange={this.handleChange}
+                    />
+                  </>
                 }
               />
             </Grid>
-            
+
             <Grid item xs={12}>
               <Link to="/">
-                <TransitionButton
-                  name="Back"
-                />
+                <TransitionButton name="Back" />
               </Link>
               <Link to="/">
-                <TransitionButton
-                name="Confirm"
-                />
+                <TransitionButton name="Confirm" />
               </Link>
             </Grid>
           </Grid>
         </Grid>
       </Grid>
-    )
+    );
   }
 }
 
