@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 import './settings.css';
 import Radio from '@mui/material/Radio';
@@ -95,14 +96,16 @@ class Settings extends React.Component {
             </Grid>
             
             <Grid item xs={12}>
-              <TransitionButton
-                name="Back"
-                onClick={this.handleClick}
-              />
-              <TransitionButton
+              <Link to="/">
+                <TransitionButton
+                  name="Back"
+                />
+              </Link>
+              <Link to="/">
+                <TransitionButton
                 name="Confirm"
-                onClick={this.handleClick}
-              />
+                />
+              </Link>
             </Grid>
           </Grid>
         </Grid>
