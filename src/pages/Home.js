@@ -1,4 +1,5 @@
 import Button from '@material-ui/core/Button';
+import {Link} from 'react-router-dom';
 import './Home.css';
 const Home = () => {
   return (
@@ -14,7 +15,9 @@ const Home = () => {
           <label>vs CPU</label>
         </div>
       </div>
-      <Button variant="contained" color="secondary">Start!</Button>
+      <Link to="/game">
+        <Button variant="contained" color="secondary">Start!</Button>
+      </Link>
     </div>
   );
 };

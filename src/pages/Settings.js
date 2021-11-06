@@ -1,4 +1,6 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
+
 import './settings.css';
 import Button from '@material-ui/core/Button';
 import Radio from '@material-ui/core/Radio';
@@ -36,8 +38,6 @@ class Settings extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-
   }
 
   handleChange(event) {
@@ -48,10 +48,6 @@ class Settings extends React.Component {
     this.setState({
       [name]: value
     });
-  }
-
-  handleClick() {
-    alert('This is Test');
   }
 
   render() {
@@ -101,17 +97,19 @@ class Settings extends React.Component {
         </Grid>
 
         <Grid item xs={6}>
-          <TransitionButton
-            name="Back"
-            onClick={this.handleClick}
-          />
+          <Link to="/">
+            <TransitionButton
+              name="Back"
+            />
+          </Link>
         </Grid>
 
         <Grid item xs={6}>
-          <TransitionButton
-            name="Confirm"
-            onClick={this.handleClick}
-          />
+          <Link to="/game">
+            <TransitionButton
+              name="Confirm"
+            />
+          </Link>
         </Grid>
       </Grid>
     )
