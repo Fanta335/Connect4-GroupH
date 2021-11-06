@@ -105,7 +105,7 @@ class Settings extends React.Component {
         </Grid>
 
         <Grid item xs={6}>
-          <Link to="/game">
+          <Link to="/">
             <TransitionButton
               name="Confirm"
             />
