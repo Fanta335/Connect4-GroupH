@@ -5,7 +5,6 @@ import './settings.css';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Grid from '@material-ui/core/Grid';
 import Button from '@mui/material/Button';
@@ -53,10 +52,10 @@ class Settings extends React.Component {
 
   render() {
     return (
-      <Grid container alignItems="center" justify="center">
+      <Grid container alignItems="center" justifyContent="center">
         <Grid item xs={8}>
-          <Grid container alignItems="center" justify="center" spacing={4}>
-            <Grid item xs={12} justifyContent="center" margin="normal">
+          <Grid container alignItems="center" spacing={4} justifyContent="center" >
+            <Grid item xs={12} margin="normal">
               <h1>Setting</h1>
             </Grid>
 
@@ -96,7 +95,7 @@ class Settings extends React.Component {
               />
             </Grid>
             
-            <Grid item xs={12} justifyContent="center">
+            <Grid item xs={12}>
               <TransitionButton
                 name="Back"
                 onClick={this.handleClick}
