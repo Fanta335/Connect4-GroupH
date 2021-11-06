@@ -1,4 +1,6 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
+
 import './settings.css';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -37,8 +39,6 @@ class Settings extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-
   }
 
   handleChange(event) {
@@ -49,10 +49,6 @@ class Settings extends React.Component {
     this.setState({
       [name]: value
     });
-  }
-
-  handleClick() {
-    alert('This is Test');
   }
 
   render() {
