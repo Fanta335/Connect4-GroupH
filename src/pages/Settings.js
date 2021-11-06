@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 
 import './settings.css';
 import Radio from '@mui/material/Radio';
