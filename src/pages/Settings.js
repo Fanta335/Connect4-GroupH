@@ -2,26 +2,26 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 import './settings.css';
-import Button from '@material-ui/core/Button';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
 import Grid from '@material-ui/core/Grid';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
 const Form = (props) => {
   return (
-    <form>
-      <label>{props.label}</label>
+    <>
+      <FormLabel component="legend">{props.label}</FormLabel>
       {props.input}
-    </form>
+    </>
   )
 }
 
 const TransitionButton = (props) => {
   return (
-    <Button onClick={props.onClick} variant="contained" color="secondary">
+    <Button onClick={props.onClick} variant="contained" color="primary">
       {props.name}
     </Button>
   )
@@ -51,65 +51,63 @@ class Settings extends React.Component {
   }
 
   render() {
-    const radioButton = (
-      <FormControl component="fieldset">
-        <FormLabel component="legend">CPU Strength</FormLabel>
-        <RadioGroup row aria-label="cpuStrength" name="cpuStrength" value={this.state.cpuStrength} onChange={this.handleChange}>
-          <FormControlLabel value="easy" control={<Radio />} label="Easy" />
-          <FormControlLabel value="medium" control={<Radio />} label="Medium" />
-          <FormControlLabel value="hard" control={<Radio />} label="Hard" />
-        </RadioGroup>
-      </FormControl>
-    );
-
-
     return (
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <h3>Setting</h3>
-        </Grid>
+      <Grid container alignItems="center" justifyContent="center">
+        <Grid item xs={8}>
+          <Grid container alignItems="center" spacing={4} justifyContent="center" >
+            <Grid item xs={12} margin="normal">
+              <h1>Setting</h1>
+            </Grid>
 
-        <Grid item xs={12}>
-          <Form
-            label="Border Size"
-            input={
-            <>
-              <input name="borderSizeHigh" type="number" value={this.state.borderSizeHigh} min="1" max="100" onChange={this.handleChange} />×
-              <input name="borderSizeWidth" type="number" value={this.state.borderSizeWidth} min="1" max="100" onChange={this.handleChange} />
-            </>
-            }
-          />
-        </Grid>
+            <Grid item xs={12}>
+              <Form
+                label="Border Size"
+                input={
+                <>
+                  <TextField inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} name="borderSizeHigh" value={this.state.borderSizeHigh} id="outlined-basic" label="Hight" variant="outlined" onChange={this.handleChange} />
+                  <TextField inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} name="borderSizeWidth" value={this.state.borderSizeWidth} id="outlined-basic" label="Width" variant="outlined" onChange={this.handleChange} />
+                </>
+                }
+              />
+            </Grid>
 
-        <Grid item xs={12}>
-          {radioButton}
-        </Grid>
+            <Grid item xs={12}>
+              <Form
+                label="CPU Strength"
+                input={
+                  <RadioGroup row aria-label="cpuStrength" name="cpuStrength" value={this.state.cpuStrength} onChange={this.handleChange}>
+                    <FormControlLabel value="easy" control={<Radio />} label="Easy" />
+                    <FormControlLabel value="medium" control={<Radio />} label="Medium" />
+                    <FormControlLabel value="hard" control={<Radio />} label="Hard" />
+                  </RadioGroup> 
+                }
+              />
+            </Grid>
 
-        <Grid item xs={12}>
-          <Form
-            label="Victory Condition"
-            input={
-            <>
-              <input name="victoryCondition" value={this.state.victoryCondition} type="number" min="4" max="10" onChange={this.handleChange} />
-            </>
-            }
-          />
-        </Grid>
-
-        <Grid item xs={6}>
-          <Link to="/">
-            <TransitionButton
-              name="Back"
-            />
-          </Link>
-        </Grid>
-
-        <Grid item xs={6}>
-          <Link to="/">
-            <TransitionButton
-              name="Confirm"
-            />
-          </Link>
+            <Grid item xs={12}>
+              <Form
+                label="Victory Condition"
+                input={
+                <>
+                  <TextField inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} name="victoryCondition" value={this.state.victoryCondition} id="outlined-basic" variant="outlined" onChange={this.handleChange} />
+                </>
+                }
+              />
+            </Grid>
+            
+            <Grid item xs={12}>
+              <Link to="/">
+                <TransitionButton
+                  name="Back"
+                />
+              </Link>
+              <Link to="/">
+                <TransitionButton
+                name="Confirm"
+                />
+              </Link>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     )
