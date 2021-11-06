@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
+import './GameDisplayPage.css'
 
-const Cell = () => {
+
+const Cell = (props) => {
     let color = "white";
     return (
         <td>
-            <div className="cell">
+            <div className="cell" key={props.key}>
                 <div className={color}></div>
             </div>
         </td>
@@ -13,8 +15,8 @@ const Cell = () => {
 
 const Row = (props) => {
     return (
-        <tr>
-            {props.row.map(() => (<Cell />))}
+        <tr key={props.key}>
+            {props.row.map((cell, cellIndex) => (<Cell cell={cell} key={cellIndex}/>))}
         </tr>
     );
 }
@@ -22,7 +24,7 @@ const Row = (props) => {
 const Board = (props) => {
     return (
         <table>
-            {props.board.map((row) => (<Row row={row}/>))}
+            {props.board.map((row, rowIndex) => (<Row row={row} key={rowIndex}/>))}
         </table>
     ); 
 }
