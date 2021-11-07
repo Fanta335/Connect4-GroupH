@@ -30,3 +30,17 @@ h1 {
     background-color: #FFF;
     border-radius: 100%;
 }
+
+.yellow {
+    height: 5em;
+    width: 5em;
+    background-color: yellow;
+    border-radius: 100%;
+}
+
+.red {
+    height: 5em;
+    width: 5em;
+    background-color: red;
+    border-radius: 100%;
+}
