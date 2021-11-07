@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import './GameDisplayPage.css'
-
+import React from "react";
+import { useState } from "react";
+import "./GameDisplayPage.css";
 
 const Cell = (props) => {
     let color = "white";
@@ -48,10 +48,8 @@ const Board = (props) => {
 }
 
 const Button = (props) => {
-    return (
-        <button onClick={props.onClick}>New Game</button>
-    );
-}
+  return <button onClick={props.onClick}>New Game</button>;
+};
 
 const GameDisplayPage = () => {
     const [board, setBoard] = useState(new Array(6).fill(Array(7).fill(null)));
@@ -59,8 +57,8 @@ const GameDisplayPage = () => {
 
     const initGame = () => {
         let board = new Array(6).fill(Array(7).fill(null))
-        setBoard(prevState => board)
-        setNextPlayerIsRed(prevState => false)
+        setBoard(board)
+        setNextPlayerIsRed(false)
     }
 
     const handleClick = (event) => {
@@ -74,7 +72,7 @@ const GameDisplayPage = () => {
                 break;
             }
         }
-        setBoard(prevState => nextBoard) 
+        setBoard(nextBoard) 
     }
 
     return (
