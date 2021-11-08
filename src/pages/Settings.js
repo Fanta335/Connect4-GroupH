@@ -1,142 +1,144 @@
 import React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import "./settings.css";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
 const Form = (props) => {
   return (
-    <>
-      <FormLabel component="legend">{props.label}</FormLabel>
-      {props.input}
-    </>
+    <Grid container spacing={1}>
+      <Grid item xs={12}>
+        <FormLabel component="legend">{props.label}</FormLabel>
+      </Grid>
+      <Grid item xs={12}>
+        {props.input}
+      </Grid>
+    </Grid>
   );
 };
 
 const TransitionButton = (props) => {
   return (
-    <Button onClick={props.onClick} variant="contained" color="primary">
+    <Button style={{ height: "50px" }} onClick={props.onClick} variant="contained" color="primary" fullWidth>
       {props.name}
     </Button>
   );
 };
 
-class Settings extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      borderSizeHigh: "6",
-      borderSizeWidth: "7",
-      cpuStrength: "2",
-      victoryCondition: "4",
-    };
+const Settings = () => {
+  const [state, setState] = useState({
+    borderSizeHeight: 6,
+    borderSizeWidth: 7,
+    cpuStrength: "easy",
+    victoryCondition: 4,
+  });
 
-    this.handleChange = this.handleChange.bind(this);
-  }
+  const handleChange = (event) => {
+    setState({ ...state, [event.target.name]: event.target.value });
+  };
 
-  handleChange(event) {
-    const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
+  return (
+    <Grid container alignItems="center" justifyContent="center" style={{ height: "100vh" }}>
+      <Grid container item xs={6} spacing={3}>
+        <Grid container item alignItems="center" justifyContent="center">
+          <Typography component="div">
+            <Box sx={{ fontSize: "h4.fontSize", fontWeight: "bold", m: 1 }}>Settings</Box>
+          </Typography>
+        </Grid>
 
-    this.setState({
-      [name]: value,
-    });
-  }
+        <Grid container item alignItems="center" justifyContent="center">
+          <Form
+            label="Border Size"
+            input={
+              <Grid container alignItems="center" justifyContent="center">
+                <Grid item xs={6}>
+                  <TextField
+                    inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                    name="borderSizeHeight"
+                    value={state.borderSizeHeight}
+                    id="outlined-basic"
+                    label="Height"
+                    variant="outlined"
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                    name="borderSizeWidth"
+                    value={state.borderSizeWidth}
+                    id="outlined-basic"
+                    label="Width"
+                    variant="outlined"
+                    onChange={handleChange}
+                  />
+                </Grid>
+              </Grid>
+            }
+          />
+        </Grid>
 
-  render() {
-    return (
-      <Grid container alignItems="center" justifyContent="center">
-        <Grid item xs={8}>
-          <Grid container alignItems="center" spacing={4} justifyContent="center">
-            <Grid item xs={12} margin="normal">
-              <h1>Setting</h1>
-            </Grid>
+        <Grid container item alignItems="center" justifyContent="center">
+          <Form
+            label="CPU Strength"
+            input={
+              <RadioGroup
+                row
+                aria-label="cpuStrength"
+                name="cpuStrength"
+                value={state.cpuStrength}
+                onChange={handleChange}
+              >
+                <FormControlLabel value="easy" control={<Radio />} label="Easy" />
+                <FormControlLabel value="medium" control={<Radio />} label="Medium" />
+                <FormControlLabel value="hard" control={<Radio />} label="Hard" />
+              </RadioGroup>
+            }
+          />
+        </Grid>
 
-            <Grid item xs={12}>
-              <Form
-                label="Border Size"
-                input={
-                  <>
-                    <TextField
-                      inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                      name="borderSizeHigh"
-                      value={this.state.borderSizeHigh}
-                      id="outlined-basic"
-                      label="Hight"
-                      variant="outlined"
-                      onChange={this.handleChange}
-                    />
-                    <TextField
-                      inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                      name="borderSizeWidth"
-                      value={this.state.borderSizeWidth}
-                      id="outlined-basic"
-                      label="Width"
-                      variant="outlined"
-                      onChange={this.handleChange}
-                    />
-                  </>
-                }
-              />
-            </Grid>
+        <Grid container item alignItems="center" justifyContent="center">
+          <Form
+            label="Victory Condition"
+            input={
+              <>
+                <TextField
+                  inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                  name="victoryCondition"
+                  value={state.victoryCondition}
+                  id="outlined-basic"
+                  variant="outlined"
+                  onChange={handleChange}
+                />
+              </>
+            }
+          />
+        </Grid>
 
-            <Grid item xs={12}>
-              <Form
-                label="CPU Strength"
-                input={
-                  <RadioGroup
-                    row
-                    aria-label="cpuStrength"
-                    name="cpuStrength"
-                    value={this.state.cpuStrength}
-                    onChange={this.handleChange}
-                  >
-                    <FormControlLabel value="easy" control={<Radio />} label="Easy" />
-                    <FormControlLabel value="medium" control={<Radio />} label="Medium" />
-                    <FormControlLabel value="hard" control={<Radio />} label="Hard" />
-                  </RadioGroup>
-                }
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Form
-                label="Victory Condition"
-                input={
-                  <>
-                    <TextField
-                      inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                      name="victoryCondition"
-                      value={this.state.victoryCondition}
-                      id="outlined-basic"
-                      variant="outlined"
-                      onChange={this.handleChange}
-                    />
-                  </>
-                }
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Link to="/">
-                <TransitionButton name="Back" />
-              </Link>
-              <Link to="/">
-                <TransitionButton name="Confirm" />
-              </Link>
-            </Grid>
+        <Grid container item alignItems="center" justifyContent="center" spacing={3}>
+          <Grid item xs={6}>
+            <Link to="/" style={{ textDecoration: "none" }}>
+              <TransitionButton name="Back" />
+            </Link>
+          </Grid>
+          <Grid item xs={6}>
+            <Link to="/" style={{ textDecoration: "none" }}>
+              <TransitionButton name="Confirm" />
+            </Link>
           </Grid>
         </Grid>
       </Grid>
-    );
-  }
-}
+    </Grid>
+  );
+};
 
 export default Settings;
