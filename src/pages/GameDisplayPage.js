@@ -66,7 +66,7 @@ export default GameDisplayPage;
 /**
  * 勝者を返す関数
  * @param {string[]} squares - 盤面を表す配列
- * @param {*} n - 勝利条件（n個連続で並んだら勝ち）
+ * @param {number} n - 勝利条件（n個連続で並んだら勝ち）
  * @returns {string} 勝者を返す
  */
 function calculateWinner(squares, n) {
