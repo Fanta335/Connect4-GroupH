@@ -23,22 +23,24 @@ function isConnectedN(arr, n, x, y) {
   let pattern = new RegExp(arr[x][y].repeat(n));
   let width = arr.length;
   let height = arr[0].length;
-  let str = "";
 
   // 縦方向
-  let start = y - n + 1 > 0 ? y - n + 1 : 0;
-  let end = y + n < height ? y + n : height;
-  for (let i = start; i < end; i++) {
-    str += arr[x][i];
+  let str = "";
+  for (let i = 1; i < n; i++) {
+    if (y - i >= 0) str = arr[x][y - i] + str;
+  }
+  for (let i = 0; i < n; i++) {
+    if (y + i < height) str += arr[x][y + i];
   }
   if (pattern.test(str)) return true;
 
   // 横方向
-  start = x - n + 1 > 0 ? x - n + 1 : 0;
-  end = x + n < width ? x + n : width;
   str = "";
-  for (let i = start; i < end; i++) {
-    str += arr[i][y];
+  for (let i = 1; i < n; i++) {
+    if (x - i >= 0) str = arr[x - i][y] + str;
+  }
+  for (let i = 0; i < n; i++) {
+    if (x + i < width) str += arr[x + i][y];
   }
   if (pattern.test(str)) return true;
 
