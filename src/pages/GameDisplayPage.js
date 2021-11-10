@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import "./GameDisplayPage.css";
-
+import Modal from "../components/Modal";
 const Cell = (props) => {
   let color = "white";
   return (
@@ -38,6 +38,14 @@ const Button = (props) => {
 };
 
 const GameDisplayPage = () => {
+  //タイムトラベル機能の実装
+  // const [history,setHistory] = useState({
+  //   history : [{
+  //     board: Array(6).fill(Array(7).fill(null)),
+  //   }],
+  //   isFirstMove: true,
+  // });
+
   const [board, setBoard] = useState(new Array(6).fill(Array(7).fill(null)));
 
   const initGame = () => {
@@ -51,6 +59,13 @@ const GameDisplayPage = () => {
       <h1>Connect 4!</h1>
       <Button onClick={initGame} />
       <Board board={board} />
+      {/* それぞれの手番の情報を表示する */}
+      <div className="game-info">
+        <div>{/*status*/}</div>
+        <ol>{/*todo*/}</ol>
+      </div>
+      {/* 便宜的にゲームの勝者をお知らせするモーダルを貼り付けています。 */}
+      <Modal />
     </div>
   );
 };

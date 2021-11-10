@@ -18,7 +18,7 @@ const Home = () => {
         </div>
       </div>
       <Link to="/game">
-        <Button variant="contained" color="secondary">
+        <Button variant="contained" color="primary" style={{ height: "50px" }} fullWidth>
           Start!
         </Button>
       </Link>
