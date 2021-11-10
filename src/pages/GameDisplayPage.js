@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import "./GameDisplayPage.css";
-
+import Modal from "../components/Modal";
 const Cell = (props) => {
   let color = "white";
   return (
@@ -51,6 +51,8 @@ const GameDisplayPage = () => {
       <h1>Connect 4!</h1>
       <Button onClick={initGame} />
       <Board board={board} />
+      {/* 便宜的にゲームの勝者をお知らせするモーダルを貼り付けています。 */}
+      <Modal />
     </div>
   );
 };
