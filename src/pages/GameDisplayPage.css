@@ -1,18 +1,18 @@
 body {
     font-family: 'Futura';
 }
-  
+
 h1 {
     text-align: center;
 }
-  
+
 .game-display {
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
 }
-  
+
 .cell {
     height: 6rem;
     width: 6rem;
@@ -23,10 +23,32 @@ h1 {
     align-items: center;
     cursor: pointer;
 }
-  
+
 .white {
     height: 5em;
     width: 5em;
     background-color: #FFF;
     border-radius: 100%;
+}
+
+.yellow{
+    height: 5em;
+    width: 5em;
+    background-color: yellow;
+    border-radius: 100%;
+}
+
+.red{
+    height: 5em;
+    width: 5em;
+    background-color: red;
+    border-radius: 100%;
+}
+
+.d-flex{
+    display: flex;
+}
+
+.flex-direction-column{
+    flex-direction: column;
 }
