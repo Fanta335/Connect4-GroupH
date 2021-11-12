@@ -6,6 +6,17 @@ h1 {
     text-align: center;
 }
 
+
+.flex-direction-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-direction-column-reverse {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
 .game-display {
     display: flex;
     justify-content: center;
@@ -31,24 +42,18 @@ h1 {
     border-radius: 100%;
 }
 
-.yellow{
+
+
+.yellow {
     height: 5em;
     width: 5em;
     background-color: yellow;
     border-radius: 100%;
 }
 
-.red{
+.red {
     height: 5em;
     width: 5em;
     background-color: red;
     border-radius: 100%;
-}
-
-.d-flex{
-    display: flex;
-}
-
-.flex-direction-column{
-    flex-direction: column;
 }

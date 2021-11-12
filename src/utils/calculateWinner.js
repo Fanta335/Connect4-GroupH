@@ -6,10 +6,10 @@
  * @param {number} y - 石を置いた座標y（縦方向）
  * @returns {string} 勝者
  */
-// function calculateWinner(squares, n, x, y) {
-//   if (isConnectedN(squares, n, x, y)) return squares[x][y];
-//   return null;
-// }
+function calculateWinner(squares, n, x, y) {
+  if (isConnectedN(squares, n, x, y)) return squares[x][y];
+  return null;
+}
 
 /**
  * 座標(x, y)を中心にN個連続で並んでいるかどうか判定する関数
@@ -69,4 +69,4 @@ function isConnectedN(arr, n, x, y) {
   return false;
 }
 
-export default isConnectedN;
+export default calculateWinner;
