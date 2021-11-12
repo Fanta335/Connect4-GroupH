@@ -5,12 +5,12 @@ const Header = () => {
   return (
     <header>
       <Link to="/">
-        <Button variant="contained" color="secondary">
+        <Button variant="contained" color="primary" style={{ height: "50px" }}>
           Home
         </Button>
       </Link>
       <Link to="/settings">
-        <Button variant="contained" color="secondary">
+        <Button variant="contained" color="primary" style={{ height: "50px" }}>
           Settings
         </Button>
       </Link>

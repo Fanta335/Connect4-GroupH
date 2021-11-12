@@ -8,13 +8,15 @@
     "extends": [
       "eslint:recommended", 
       "plugin:react/recommended",
+      "plugin:react-hooks/recommended",
       "prettier"
     ],
     "rules": {
       "react/prop-types": "off"
     },
     "parserOptions": {
-      "sourceType": "module"
+      "sourceType": "module",
+      "ecmaVersion": 2018
     },
     "settings": {
       "react": {
