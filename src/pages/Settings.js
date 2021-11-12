@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import "./settings.css";
@@ -35,15 +34,36 @@ const TransitionButton = (props) => {
 };
 
 const Settings = () => {
-  const [state, setState] = useState({
-    borderSizeHeight: 6,
-    borderSizeWidth: 7,
-    cpuStrength: "easy",
-    victoryCondition: 4,
-  });
+  const [borderSizeHeight, setBorderSizeHeight] = useState(6);
+  const [borderSizeWidth, setBorderSizeWidth] = useState(7);
+  const [cpuStrength, setCpuStrength] = useState("easy");
+  const [victoryCondition, setVictoryCondition] = useState(4);
 
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.value });
+  const handleInputChange = (event) => {
+    const name = event.target.name;
+    if (name === "cpuStrength") {
+      setCpuStrength(event.target.value);
+    }
+  };
+
+  const handleInputNumberChange = (event) => {
+    const min = parseInt(event.target.min);
+    const max = parseInt(event.target.max);
+    let tempValue = "";
+    if (event.target.value !== "") {
+      tempValue = parseInt(event.target.value);
+    }
+    if (tempValue > max || tempValue < min) {
+      return;
+    }
+    const name = event.target.name;
+    if (name === "borderSizeHeight") {
+      setBorderSizeHeight(tempValue);
+    } else if (name === "borderSizeWidth") {
+      setBorderSizeWidth(tempValue);
+    } else if (name === "victoryCondition") {
+      setVictoryCondition(tempValue);
+    }
   };
 
   return (
@@ -62,24 +82,44 @@ const Settings = () => {
               <Grid container alignItems="center" justifyContent="center">
                 <Grid item xs={6}>
                   <TextField
-                    inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                    name="borderSizeHeight"
-                    value={state.borderSizeHeight}
-                    id="outlined-basic"
-                    label="Height"
+                    label="Hight"
                     variant="outlined"
-                    onChange={handleChange}
+                    type="number"
+                    onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+                    name="borderSizeHeight"
+                    value={borderSizeHeight}
+                    onChange={handleInputNumberChange}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    style={{ textAlign: "right", minWidth: "200px" }}
+                    InputProps={{
+                      inputProps: {
+                        max: 100,
+                        min: 6,
+                      },
+                    }}
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                    inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                    name="borderSizeWidth"
-                    value={state.borderSizeWidth}
-                    id="outlined-basic"
                     label="Width"
                     variant="outlined"
-                    onChange={handleChange}
+                    type="number"
+                    onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+                    name="borderSizeWidth"
+                    value={borderSizeWidth}
+                    onChange={handleInputNumberChange}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    style={{ textAlign: "right", minWidth: "200px" }}
+                    InputProps={{
+                      inputProps: {
+                        max: 100,
+                        min: 7,
+                      },
+                    }}
                   />
                 </Grid>
               </Grid>
@@ -95,8 +135,8 @@ const Settings = () => {
                 row
                 aria-label="cpuStrength"
                 name="cpuStrength"
-                value={state.cpuStrength}
-                onChange={handleChange}
+                value={cpuStrength}
+                onChange={handleInputChange}
               >
                 <FormControlLabel value="easy" control={<Radio />} label="Easy" />
                 <FormControlLabel value="medium" control={<Radio />} label="Medium" />
@@ -112,12 +152,22 @@ const Settings = () => {
             input={
               <>
                 <TextField
-                  inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                  name="victoryCondition"
-                  value={state.victoryCondition}
-                  id="outlined-basic"
                   variant="outlined"
-                  onChange={handleChange}
+                  type="number"
+                  onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+                  name="victoryCondition"
+                  value={victoryCondition}
+                  onChange={handleInputNumberChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  style={{ textAlign: "right", minWidth: "200px" }}
+                  InputProps={{
+                    inputProps: {
+                      max: 100,
+                      min: 4,
+                    },
+                  }}
                 />
               </>
             }
