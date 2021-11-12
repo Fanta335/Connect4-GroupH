@@ -72,6 +72,7 @@ const GameDisplayPage = () => {
   const initGame = () => {
     setBoard(initBoard);
     setGameWinner("");
+    setIsNextPlayerRed(false);
   };
 
   // ボードの深いコピーを作成
@@ -88,8 +89,6 @@ const GameDisplayPage = () => {
     if (board[x][5] != null) return false;
     return true;
   };
-
-  // プレイヤーを変更
 
   // 選んだ列の一番下の空いているy座標を返す
   const getYIndex = (board, x) => {
@@ -125,6 +124,7 @@ const GameDisplayPage = () => {
           setGameWinner(winner);
           handleOpen();
         } else if (winner == null) {
+          // プレイヤーを変更
           setIsNextPlayerRed(!isNextPlayerRed);
         }
         setBoard(nextBoard);
