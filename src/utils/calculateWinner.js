@@ -23,51 +23,44 @@ function isConnectedN(arr, n, x, y) {
   let pattern = new RegExp(arr[x][y].repeat(n));
   let width = arr.length;
   let height = arr[0].length;
-  console.log(width); // 7
-  console.log(height); // 6
-  console.log(x);
-  console.log(arr[x]);
-  console.log(arr[x - 1]);
-  console.log(arr[x - 2]);
-  console.log(arr[x - 3]);
 
   // 縦方向
   let str = "";
   for (let i = 1; i < n; i++) {
-    if (y - i >= 0 && arr[x][y - i] !== null) str = arr[x][y - i] + str;
+    if (y - i >= 0) str = arr[x][y - i] + str;
   }
   for (let i = 0; i < n; i++) {
-    if (y + i < height && arr[x][y + i] !== null) str += arr[x][y + i];
+    if (y + i < height) str += arr[x][y + i];
   }
   if (pattern.test(str)) return true;
 
   // 横方向
   str = "";
   for (let i = 1; i < n; i++) {
-    if (x - i >= 0 && arr[x - i][y] !== null) str = arr[x - i][y] + str;
+    if (x - i >= 0) str = arr[x - i][y] + str;
   }
   for (let i = 0; i < n; i++) {
-    if (x + i < width && arr[x + i][y] !== null) str += arr[x + i][y];
+    if (x + i < width) str += arr[x + i][y];
   }
   if (pattern.test(str)) return true;
 
   // 右斜め上方向
   str = "";
   for (let i = 1; i < n; i++) {
-    if (x - i >= 0 && y - i >= 0 && arr[x - i][y - i] !== null) str = arr[x - i][y - i] + str;
+    if (x - i >= 0 && y - i >= 0) str = arr[x - i][y - i] + str;
   }
   for (let i = 0; i < n; i++) {
-    if (x + i < width && y + i < height && arr[x + i][y + i] !== null) str += arr[x + i][y + i];
+    if (x + i < width && y + i < height) str += arr[x + i][y + i];
   }
   if (pattern.test(str)) return true;
 
   // 左斜め上方向
   str = "";
   for (let i = 1; i < n; i++) {
-    if (x - i >= 0 && y + i < height && arr[x - i][y + i] !== null) str = arr[x - i][y + i] + str;
+    if (x - i >= 0 && y + i < height) str = arr[x - i][y + i] + str;
   }
   for (let i = 0; i < n; i++) {
-    if (x + i < width && y - i >= 0 && arr[x + i][y - i] !== null) str += arr[x + i][y - i];
+    if (x + i < width && y - i >= 0) str += arr[x + i][y - i];
   }
   if (pattern.test(str)) return true;
 
