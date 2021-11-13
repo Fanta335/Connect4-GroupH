@@ -98,7 +98,7 @@ const GameDisplayPage = () => {
   const getYIndex = (board, x) => {
     for (let y = 0; y < 6; y++) {
       if (board[x][y] == null) {
-        return parseInt(y);
+        return y;
       }
     }
   };
