@@ -1,9 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import "./GameDisplayPage.css";
-import "./../utils/calculateWinner";
 import Modal from "../components/Modal";
-import calculateWinner from "./../utils/calculateWinner";
+import calculateWinner from "../utils/calculateWinner";
 
 const Cell = (props) => {
   let color = "white";
@@ -57,17 +56,21 @@ const GameDisplayPage = () => {
   for (let y = 0; y < 7; y++) {
     initBoard[y] = new Array(6).fill(null);
   }
-
   const [board, setBoard] = useState(initBoard);
-  const [nextPlayerIs, setNextPlayerIs] = useState("Player1");
+  const [isNextPlayerRed, setIsNextPlayerRed] = useState(false);
   const [gameWinner, setGameWinner] = useState("");
+
+  //モーダルの開閉
+  const [open, setOpen] = useState(false);
+  // ゲームが終了した時に起動する↓
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   // ゲームの状態の初期化
   const initGame = () => {
-    let board = initBoard;
-    setBoard(() => board);
-    setNextPlayerIs(() => "Player1");
-    setGameWinner(() => "");
+    setBoard(initBoard);
+    setGameWinner("");
+    setIsNextPlayerRed(false);
   };
 
   // ボードの深いコピーを作成
@@ -85,15 +88,6 @@ const GameDisplayPage = () => {
     return true;
   };
 
-  // プレイヤーを変更
-  const changePlayer = (nextPlayerIs) => {
-    if (nextPlayerIs == "Player1") {
-      setNextPlayerIs(() => "Player2");
-    } else if (nextPlayerIs == "Player2") {
-      setNextPlayerIs(() => "Player1");
-    }
-  };
-
   // 選んだ列の一番下の空いているy座標を返す
   const getYIndex = (board, x) => {
     for (let y = 0; y < 6; y++) {
@@ -105,26 +99,36 @@ const GameDisplayPage = () => {
 
   // 選んだ列の一番下に石を落とす。配列にはboolean値ではなくstringを入れる
   const putStone = (board, x, y) => {
-    board[x][y] = nextPlayerIs;
+    if (isNextPlayerRed) {
+      board[x][y] = "Player2";
+    } else {
+      board[x][y] = "Player1";
+    }
   };
 
   const handleClick = (event) => {
     if (gameWinner == "") {
       let nextBoard = copyBoard(board);
       let dataset = event.currentTarget.dataset;
-      let x = dataset.x;
+
+      let x = parseInt(dataset.x);
+      console.log(nextBoard);
+      console.log(x);
+
       if (canPutStone(nextBoard, x)) {
         let y = getYIndex(nextBoard, x);
         putStone(nextBoard, x, y);
         // 勝利判定
         let winner = calculateWinner(nextBoard, 4, x, y);
+        console.log(winner);
         if (winner != null) {
-          setGameWinner(() => winner);
-          setBoard(() => nextBoard);
+          setGameWinner(winner);
+          handleOpen();
         } else if (winner == null) {
-          changePlayer(nextPlayerIs);
-          setBoard(nextBoard);
+          // プレイヤーを変更
+          setIsNextPlayerRed(!isNextPlayerRed);
         }
+        setBoard(nextBoard);
       }
     }
   };
@@ -134,14 +138,14 @@ const GameDisplayPage = () => {
       <h1>Connect 4!</h1>
       <Button onClick={initGame} />
       <Board board={board} onClick={handleClick} />
-      <h1>{gameWinner}</h1>
+
       {/* それぞれの手番の情報を表示する */}
       <div className="game-info">
         <div>{/*status*/}</div>
         <ol>{/*todo*/}</ol>
       </div>
       {/* 便宜的にゲームの勝者をお知らせするモーダルを貼り付けています。 */}
-      <Modal />
+      <Modal handleOpen={handleOpen} handleClose={handleClose} open={open} gameWinner={gameWinner} />
     </div>
   );
 };
