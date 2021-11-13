@@ -52,10 +52,14 @@ const InitButton = (props) => {
 
 const GameDisplayPage = () => {
   const initBoard = createNewBoard(7, 6);
-  const [board, setBoard] = useState(initBoard);
+  const [history, setHistory] = useState([
+    {
+      board: initBoard,
+    },
+  ]);
   const [isNextPlayerRed, setIsNextPlayerRed] = useState(false);
   const [gameWinner, setGameWinner] = useState("");
-  // const [stepNumber,setStepNumber] = useState(0);
+  const [stepNumber, setStepNumber] = useState(0);
 
   //モーダルの開閉
   const [open, setOpen] = useState(false);
@@ -65,19 +69,24 @@ const GameDisplayPage = () => {
 
   // ゲームの状態の初期化
   const initGame = () => {
-    setBoard(initBoard);
+    setHistory([
+      {
+        board: initBoard,
+      },
+    ]);
     setGameWinner("");
     setIsNextPlayerRed(false);
+    setStepNumber(0);
   };
 
   // ボードの深いコピーを作成
-  const copyBoard = (board) => {
-    let copiedBoard = [];
-    for (const array of board) {
-      copiedBoard.push([...array]);
-    }
-    return copiedBoard;
-  };
+  // const copyBoard = (board) => {
+  //   let copiedBoard = [];
+  //   for (const array of board) {
+  //     copiedBoard.push([...array]);
+  //   }
+  //   return copiedBoard;
+  // };
 
   // 選択した列に石が置けるか判定
   const canPutStone = (board, x) => {
@@ -105,37 +114,66 @@ const GameDisplayPage = () => {
 
   const handleClick = (event) => {
     if (gameWinner == "") {
-      let nextBoard = copyBoard(board);
-      let dataset = event.currentTarget.dataset;
-      let x = parseInt(dataset.x);
+      const renewedHistory = history.slice(0, stepNumber + 1);
+      const current = renewedHistory[renewedHistory.length - 1].board;
+      const dataset = event.currentTarget.dataset;
+      const x = parseInt(dataset.x);
 
-      if (canPutStone(nextBoard, x)) {
-        let y = getYIndex(nextBoard, x);
-        putStone(nextBoard, x, y);
+      if (canPutStone(current, x)) {
+        let y = getYIndex(current, x);
+        putStone(current, x, y);
         // 勝利判定
-        let winner = calculateWinner(nextBoard, 4, x, y);
+        let winner = calculateWinner(current, 4, x, y);
         if (winner != null) {
           setGameWinner(winner);
           handleOpen();
         } else if (winner == null) {
           // プレイヤーを変更
           setIsNextPlayerRed(!isNextPlayerRed);
-          setBoard(nextBoard);
+          //盤面の状態変更
+          setHistory(renewedHistory.concat([{ board: current }]));
+          //何手目かの状態変更
+          setStepNumber(renewedHistory.length);
         }
       }
     }
   };
 
+  const jumpTo = (step) => {
+    console.log(step);
+    setStepNumber(step);
+    setIsNextPlayerRed(step % 2 !== 0);
+    console.log(stepNumber);
+    console.log(isNextPlayerRed);
+  };
+
+  const moves = history.map((_, index) => {
+    const desc = index ? "Go to move #" + index : "Go to game start";
+    return (
+      <li key={index}>
+        <Button onClick={() => jumpTo(index)}>{desc}</Button>
+      </li>
+    );
+  });
+
+  const current = history[stepNumber];
+  let status;
+  if (gameWinner) {
+    status = "Winner: " + gameWinner;
+  } else {
+    status = "Next player: " + (isNextPlayerRed ? "Player2" : "Player1");
+  }
+
   return (
     <div className="game-display">
       <h1>Connect 4!</h1>
-      <InitButton onClick={initGame} />
-      <Board board={board} onClick={handleClick} />
+      <InitButton onClick={() => initGame} />
+      <Board board={current.board} onClick={handleClick} />
 
       {/* それぞれの手番の情報を表示する */}
       <div className="game-info">
-        <div>{/*status*/}</div>
-        <ol>{/*todo*/}</ol>
+        <div>{status}</div>
+        <ol>{moves}</ol>
       </div>
       {/* 便宜的にゲームの勝者をお知らせするモーダルを貼り付けています。 */}
       <Modal handleOpen={handleOpen} handleClose={handleClose} open={open} gameWinner={gameWinner} />
