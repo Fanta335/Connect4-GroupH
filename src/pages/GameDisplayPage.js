@@ -1,9 +1,10 @@
 import React from "react";
 import { useState } from "react";
 import "./GameDisplayPage.css";
-import "./../utils/calculateWinner";
 import Modal from "../components/Modal";
 import calculateWinner from "../utils/calculateWinner";
+import Button from "@mui/material/Button";
+import createNewBoard from "../utils/createNewBoard";
 
 const Cell = (props) => {
   let color = "white";
@@ -41,26 +42,20 @@ const Board = (props) => {
   );
 };
 
-const Button = (props) => {
-  return <button onClick={props.onClick}>New Game</button>;
+const InitButton = (props) => {
+  return (
+    <Button variant="contained" color="primary" style={{ height: "50px" }} onClick={props.onClick}>
+      New Game
+    </Button>
+  );
 };
 
 const GameDisplayPage = () => {
-  //タイムトラベル機能の実装
-  // const [history,setHistory] = useState({
-  //   history : [{
-  //     board: Array(6).fill(Array(7).fill(null)),
-  //   }],
-  //   isFirstMove: true,
-  // });
-  let initBoard = new Array(7);
-  for (let y = 0; y < 7; y++) {
-    initBoard[y] = new Array(6).fill(null);
-  }
-
+  const initBoard = createNewBoard(7, 6);
   const [board, setBoard] = useState(initBoard);
   const [isNextPlayerRed, setIsNextPlayerRed] = useState(false);
   const [gameWinner, setGameWinner] = useState("");
+  // const [stepNumber,setStepNumber] = useState(0);
 
   //モーダルの開閉
   const [open, setOpen] = useState(false);
@@ -113,22 +108,20 @@ const GameDisplayPage = () => {
       let nextBoard = copyBoard(board);
       let dataset = event.currentTarget.dataset;
       let x = parseInt(dataset.x);
-      console.log(nextBoard);
-      console.log(x);
+
       if (canPutStone(nextBoard, x)) {
         let y = getYIndex(nextBoard, x);
         putStone(nextBoard, x, y);
         // 勝利判定
         let winner = calculateWinner(nextBoard, 4, x, y);
-        console.log(winner);
         if (winner != null) {
           setGameWinner(winner);
           handleOpen();
         } else if (winner == null) {
           // プレイヤーを変更
           setIsNextPlayerRed(!isNextPlayerRed);
+          setBoard(nextBoard);
         }
-        setBoard(nextBoard);
       }
     }
   };
@@ -136,7 +129,7 @@ const GameDisplayPage = () => {
   return (
     <div className="game-display">
       <h1>Connect 4!</h1>
-      <Button onClick={initGame} />
+      <InitButton onClick={initGame} />
       <Board board={board} onClick={handleClick} />
 
       {/* それぞれの手番の情報を表示する */}
