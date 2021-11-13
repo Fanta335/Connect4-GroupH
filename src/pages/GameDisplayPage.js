@@ -105,7 +105,7 @@ const GameDisplayPage = () => {
   const getYIndex = (board, x) => {
     for (let y = 0; y < 6; y++) {
       if (board[x][y] == null) {
-        return parseInt(y);
+        return y;
       }
     }
   };
@@ -129,6 +129,7 @@ const GameDisplayPage = () => {
       if (canPutStone(current, x)) {
         let y = getYIndex(current, x);
         putStone(current, x, y);
+
         // 勝利判定
         let winner = calculateWinner(current, 4, x, y);
         if (winner != null) {
