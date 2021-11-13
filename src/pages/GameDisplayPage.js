@@ -79,14 +79,21 @@ const GameDisplayPage = () => {
     setStepNumber(0);
   };
 
-  // ボードの深いコピーを作成
-  // const copyBoard = (board) => {
-  //   let copiedBoard = [];
-  //   for (const array of board) {
-  //     copiedBoard.push([...array]);
-  //   }
-  //   return copiedBoard;
-  // };
+  // historyの深いコピーを作成
+  const copyBoard = (history) => {
+    let renewedHistory = [];
+    for (const historyItem of history) {
+      let board = historyItem.board;
+      let copiedBoard = [];
+      for (const array of board) {
+        copiedBoard.push([...array]);
+      }
+      renewedHistory.push({
+        board: copiedBoard,
+      });
+    }
+    return renewedHistory;
+  };
 
   // 選択した列に石が置けるか判定
   const canPutStone = (board, x) => {
@@ -114,8 +121,8 @@ const GameDisplayPage = () => {
 
   const handleClick = (event) => {
     if (gameWinner == "") {
-      const renewedHistory = history.slice(0, stepNumber + 1);
-      const current = renewedHistory[renewedHistory.length - 1].board;
+      const current = history[history.length - 1].board;
+      const renewedHistory = copyBoard(history);
       const dataset = event.currentTarget.dataset;
       const x = parseInt(dataset.x);
 
@@ -140,11 +147,8 @@ const GameDisplayPage = () => {
   };
 
   const jumpTo = (step) => {
-    console.log(step);
     setStepNumber(step);
     setIsNextPlayerRed(step % 2 !== 0);
-    console.log(stepNumber);
-    console.log(isNextPlayerRed);
   };
 
   const moves = history.map((_, index) => {
@@ -156,7 +160,7 @@ const GameDisplayPage = () => {
     );
   });
 
-  const current = history[stepNumber];
+  const current = history[stepNumber].board;
   let status;
   if (gameWinner) {
     status = "Winner: " + gameWinner;
@@ -167,8 +171,8 @@ const GameDisplayPage = () => {
   return (
     <div className="game-display">
       <h1>Connect 4!</h1>
-      <InitButton onClick={() => initGame} />
-      <Board board={current.board} onClick={handleClick} />
+      <InitButton onClick={initGame} />
+      <Board board={current} onClick={handleClick} />
 
       {/* それぞれの手番の情報を表示する */}
       <div className="game-info">
