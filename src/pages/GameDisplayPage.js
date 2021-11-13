@@ -89,7 +89,7 @@ const GameDisplayPage = () => {
   const getYIndex = (board, x) => {
     for (let y = 0; y < 6; y++) {
       if (board[x][y] == null) {
-        return parseInt(y);
+        return y;
       }
     }
   };
@@ -107,6 +107,7 @@ const GameDisplayPage = () => {
     if (gameWinner == "") {
       let nextBoard = copyBoard(board);
       let dataset = event.currentTarget.dataset;
+
       let x = parseInt(dataset.x);
 
       if (canPutStone(nextBoard, x)) {
