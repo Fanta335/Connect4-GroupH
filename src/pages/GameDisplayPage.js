@@ -1,7 +1,6 @@
 import React from "react";
 import { useState } from "react";
 import "./GameDisplayPage.css";
-import "./../utils/calculateWinner";
 import Modal from "../components/Modal";
 import calculateWinner from "../utils/calculateWinner";
 
@@ -57,7 +56,6 @@ const GameDisplayPage = () => {
   for (let y = 0; y < 7; y++) {
     initBoard[y] = new Array(6).fill(null);
   }
-
   const [board, setBoard] = useState(initBoard);
   const [isNextPlayerRed, setIsNextPlayerRed] = useState(false);
   const [gameWinner, setGameWinner] = useState("");
@@ -112,9 +110,11 @@ const GameDisplayPage = () => {
     if (gameWinner == "") {
       let nextBoard = copyBoard(board);
       let dataset = event.currentTarget.dataset;
+
       let x = parseInt(dataset.x);
       console.log(nextBoard);
       console.log(x);
+
       if (canPutStone(nextBoard, x)) {
         let y = getYIndex(nextBoard, x);
         putStone(nextBoard, x, y);
