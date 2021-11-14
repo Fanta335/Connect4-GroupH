@@ -121,8 +121,8 @@ const GameDisplayPage = () => {
 
   const handleClick = (event) => {
     if (gameWinner == "") {
-      const current = history[history.length - 1].board;
       const renewedHistory = copyBoard(history);
+      const current = renewedHistory[renewedHistory.length - 1].board;
       const dataset = event.currentTarget.dataset;
       const x = parseInt(dataset.x);
 
