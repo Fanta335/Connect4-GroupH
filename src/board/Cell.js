@@ -1,5 +1,5 @@
 import React from "react";
-import "./../pages/GameDisplayPage.css";
+import "./Board.css";
 
 const Cell = (props) => {
   let color = "white";

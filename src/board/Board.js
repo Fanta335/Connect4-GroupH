@@ -1,5 +1,5 @@
 import React from "react";
-import "./../pages/GameDisplayPage.css";
+import "./Board.css";
 import Column from "./../board/Column.js";
 
 const Board = (props) => {
