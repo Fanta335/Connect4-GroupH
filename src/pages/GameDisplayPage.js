@@ -5,42 +5,7 @@ import Modal from "../components/Modal";
 import calculateWinner from "../utils/calculateWinner";
 import Button from "@mui/material/Button";
 import createNewBoard from "../utils/createNewBoard";
-
-const Cell = (props) => {
-  let color = "white";
-  if (props.value === "Player1") {
-    color = "red";
-  } else if (props.value === "Player2") {
-    color = "yellow";
-  }
-  return (
-    <div className="cell" data-x={props.x} data-y={props.y} onClick={props.onClick}>
-      <div className={color}></div>
-    </div>
-  );
-};
-
-const Column = (props) => {
-  return (
-    <div className="flex-direction-column-reverse">
-      {props.column.map((y, i) => (
-        <Cell value={y} key={i} x={props.x} y={i} onClick={props.onClick} />
-      ))}
-    </div>
-  );
-};
-
-const Board = (props) => {
-  return (
-    <div>
-      <div className="flex-direction-row">
-        {props.board.map((x, i) => (
-          <Column column={x} key={i} x={i} onClick={props.onClick} />
-        ))}
-      </div>
-    </div>
-  );
-};
+import Board from "./../board/Board.js";
 
 const InitButton = (props) => {
   return (
