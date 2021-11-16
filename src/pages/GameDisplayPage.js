@@ -5,7 +5,14 @@ import Modal from "../components/Modal";
 import calculateWinner from "../utils/calculateWinner";
 import Button from "@mui/material/Button";
 import createNewBoard from "../utils/createNewBoard";
+import canPutStone from "../utils/canPutStone";
+import getLowestEmptyYIndex from "../utils/getLowestEmptyYIndex";
 import Board from "./../board/Board.js";
+
+// Yuki Ueno: ハードコーディングになっているため、定数に置き換えました
+const HEIGHT = 6;
+const WIDTH = 7;
+const VICTORY_CONDITION = 4;
 
 const InitButton = (props) => {
   return (
@@ -16,7 +23,7 @@ const InitButton = (props) => {
 };
 
 const GameDisplayPage = () => {
-  const initBoard = createNewBoard(7, 6);
+  const initBoard = createNewBoard(WIDTH, HEIGHT);
   const [board, setBoard] = useState(initBoard);
   const [isNextPlayerRed, setIsNextPlayerRed] = useState(false);
   const [gameWinner, setGameWinner] = useState("");
@@ -44,21 +51,6 @@ const GameDisplayPage = () => {
     return copiedBoard;
   };
 
-  // 選択した列に石が置けるか判定
-  const canPutStone = (board, x) => {
-    if (board[x][5] != null) return false;
-    return true;
-  };
-
-  // 選んだ列の一番下の空いているy座標を返す
-  const getYIndex = (board, x) => {
-    for (let y = 0; y < 6; y++) {
-      if (board[x][y] == null) {
-        return y;
-      }
-    }
-  };
-
   // 選んだ列の一番下に石を落とす。配列にはboolean値ではなくstringを入れる
   const putStone = (board, x, y) => {
     if (isNextPlayerRed) {
@@ -72,14 +64,13 @@ const GameDisplayPage = () => {
     if (gameWinner == "") {
       let nextBoard = copyBoard(board);
       let dataset = event.currentTarget.dataset;
-
       let x = parseInt(dataset.x);
 
       if (canPutStone(nextBoard, x)) {
-        let y = getYIndex(nextBoard, x);
+        let y = getLowestEmptyYIndex(nextBoard, x);
         putStone(nextBoard, x, y);
         // 勝利判定
-        let winner = calculateWinner(nextBoard, 4, x, y);
+        let winner = calculateWinner(nextBoard, VICTORY_CONDITION, x, y);
         if (winner != null) {
           setGameWinner(winner);
           handleOpen();
