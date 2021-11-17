@@ -4,6 +4,9 @@ import "./GameDisplayPage.css";
 import Modal from "../components/Modal";
 import calculateWinner from "../utils/calculateWinner";
 import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import List from "@mui/material/List";
+import Typography from "@mui/material/Typography";
 import createNewBoard from "../utils/createNewBoard";
 import canPutStone from "../utils/canPutStone";
 import getLowestEmptyYIndex from "../utils/getLowestEmptyYIndex";
@@ -84,19 +87,23 @@ const GameDisplayPage = () => {
   };
 
   return (
-    <div className="game-display">
-      <h1>Connect 4!</h1>
-      <InitButton onClick={initGame} />
+    <Grid sx={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
+      <Typography variant="h2" component="h1">
+        Connect 4!
+      </Typography>
+      <Grid sx={{ display: "flex", justifyContent: "space-evenly", pb: 3 }}>
+        <InitButton onClick={initGame} />
+      </Grid>
       <Board board={board} onClick={handleClick} />
 
       {/* それぞれの手番の情報を表示する */}
-      <div className="game-info">
-        <div>{/*status*/}</div>
-        <ol>{/*todo*/}</ol>
-      </div>
+      <Grid className="game-info">
+        <Grid>{/*status*/}</Grid>
+        <List>{/*todo*/}</List>
+      </Grid>
       {/* 便宜的にゲームの勝者をお知らせするモーダルを貼り付けています。 */}
       <Modal handleOpen={handleOpen} handleClose={handleClose} open={open} gameWinner={gameWinner} />
-    </div>
+    </Grid>
   );
 };
 
