@@ -80,7 +80,7 @@ const GameDisplayPage = () => {
   };
 
   // historyの深いコピーを作成
-  const copyBoard = (history) => {
+  const copyHistory = (history) => {
     let renewedHistory = [];
     for (const historyItem of history) {
       let board = historyItem.board;
@@ -94,6 +94,23 @@ const GameDisplayPage = () => {
     }
     return renewedHistory;
   };
+
+  // historyを任意の手番に遡る際にhistoryを更新する
+  const updateHistory = (history,step) => {
+    let updatedHistory = [];
+    for (let i = 0; i <= step; i++) {
+      let board = history[i].board;
+      let copiedBoard = [];
+      for (const array of board) {
+        copiedBoard.push([...array]);
+      }
+      updatedHistory.push({
+        board: copiedBoard,
+      });
+    }
+    console.log(updatedHistory);
+    return updatedHistory;
+  }
 
   // 選択した列に石が置けるか判定
   const canPutStone = (board, x) => {
@@ -121,7 +138,7 @@ const GameDisplayPage = () => {
 
   const handleClick = (event) => {
     if (gameWinner == "") {
-      const renewedHistory = copyBoard(history);
+      const renewedHistory = copyHistory(history);
       const current = renewedHistory[renewedHistory.length - 1].board;
       const dataset = event.currentTarget.dataset;
       const x = parseInt(dataset.x);
@@ -129,7 +146,8 @@ const GameDisplayPage = () => {
       if (canPutStone(current, x)) {
         let y = getYIndex(current, x);
         putStone(current, x, y);
-
+        //盤面の状態変更
+        setHistory(renewedHistory.concat([{ board: current }]));
         // 勝利判定
         let winner = calculateWinner(current, 4, x, y);
         if (winner != null) {
@@ -138,8 +156,6 @@ const GameDisplayPage = () => {
         } else if (winner == null) {
           // プレイヤーを変更
           setIsNextPlayerRed(!isNextPlayerRed);
-          //盤面の状態変更
-          setHistory(renewedHistory.concat([{ board: current }]));
           //何手目かの状態変更
           setStepNumber(renewedHistory.length);
         }
@@ -148,8 +164,10 @@ const GameDisplayPage = () => {
   };
 
   const jumpTo = (step) => {
+    setHistory(updateHistory(history,step));
     setStepNumber(step);
     setIsNextPlayerRed(step % 2 !== 0);
+    setGameWinner("");
   };
 
   const moves = history.map((_, index) => {
