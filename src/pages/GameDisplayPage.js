@@ -164,9 +164,9 @@ const GameDisplayPage = () => {
   };
 
   const jumpTo = (step) => {
-    setHistory(updateHistory(history,step));
     setStepNumber(step);
     setIsNextPlayerRed(step % 2 !== 0);
+    setHistory(updateHistory(history,step));
     setGameWinner("");
   };
 
