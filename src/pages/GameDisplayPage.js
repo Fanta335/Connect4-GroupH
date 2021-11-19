@@ -11,6 +11,7 @@ import createNewBoard from "../utils/createNewBoard";
 import canPutStone from "../utils/canPutStone";
 import getLowestEmptyYIndex from "../utils/getLowestEmptyYIndex";
 import Board from "./../board/Board.js";
+import DisplayPlayerTurn from "./../board/DisplayPlayerTurn.js";
 
 // Yuki Ueno: ハードコーディングになっているため、定数に置き換えました
 const HEIGHT = 6;
@@ -76,6 +77,8 @@ const GameDisplayPage = () => {
         let winner = calculateWinner(nextBoard, VICTORY_CONDITION, x, y);
         if (winner != null) {
           setGameWinner(winner);
+          // 勝利判定後に石が配置されないようになっていたので修正しました。
+          setBoard(nextBoard);
           handleOpen();
         } else if (winner == null) {
           // プレイヤーを変更
@@ -91,8 +94,9 @@ const GameDisplayPage = () => {
       <Typography variant="h2" component="h1">
         Connect 4!
       </Typography>
-      <Grid sx={{ display: "flex", justifyContent: "space-evenly", pb: 3 }}>
+      <Grid sx={{ display: "flex", justifyContent: "center", flexDirection: "row", alignItems: "flex-end", mb: 2 }}>
         <InitButton onClick={initGame} />
+        <DisplayPlayerTurn playerTurn={isNextPlayerRed} />
       </Grid>
       <Board board={board} onClick={handleClick} />
 
