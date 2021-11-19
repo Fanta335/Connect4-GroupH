@@ -6,6 +6,10 @@ import calculateWinner from "../utils/calculateWinner";
 import Button from "@mui/material/Button";
 import createNewBoard from "../utils/createNewBoard";
 
+const HEIGHT = 6;
+const WIDTH = 7;
+const VICTORY_CONDITION = 4;
+
 const Cell = (props) => {
   let color = "white";
   if (props.value === "Player1") {
@@ -51,14 +55,14 @@ const InitButton = (props) => {
 };
 
 const GameDisplayPage = () => {
-  const initBoard = createNewBoard(7, 6);
+  const initBoard = createNewBoard(WIDTH, HEIGHT);
+  const [isNextPlayerRed, setIsNextPlayerRed] = useState(false);
+  const [gameWinner, setGameWinner] = useState("");
   const [history, setHistory] = useState([
     {
       board: initBoard,
     },
   ]);
-  const [isNextPlayerRed, setIsNextPlayerRed] = useState(false);
-  const [gameWinner, setGameWinner] = useState("");
   const [stepNumber, setStepNumber] = useState(0);
 
   //モーダルの開閉
@@ -79,15 +83,21 @@ const GameDisplayPage = () => {
     setStepNumber(0);
   };
 
+  //ボードの深いコピーを作成
+  const copyBoard = (board) => {
+    let copiedBoard = [];
+    for(const array of board){
+      copiedBoard.push([...array]);
+    }
+    return copiedBoard;
+  }
+
   // historyの深いコピーを作成
   const copyHistory = (history) => {
     let renewedHistory = [];
     for (const historyItem of history) {
       let board = historyItem.board;
-      let copiedBoard = [];
-      for (const array of board) {
-        copiedBoard.push([...array]);
-      }
+      let copiedBoard = copyBoard(board);
       renewedHistory.push({
         board: copiedBoard,
       });
@@ -100,15 +110,11 @@ const GameDisplayPage = () => {
     let updatedHistory = [];
     for (let i = 0; i <= step; i++) {
       let board = history[i].board;
-      let copiedBoard = [];
-      for (const array of board) {
-        copiedBoard.push([...array]);
-      }
+      let copiedBoard = copyBoard(board);
       updatedHistory.push({
         board: copiedBoard,
       });
     }
-    console.log(updatedHistory);
     return updatedHistory;
   }
 
@@ -135,36 +141,36 @@ const GameDisplayPage = () => {
       board[x][y] = "Player1";
     }
   };
-
+  console.log(history);
   const handleClick = (event) => {
-    if (gameWinner == "") {
-      const renewedHistory = copyHistory(history);
-      const current = renewedHistory[renewedHistory.length - 1].board;
-      const dataset = event.currentTarget.dataset;
-      const x = parseInt(dataset.x);
+    if (gameWinner !== "") return;
+    const renewedHistory = copyHistory(history);
+    const current = renewedHistory[stepNumber].board;
+    let nextBoard = copyBoard(current);
+    const dataset = event.currentTarget.dataset;
+    const x = parseInt(dataset.x);
 
-      if (canPutStone(current, x)) {
-        let y = getYIndex(current, x);
-        putStone(current, x, y);
-        //盤面の状態変更
-        setHistory(renewedHistory.concat([{ board: current }]));
-        // 勝利判定
-        let winner = calculateWinner(current, 4, x, y);
-        if (winner != null) {
-          setGameWinner(winner);
-          handleOpen();
-        } else if (winner == null) {
-          // プレイヤーを変更
-          setIsNextPlayerRed(!isNextPlayerRed);
-          //何手目かの状態変更
-          setStepNumber(renewedHistory.length);
-        }
+    if (canPutStone(nextBoard, x)) {
+      let y = getYIndex(nextBoard, x);
+      putStone(nextBoard, x, y);
+      //盤面の状態変更
+      setHistory(renewedHistory.concat([{ board: nextBoard }]));
+      //何手目かの状態変更
+      setStepNumber(stepNumber + 1);
+      // 勝利判定
+      let winner = calculateWinner(nextBoard, VICTORY_CONDITION, x, y);
+      if (winner != null) {
+        setGameWinner(winner);
+        handleOpen();
+      } else if (winner == null) {
+        // プレイヤーを変更
+        setIsNextPlayerRed(!isNextPlayerRed);
       }
     }
+
   };
 
   const jumpTo = (step) => {
-    setIsNextPlayerRed(!isNextPlayerRed);
     setStepNumber(step);
     setIsNextPlayerRed(step % 2 !== 0);
     setHistory(updateHistory(history,step));
