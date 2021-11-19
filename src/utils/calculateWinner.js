@@ -1,16 +1,27 @@
+import canPutStone from "./canPutStone";
+
 /**
  * 勝者を返す関数
- * @param {string[][]} squares - 盤面を表す二次元配列
+ * @param {string[][]} board - 盤面を表す二次元配列
  * @param {number} victoryCondition - 勝利条件
  * @param {number} x - 石を置いた座標x（横方向）
  * @param {number} y - 石を置いた座標y（縦方向）
  * @returns {string} 勝者
  */
-function calculateWinner(squares, victoryCondition, x, y) {
-  if (isConnectedN(squares, victoryCondition, x, y)) {
-    return squares[x][y];
+function calculateWinner(board, victoryCondition, x, y) {
+  // 勝者の判定
+  if (isConnectedN(board, victoryCondition, x, y)) {
+    return board[x][y];
   }
-  return null;
+  // 引き分けの判定
+  let isGameContinue = false;
+  for (let x = 0; x < board.length; x++) {
+    isGameContinue = isGameContinue || canPutStone(board, x);
+    if (isGameContinue) {
+      return null;
+    }
+  }
+  return "draw";
 }
 
 /**
