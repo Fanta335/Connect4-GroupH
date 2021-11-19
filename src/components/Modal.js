@@ -26,12 +26,25 @@ const BasicModal = (props) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            The winner is {props.gameWinner}
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Congratulations! {props.gameWinner} won the game!
-          </Typography>
+          {props.gameWinner !== "draw" ? (
+            <>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                The winner is {props.gameWinner}
+              </Typography>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                Congratulations! {props.gameWinner} won the game!
+              </Typography>
+            </>
+          ) : (
+            <>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                Draw
+              </Typography>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                This game is a draw. Try again!
+              </Typography>
+            </>
+          )}
         </Box>
       </Modal>
     </div>
