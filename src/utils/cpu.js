@@ -10,12 +10,12 @@ const GameState = {
 };
 
 class Cpu {
-  constructor(board, victoryCondition) {
+  constructor(board, victoryCondition, cpuName, playerName) {
     this.board = board;
     this.victoryCondition = victoryCondition;
-    this.cpuName = "cpu";
-    this.playerName = "player";
-    this.myTurn = true;
+    this.cpuName = cpuName;
+    this.playerName = playerName;
+    this.myTurn = false; // false: CPU, true: Player
     this.state = GameState.game;
   }
 
@@ -42,7 +42,7 @@ class Cpu {
    * @param {number} y - 石を置く座標y
    */
   putStone(x, y) {
-    this.myTurn ? (this.board[x][y] = this.cpuName) : (this.board[x][y] = this.playerName);
+    this.myTurn ? (this.board[x][y] = this.playerName) : (this.board[x][y] = this.cpuName);
     this.checkState(x, y);
     this.changeTurn();
   }
@@ -73,7 +73,7 @@ class Cpu {
    * @returns 評価値
    */
   evaluate(x, y, depth) {
-    let maxScore = this.board.length * this.board[0].length;
+    let maxScore = this.board.length * this.board[0].length + 1;
     let winner = calculateWinner(this.board, this.victoryCondition, x, y);
     if (winner === this.cpuName) {
       return maxScore - depth;
@@ -90,14 +90,13 @@ class Cpu {
    * @returns cpuが石を置く座標x
    */
   cpuThink(mode) {
-    // let maxScore = this.board.length * this.board[0].length;
+    let maxScore = this.board.length * this.board[0].length + 1;
     if (mode === "easy") {
-      return this.random();
+      return this.random(); // ランダム
     } else if (mode === "medium") {
-      console.log("5手先まで読む");
+      return this.minmax(0, -maxScore, maxScore, null, null, 3); // 3手先まで読む
     } else if (mode === "hard") {
-      // return this.minmax(0, -maxScore, maxScore, 0, 0);
-      console.log("最終手まで読む");
+      return this.minmax(0, -maxScore, maxScore, null, null, 10); // 10手先まで読む
     }
   }
 
@@ -106,9 +105,11 @@ class Cpu {
    * @returns 石を置く座標x
    */
   random() {
-    let x = Cpu.getRandomInt(this.board.length);
-    if (canPutStone(this.board, x)) {
-      return x;
+    for (;;) {
+      let x = Cpu.getRandomInt(this.board.length);
+      if (canPutStone(this.board, x)) {
+        return x;
+      }
     }
   }
 
@@ -125,8 +126,8 @@ class Cpu {
    * @param {number} y - 石を置く座標y
    * @returns
    */
-  minmax(depth, alpha, beta, x, y) {
-    if (this.state !== GameState.game) {
+  minmax(depth, alpha, beta, x, y, limit) {
+    if (this.state !== GameState.game || depth >= limit) {
       return this.evaluate(x, y, depth);
     }
 
@@ -134,11 +135,21 @@ class Cpu {
     let value = null;
     this.myTurn ? (value = Infinity) : (value = -Infinity);
 
-    for (let x = 0; x < this.board.length; x++) {
+    // 盤面の中央から探索した方が、早く良い手を見つけられる可能性が高いので、中央から外に向かって探索していく
+    let searchXIndex = [...Array(this.board.length)].map((_, i) => i); //=> [0, 1, 2, 3, 4]
+    searchXIndex.sort(function (a, b) {
+      return (
+        Math.abs(a - searchXIndex[Math.floor(searchXIndex.length / 2)]) -
+        Math.abs(b - searchXIndex[Math.floor(searchXIndex.length / 2)])
+      );
+    }); //=> [2, 1, 3, 0, 4]
+
+    for (let i = 0; i < searchXIndex.length; i++) {
+      let x = searchXIndex[i];
       if (canPutStone(this.board, x)) {
         let y = getLowestEmptyYIndex(this.board, x);
         this.putStone(x, y);
-        let childValue = this.minmax(depth + 1, alpha, beta, x, y);
+        let childValue = this.minmax(depth + 1, alpha, beta, x, y, limit);
 
         if (this.myTurn) {
           if (beta <= childValue) {
