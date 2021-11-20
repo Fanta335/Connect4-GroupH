@@ -57,11 +57,11 @@ const GameDisplayPage = () => {
   //ボードの深いコピーを作成
   const copyBoard = (board) => {
     let copiedBoard = [];
-    for(const array of board){
+    for (const array of board) {
       copiedBoard.push([...array]);
     }
     return copiedBoard;
-  }
+  };
 
   // historyの深いコピーを作成
   const copyHistory = (history) => {
@@ -77,7 +77,7 @@ const GameDisplayPage = () => {
   };
 
   // historyを任意の手番に遡る際にhistoryを更新する
-  const updateHistory = (history,step) => {
+  const updateHistory = (history, step) => {
     let updatedHistory = [];
     for (let i = 0; i <= step; i++) {
       let board = history[i].board;
@@ -87,7 +87,7 @@ const GameDisplayPage = () => {
       });
     }
     return updatedHistory;
-  }
+  };
 
   // 選んだ列の一番下に石を落とす。配列にはboolean値ではなくstringを入れる
   const putStone = (board, x, y) => {
@@ -97,8 +97,7 @@ const GameDisplayPage = () => {
       board[x][y] = "Player1";
     }
   };
-  
-  console.log(history);
+
   const handleClick = (event) => {
     if (gameWinner !== "") return;
     const renewedHistory = copyHistory(history);
@@ -129,7 +128,7 @@ const GameDisplayPage = () => {
   const jumpTo = (step) => {
     setStepNumber(step);
     setIsNextPlayerRed(step % 2 !== 0);
-    setHistory(updateHistory(history,step));
+    setHistory(updateHistory(history, step));
     setGameWinner("");
   };
 
