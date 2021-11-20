@@ -83,8 +83,8 @@ class Cpu {
    * @returns 評価値
    */
   evaluate(x, y, depth) {
-    let maxScore = this.board.length * this.board[0].length + 1;
-    let winner = calculateWinner(this.board, this.victoryCondition, x, y);
+    const maxScore = this.board.length * this.board[0].length + 1;
+    const winner = calculateWinner(this.board, this.victoryCondition, x, y);
     if (winner === this.cpuName) {
       return maxScore - depth;
     } else if (winner == this.playerName) {
