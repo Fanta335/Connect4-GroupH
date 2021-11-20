@@ -155,11 +155,11 @@ class Cpu {
     }); //=> [2, 1, 3, 0, 4]
 
     for (let i = 0; i < searchXIndex.length; i++) {
-      let x = searchXIndex[i];
+      const x = searchXIndex[i];
       if (canPutStone(this.board, x)) {
-        let y = getLowestEmptyYIndex(this.board, x);
+        const y = getLowestEmptyYIndex(this.board, x);
         this.putStone(x, y);
-        let childValue = this.minmax(depth + 1, alpha, beta, x, y, limit);
+        const childValue = this.minmax(depth + 1, alpha, beta, x, y, limit);
 
         if (this.myTurn) {
           if (beta <= childValue) {
