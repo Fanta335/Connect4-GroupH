@@ -116,7 +116,7 @@ class Cpu {
    */
   random() {
     for (;;) {
-      let x = Cpu.getRandomInt(this.board.length);
+      const x = Cpu.getRandomInt(this.board.length);
       if (canPutStone(this.board, x)) {
         return x;
       }
