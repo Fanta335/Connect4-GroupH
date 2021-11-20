@@ -98,7 +98,6 @@ const GameDisplayPage = () => {
     }
   };
 
-  console.log(history);
   const handleClick = (event) => {
     if (gameWinner !== "") return;
     const renewedHistory = copyHistory(history);
