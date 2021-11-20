@@ -100,7 +100,7 @@ class Cpu {
    * @returns cpuが石を置く座標x
    */
   cpuThink(mode) {
-    let maxScore = this.board.length * this.board[0].length + 1;
+    const maxScore = this.board.length * this.board[0].length + 1;
     if (mode === "easy") {
       return this.random(); // ランダム
     } else if (mode === "medium") {
