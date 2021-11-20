@@ -1,4 +1,4 @@
-import calculateWinner from "../utils/calculateWinner";
+import calculateWinner from "./calculateWinner";
 import canPutStone from "./canPutStone";
 import getLowestEmptyYIndex from "./getLowestEmptyYIndex";
 
