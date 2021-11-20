@@ -9,7 +9,17 @@ const GameState = {
   draw: "DRAW",
 };
 
+/**
+ * CPUのクラス
+ */
 class Cpu {
+  /**
+   * Cpuクラスのコンストラクターの説明
+   * @param {string[][]} board - 盤面を表す二次元配列
+   * @param {number} victoryCondition - 勝利条件
+   * @param {string} cpuName - boardで使用しているcpuの名前（Player2など）
+   * @param {string} playerName - boardで使用しているplayerの名前（Player1など）
+   */
   constructor(board, victoryCondition, cpuName, playerName) {
     this.board = board;
     this.victoryCondition = victoryCondition;
