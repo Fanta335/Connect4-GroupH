@@ -1,48 +1,26 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
-import "./settings.css";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormLabel from "@mui/material/FormLabel";
 import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-
-const Form = (props) => {
-  return (
-    <Grid container spacing={1}>
-      <Grid item xs={12}>
-        <FormLabel component="legend">{props.label}</FormLabel>
-      </Grid>
-      <Grid item xs={12}>
-        {props.input}
-      </Grid>
-    </Grid>
-  );
-};
-
-const TransitionButton = (props) => {
-  return (
-    <Button style={{ height: "50px" }} onClick={props.onClick} variant="contained" color="primary" fullWidth>
-      {props.name}
-    </Button>
-  );
-};
+import Form from "../components/Form";
+import TransitionButton from "../components/TransitionButton";
+import "./settings.css";
 
 const Settings = () => {
   const [borderSizeHeight, setBorderSizeHeight] = useState(6);
   const [borderSizeWidth, setBorderSizeWidth] = useState(7);
-  const [cpuStrength, setCpuStrength] = useState("easy");
   const [victoryCondition, setVictoryCondition] = useState(4);
+  const [playerName1, setPlayerName1] = useState("Player1");
+  const [playerName2, setPlayerName2] = useState("Player2");
 
   const handleInputChange = (event) => {
     const name = event.target.name;
-    if (name === "cpuStrength") {
-      setCpuStrength(event.target.value);
+    if (name === "playerName1") {
+      setPlayerName1(event.target.value);
+    } else if (name === "playerName2") {
+      setPlayerName2(event.target.value);
     }
   };
 
@@ -77,6 +55,42 @@ const Settings = () => {
 
         <Grid container item alignItems="center" justifyContent="center">
           <Form
+            label="Player Name"
+            input={
+              <Grid container alignItems="center" justifyContent="center">
+                <Grid item xs={6}>
+                  <TextField
+                    label="Player1"
+                    variant="outlined"
+                    name="playerName1"
+                    value={playerName1}
+                    onChange={handleInputChange}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    style={{ textAlign: "right", width: "90%" }}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Player2"
+                    variant="outlined"
+                    name="playerName2"
+                    value={playerName2}
+                    onChange={handleInputChange}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    style={{ textAlign: "right", width: "90%" }}
+                  />
+                </Grid>
+              </Grid>
+            }
+          />
+        </Grid>
+
+        <Grid container item alignItems="center" justifyContent="center">
+          <Form
             label="Border Size"
             input={
               <Grid container alignItems="center" justifyContent="center">
@@ -92,7 +106,7 @@ const Settings = () => {
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    style={{ textAlign: "right", minWidth: "200px" }}
+                    style={{ textAlign: "right", width: "90%" }}
                     InputProps={{
                       inputProps: {
                         max: 100,
@@ -113,7 +127,7 @@ const Settings = () => {
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    style={{ textAlign: "right", minWidth: "200px" }}
+                    style={{ textAlign: "right", width: "90%" }}
                     InputProps={{
                       inputProps: {
                         max: 100,
@@ -123,25 +137,6 @@ const Settings = () => {
                   />
                 </Grid>
               </Grid>
-            }
-          />
-        </Grid>
-
-        <Grid container item alignItems="center" justifyContent="center">
-          <Form
-            label="CPU Strength"
-            input={
-              <RadioGroup
-                row
-                aria-label="cpuStrength"
-                name="cpuStrength"
-                value={cpuStrength}
-                onChange={handleInputChange}
-              >
-                <FormControlLabel value="easy" control={<Radio />} label="Easy" />
-                <FormControlLabel value="medium" control={<Radio />} label="Medium" />
-                <FormControlLabel value="hard" control={<Radio />} label="Hard" />
-              </RadioGroup>
             }
           />
         </Grid>
@@ -161,7 +156,7 @@ const Settings = () => {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  style={{ textAlign: "right", minWidth: "200px" }}
+                  style={{ textAlign: "right", width: "45%" }}
                   InputProps={{
                     inputProps: {
                       max: 100,
