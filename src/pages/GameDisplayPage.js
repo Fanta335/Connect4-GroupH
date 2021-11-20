@@ -167,7 +167,6 @@ const GameDisplayPage = () => {
         setIsNextPlayerRed(!isNextPlayerRed);
       }
     }
-
   };
 
   const jumpTo = (step) => {
