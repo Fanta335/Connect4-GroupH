@@ -4,47 +4,18 @@ import "./GameDisplayPage.css";
 import Modal from "../components/Modal";
 import calculateWinner from "../utils/calculateWinner";
 import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import List from "@mui/material/List";
+import Typography from "@mui/material/Typography";
 import createNewBoard from "../utils/createNewBoard";
+import canPutStone from "../utils/canPutStone";
+import getLowestEmptyYIndex from "../utils/getLowestEmptyYIndex";
+import Board from "./../components/board/Board.js";
+import DisplayPlayerTurn from "./../components/board/DisplayPlayerTurn.js";
 
 const HEIGHT = 6;
 const WIDTH = 7;
 const VICTORY_CONDITION = 4;
-
-const Cell = (props) => {
-  let color = "white";
-  if (props.value === "Player1") {
-    color = "red";
-  } else if (props.value === "Player2") {
-    color = "yellow";
-  }
-  return (
-    <div className="cell" data-x={props.x} data-y={props.y} onClick={props.onClick}>
-      <div className={color}></div>
-    </div>
-  );
-};
-
-const Column = (props) => {
-  return (
-    <div className="flex-direction-column-reverse">
-      {props.column.map((y, i) => (
-        <Cell value={y} key={i} x={props.x} y={i} onClick={props.onClick} />
-      ))}
-    </div>
-  );
-};
-
-const Board = (props) => {
-  return (
-    <div>
-      <div className="flex-direction-row">
-        {props.board.map((x, i) => (
-          <Column column={x} key={i} x={i} onClick={props.onClick} />
-        ))}
-      </div>
-    </div>
-  );
-};
 
 const InitButton = (props) => {
   return (
@@ -118,21 +89,6 @@ const GameDisplayPage = () => {
     return updatedHistory;
   }
 
-  // 選択した列に石が置けるか判定
-  const canPutStone = (board, x) => {
-    if (board[x][5] != null) return false;
-    return true;
-  };
-
-  // 選んだ列の一番下の空いているy座標を返す
-  const getYIndex = (board, x) => {
-    for (let y = 0; y < 6; y++) {
-      if (board[x][y] == null) {
-        return y;
-      }
-    }
-  };
-
   // 選んだ列の一番下に石を落とす。配列にはboolean値ではなくstringを入れる
   const putStone = (board, x, y) => {
     if (isNextPlayerRed) {
@@ -141,6 +97,7 @@ const GameDisplayPage = () => {
       board[x][y] = "Player1";
     }
   };
+  
   console.log(history);
   const handleClick = (event) => {
     if (gameWinner !== "") return;
@@ -151,7 +108,7 @@ const GameDisplayPage = () => {
     const x = parseInt(dataset.x);
 
     if (canPutStone(nextBoard, x)) {
-      let y = getYIndex(nextBoard, x);
+      let y = getLowestEmptyYIndex(nextBoard, x);
       putStone(nextBoard, x, y);
       //盤面の状態変更
       setHistory(renewedHistory.concat([{ board: nextBoard }]));
@@ -194,19 +151,24 @@ const GameDisplayPage = () => {
   }
 
   return (
-    <div className="game-display">
-      <h1>Connect 4!</h1>
-      <InitButton onClick={initGame} />
+    <Grid sx={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
+      <Typography variant="h2" component="h1">
+        Connect 4!
+      </Typography>
+      <Grid sx={{ display: "flex", justifyContent: "center", flexDirection: "row", alignItems: "flex-end", mb: 2 }}>
+        <InitButton onClick={initGame} />
+        <DisplayPlayerTurn playerTurn={isNextPlayerRed} />
+      </Grid>
       <Board board={current} onClick={handleClick} />
 
       {/* それぞれの手番の情報を表示する */}
-      <div className="game-info">
-        <div>{status}</div>
-        <ol>{moves}</ol>
-      </div>
+      <Grid className="game-info">
+        <Grid>{status}</Grid>
+        <List>{moves}</List>
+      </Grid>
       {/* 便宜的にゲームの勝者をお知らせするモーダルを貼り付けています。 */}
       <Modal handleOpen={handleOpen} handleClose={handleClose} open={open} gameWinner={gameWinner} />
-    </div>
+    </Grid>
   );
 };
 

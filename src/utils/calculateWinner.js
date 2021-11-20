@@ -1,68 +1,105 @@
+import canPutStone from "./canPutStone";
+
 /**
  * 勝者を返す関数
- * @param {string[][]} squares - 盤面を表す二次元配列
- * @param {number} n - 勝利条件（n個連続で並んだら勝ち）
+ * @param {string[][]} board - 盤面を表す二次元配列
+ * @param {number} victoryCondition - 勝利条件
  * @param {number} x - 石を置いた座標x（横方向）
  * @param {number} y - 石を置いた座標y（縦方向）
  * @returns {string} 勝者
  */
-function calculateWinner(squares, n, x, y) {
-  if (isConnectedN(squares, n, x, y)) return squares[x][y];
-  return null;
+function calculateWinner(board, victoryCondition, x, y) {
+  // 勝者の判定
+  if (isConnectedN(board, victoryCondition, x, y)) {
+    return board[x][y];
+  }
+  // 引き分けの判定
+  let isGameContinue = false;
+  for (let x = 0; x < board.length; x++) {
+    isGameContinue = isGameContinue || canPutStone(board, x);
+    if (isGameContinue) {
+      return null;
+    }
+  }
+  return "draw";
 }
 
 /**
  * 座標(x, y)を中心にN個連続で並んでいるかどうか判定する関数
  * @param {string[][]} arr - 盤面を表す二次元配列
- * @param {number} n - 勝利条件（n個連続で並んだら勝ち）
+ * @param {number} victoryCondition - 勝利条件
  * @param {number} x - 石を置いた座標x（横方向）
  * @param {number} y - 石を置いた座標y（縦方向）
- * @returns {boolean}
+ * @returns {boolean} - true/false
  */
-function isConnectedN(arr, n, x, y) {
-  let pattern = new RegExp(arr[x][y].repeat(n));
+function isConnectedN(arr, victoryCondition, x, y) {
+  let pattern = new RegExp(arr[x][y].repeat(victoryCondition));
   let width = arr.length;
   let height = arr[0].length;
 
   // 縦方向
   let str = "";
-  for (let i = 1; i < n; i++) {
-    if (y - i >= 0) str = arr[x][y - i] + str;
+  for (let i = 1; i < victoryCondition; i++) {
+    if (y - i >= 0) {
+      str = arr[x][y - i] + str;
+    }
   }
-  for (let i = 0; i < n; i++) {
-    if (y + i < height) str += arr[x][y + i];
+  for (let i = 0; i < victoryCondition; i++) {
+    if (y + i < height) {
+      str += arr[x][y + i];
+    }
   }
-  if (pattern.test(str)) return true;
+  if (pattern.test(str)) {
+    return true;
+  }
 
   // 横方向
   str = "";
-  for (let i = 1; i < n; i++) {
-    if (x - i >= 0) str = arr[x - i][y] + str;
+  for (let i = 1; i < victoryCondition; i++) {
+    if (x - i >= 0) {
+      str = arr[x - i][y] + str;
+    }
   }
-  for (let i = 0; i < n; i++) {
-    if (x + i < width) str += arr[x + i][y];
+  for (let i = 0; i < victoryCondition; i++) {
+    if (x + i < width) {
+      str += arr[x + i][y];
+    }
   }
-  if (pattern.test(str)) return true;
+  if (pattern.test(str)) {
+    return true;
+  }
 
   // 右斜め上方向
   str = "";
-  for (let i = 1; i < n; i++) {
-    if (x - i >= 0 && y - i >= 0) str = arr[x - i][y - i] + str;
+  for (let i = 1; i < victoryCondition; i++) {
+    if (x - i >= 0 && y - i >= 0) {
+      str = arr[x - i][y - i] + str;
+    }
   }
-  for (let i = 0; i < n; i++) {
-    if (x + i < width && y + i < height) str += arr[x + i][y + i];
+  for (let i = 0; i < victoryCondition; i++) {
+    if (x + i < width && y + i < height) {
+      str += arr[x + i][y + i];
+    }
   }
-  if (pattern.test(str)) return true;
+  if (pattern.test(str)) {
+    return true;
+  }
 
   // 左斜め上方向
   str = "";
-  for (let i = 1; i < n; i++) {
-    if (x - i >= 0 && y + i < height) str = arr[x - i][y + i] + str;
+  for (let i = 1; i < victoryCondition; i++) {
+    if (x - i >= 0 && y + i < height) {
+      str = arr[x - i][y + i] + str;
+    }
   }
-  for (let i = 0; i < n; i++) {
-    if (x + i < width && y - i >= 0) str += arr[x + i][y - i];
+  for (let i = 0; i < victoryCondition; i++) {
+    if (x + i < width && y - i >= 0) {
+      str += arr[x + i][y - i];
+    }
   }
-  if (pattern.test(str)) return true;
+  if (pattern.test(str)) {
+    return true;
+  }
 
   return false;
 }
