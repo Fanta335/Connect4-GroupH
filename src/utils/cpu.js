@@ -63,7 +63,7 @@ class Cpu {
    * @param {number} y - 直前に石を置いた座標y
    */
   checkState(x, y) {
-    let winner = calculateWinner(this.board, this.victoryCondition, x, y);
+    const winner = calculateWinner(this.board, this.victoryCondition, x, y);
     if (winner === this.cpuName) {
       this.state = GameState.cpu_win;
     } else if (winner === this.playerName) {
