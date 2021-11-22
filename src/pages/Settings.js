@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -8,42 +8,7 @@ import Form from "../components/Form";
 import TransitionButton from "../components/TransitionButton";
 import "./settings.css";
 
-const Settings = () => {
-  const [borderSizeHeight, setBorderSizeHeight] = useState(6);
-  const [borderSizeWidth, setBorderSizeWidth] = useState(7);
-  const [victoryCondition, setVictoryCondition] = useState(4);
-  const [playerName1, setPlayerName1] = useState("Player1");
-  const [playerName2, setPlayerName2] = useState("Player2");
-
-  const handleInputChange = (event) => {
-    const name = event.target.name;
-    if (name === "playerName1") {
-      setPlayerName1(event.target.value);
-    } else if (name === "playerName2") {
-      setPlayerName2(event.target.value);
-    }
-  };
-
-  const handleInputNumberChange = (event) => {
-    const min = parseInt(event.target.min);
-    const max = parseInt(event.target.max);
-    let tempValue = "";
-    if (event.target.value !== "") {
-      tempValue = parseInt(event.target.value);
-    }
-    if (tempValue > max || tempValue < min) {
-      return;
-    }
-    const name = event.target.name;
-    if (name === "borderSizeHeight") {
-      setBorderSizeHeight(tempValue);
-    } else if (name === "borderSizeWidth") {
-      setBorderSizeWidth(tempValue);
-    } else if (name === "victoryCondition") {
-      setVictoryCondition(tempValue);
-    }
-  };
-
+const Settings = (props) => {
   return (
     <Grid container alignItems="center" justifyContent="center" style={{ height: "100vh" }}>
       <Grid container item xs={6} spacing={3}>
@@ -63,8 +28,8 @@ const Settings = () => {
                     label="Player1"
                     variant="outlined"
                     name="playerName1"
-                    value={playerName1}
-                    onChange={handleInputChange}
+                    value={props.playerName1}
+                    onChange={props.onPlayerNameChange}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -76,8 +41,8 @@ const Settings = () => {
                     label="Player2"
                     variant="outlined"
                     name="playerName2"
-                    value={playerName2}
-                    onChange={handleInputChange}
+                    value={props.playerName2}
+                    onChange={props.onPlayerNameChange}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -101,8 +66,8 @@ const Settings = () => {
                     type="number"
                     onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
                     name="borderSizeHeight"
-                    value={borderSizeHeight}
-                    onChange={handleInputNumberChange}
+                    value={props.borderSizeHeight}
+                    onChange={props.onNumberChange}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -122,8 +87,8 @@ const Settings = () => {
                     type="number"
                     onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
                     name="borderSizeWidth"
-                    value={borderSizeWidth}
-                    onChange={handleInputNumberChange}
+                    value={props.borderSizeWidth}
+                    onChange={props.onNumberChange}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -151,8 +116,8 @@ const Settings = () => {
                   type="number"
                   onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
                   name="victoryCondition"
-                  value={victoryCondition}
-                  onChange={handleInputNumberChange}
+                  value={props.victoryCondition}
+                  onChange={props.onNumberChange}
                   InputLabelProps={{
                     shrink: true,
                   }}
