@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -10,18 +10,9 @@ import Form from "../components/Form";
 import TransitionButton from "../components/TransitionButton";
 import "./Home.css";
 
-const Home = () => {
-  const [gameMode, setGameMode] = useState("player");
-  const [cpuStrength, setCpuStrength] = useState("easy");
-
-  const handleInputChange = (event) => {
-    const name = event.target.name;
-    if (name === "gameMode") {
-      setGameMode(event.target.value);
-    } else if (name === "cpuStrength") {
-      setCpuStrength(event.target.value);
-    }
-  };
+const Home = (props) => {
+  const gameMode = props.gameMode;
+  const cpuStrength = props.cpuStrength;
 
   return (
     <Grid container alignItems="center" justifyContent="center" style={{ height: "100vh" }}>
@@ -37,7 +28,7 @@ const Home = () => {
             <Form
               label="Game Mode"
               input={
-                <RadioGroup row aria-label="gameMode" name="gameMode" value={gameMode} onChange={handleInputChange}>
+                <RadioGroup row aria-label="gameMode" name="gameMode" value={gameMode} onChange={props.onChange}>
                   <FormControlLabel value="player" control={<Radio />} label="vs Player" />
                   <FormControlLabel value="cpu" control={<Radio />} label="vs CPU" />
                 </RadioGroup>
@@ -57,7 +48,7 @@ const Home = () => {
                     aria-label="cpuStrength"
                     name="cpuStrength"
                     value={cpuStrength}
-                    onChange={handleInputChange}
+                    onChange={props.onChange}
                   >
                     <FormControlLabel value="easy" control={<Radio />} label="Easy" />
                     <FormControlLabel value="medium" control={<Radio />} label="Medium" />

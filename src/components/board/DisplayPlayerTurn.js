@@ -19,10 +19,10 @@ const DisplayPlayerTurn = (props) => {
   let playerTurn = "";
   let backgroundColor = "";
   if (props.playerTurn == false) {
-    playerTurn = "Player1";
+    playerTurn = props.playerName1;
     backgroundColor = "red";
   } else if (props.playerTurn == true) {
-    playerTurn = "Player2";
+    playerTurn = props.playerName2;
     backgroundColor = "yellow";
   }
   return (

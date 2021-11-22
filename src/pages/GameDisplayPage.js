@@ -2,20 +2,16 @@ import React from "react";
 import { useState } from "react";
 import "./GameDisplayPage.css";
 import Modal from "../components/Modal";
-import calculateWinner from "../utils/calculateWinner";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
+import Board from "./../components/board/Board.js";
+import DisplayPlayerTurn from "./../components/board/DisplayPlayerTurn.js";
 import createNewBoard from "../utils/createNewBoard";
 import canPutStone from "../utils/canPutStone";
 import getLowestEmptyYIndex from "../utils/getLowestEmptyYIndex";
-import Board from "./../components/board/Board.js";
-import DisplayPlayerTurn from "./../components/board/DisplayPlayerTurn.js";
-
-const HEIGHT = 6;
-const WIDTH = 7;
-const VICTORY_CONDITION = 4;
+import calculateWinner from "../utils/calculateWinner";
 
 const InitButton = (props) => {
   return (
@@ -25,8 +21,8 @@ const InitButton = (props) => {
   );
 };
 
-const GameDisplayPage = () => {
-  const initBoard = createNewBoard(WIDTH, HEIGHT);
+const GameDisplayPage = (props) => {
+  const initBoard = createNewBoard(props.borderSizeWidth, props.borderSizeHeight);
   const [isNextPlayerRed, setIsNextPlayerRed] = useState(false);
   const [gameWinner, setGameWinner] = useState("");
   const [history, setHistory] = useState([
@@ -35,9 +31,9 @@ const GameDisplayPage = () => {
     },
   ]);
   const [stepNumber, setStepNumber] = useState(0);
-
   //モーダルの開閉
   const [open, setOpen] = useState(false);
+
   // ゲームが終了した時に起動する↓
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -62,7 +58,6 @@ const GameDisplayPage = () => {
     }
     return copiedBoard;
   };
-
   // historyの深いコピーを作成
   const copyHistory = (history) => {
     let renewedHistory = [];
@@ -98,33 +93,6 @@ const GameDisplayPage = () => {
     }
   };
 
-  const handleClick = (event) => {
-    if (gameWinner !== "") return;
-    const renewedHistory = copyHistory(history);
-    const current = renewedHistory[stepNumber].board;
-    let nextBoard = copyBoard(current);
-    const dataset = event.currentTarget.dataset;
-    const x = parseInt(dataset.x);
-
-    if (canPutStone(nextBoard, x)) {
-      let y = getLowestEmptyYIndex(nextBoard, x);
-      putStone(nextBoard, x, y);
-      //盤面の状態変更
-      setHistory(renewedHistory.concat([{ board: nextBoard }]));
-      //何手目かの状態変更
-      setStepNumber(stepNumber + 1);
-      // 勝利判定
-      let winner = calculateWinner(nextBoard, VICTORY_CONDITION, x, y);
-      if (winner != null) {
-        setGameWinner(winner);
-        handleOpen();
-      } else if (winner == null) {
-        // プレイヤーを変更
-        setIsNextPlayerRed(!isNextPlayerRed);
-      }
-    }
-  };
-
   const jumpTo = (step) => {
     setStepNumber(step);
     setIsNextPlayerRed(step % 2 !== 0);
@@ -142,11 +110,39 @@ const GameDisplayPage = () => {
   });
 
   const current = history[stepNumber].board;
+
+  const handleClick = (event) => {
+    if (gameWinner !== "") return;
+    const renewedHistory = copyHistory(history);
+    const current = renewedHistory[stepNumber].board;
+    let nextBoard = copyBoard(current);
+    const dataset = event.currentTarget.dataset;
+    const x = parseInt(dataset.x);
+
+    if (canPutStone(nextBoard, x)) {
+      let y = getLowestEmptyYIndex(nextBoard, x);
+      putStone(nextBoard, x, y);
+      //盤面の状態変更
+      setHistory(renewedHistory.concat([{ board: nextBoard }]));
+      //何手目かの状態変更
+      setStepNumber(stepNumber + 1);
+      // 勝利判定
+      let winner = calculateWinner(nextBoard, props.victoryCondition, x, y);
+      if (winner != null) {
+        setGameWinner(winner);
+        handleOpen();
+      } else if (winner == null) {
+        // プレイヤーを変更
+        setIsNextPlayerRed(!isNextPlayerRed);
+      }
+    }
+  };
+
   let status;
-  if (gameWinner) {
-    status = "Winner: " + gameWinner;
+  if (props.gameWinner) {
+    status = "Winner: " + props.gameWinner;
   } else {
-    status = "Next player: " + (isNextPlayerRed ? "Player2" : "Player1");
+    status = "Next player: " + (props.isNextPlayerRed ? "Player2" : "Player1");
   }
 
   return (
@@ -156,7 +152,11 @@ const GameDisplayPage = () => {
       </Typography>
       <Grid sx={{ display: "flex", justifyContent: "center", flexDirection: "row", alignItems: "flex-end", mb: 2 }}>
         <InitButton onClick={initGame} />
-        <DisplayPlayerTurn playerTurn={isNextPlayerRed} />
+        <DisplayPlayerTurn
+          playerTurn={isNextPlayerRed}
+          playerName1={props.playerName1}
+          playerName2={props.playerName2}
+        />
       </Grid>
       <Board board={current} onClick={handleClick} />
 
