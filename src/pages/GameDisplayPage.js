@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import "./GameDisplayPage.css";
 import Modal from "../components/Modal";
 import Button from "@mui/material/Button";
@@ -23,7 +22,7 @@ const InitButton = (props) => {
 
 const GameDisplayPage = (props) => {
   const initBoard = createNewBoard(props.borderSizeWidth, props.borderSizeHeight);
-  const [isNextPlayerRed, setIsNextPlayerRed] = useState(false);
+  const [player1IsNext, setPlayer1IsNext] = useState(true);
   const [gameWinner, setGameWinner] = useState("");
   const [history, setHistory] = useState([
     {
@@ -31,14 +30,13 @@ const GameDisplayPage = (props) => {
     },
   ]);
   const [stepNumber, setStepNumber] = useState(0);
-  //モーダルの開閉
-  const [open, setOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleModalOpen = () => setModalOpen(true);
+  const handleModalClose = () => setModalOpen(false);
 
-  // ゲームが終了した時に起動する↓
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  // ゲームの状態の初期化
+  /**
+   * ゲーム状態の初期化
+   */
   const initGame = () => {
     setHistory([
       {
@@ -46,11 +44,15 @@ const GameDisplayPage = (props) => {
       },
     ]);
     setGameWinner("");
-    setIsNextPlayerRed(false);
+    setPlayer1IsNext(true);
     setStepNumber(0);
   };
 
-  //ボードの深いコピーを作成
+  /**
+   * ボードの深いコピーを作成する
+   * @param {string[][]} board - 盤面を表す二次元配列
+   * @returns 複製した盤面を表す二次元配列
+   */
   const copyBoard = (board) => {
     let copiedBoard = [];
     for (const array of board) {
@@ -58,17 +60,22 @@ const GameDisplayPage = (props) => {
     }
     return copiedBoard;
   };
-  // historyの深いコピーを作成
+
+  /**
+   * historyの深いコピーを作成する
+   * @param {*} history
+   * @returns 複製したhistoryオブジェクト
+   */
   const copyHistory = (history) => {
-    let renewedHistory = [];
+    let copiedHistory = [];
     for (const historyItem of history) {
       let board = historyItem.board;
       let copiedBoard = copyBoard(board);
-      renewedHistory.push({
+      copiedHistory.push({
         board: copiedBoard,
       });
     }
-    return renewedHistory;
+    return copiedHistory;
   };
 
   // historyを任意の手番に遡る際にhistoryを更新する
@@ -84,18 +91,23 @@ const GameDisplayPage = (props) => {
     return updatedHistory;
   };
 
-  // 選んだ列の一番下に石を落とす。配列にはboolean値ではなくstringを入れる
+  /**
+   * 指定の座標に石を置く
+   * @param {*} board - 盤面を表す二次元配列
+   * @param {*} x - 石を置く座標x
+   * @param {*} y - 石を置く座標y
+   */
   const putStone = (board, x, y) => {
-    if (isNextPlayerRed) {
-      board[x][y] = "Player2";
-    } else {
+    if (player1IsNext) {
       board[x][y] = "Player1";
+    } else {
+      board[x][y] = "Player2";
     }
   };
 
   const jumpTo = (step) => {
     setStepNumber(step);
-    setIsNextPlayerRed(step % 2 !== 0);
+    setPlayer1IsNext(step % 2 === 0);
     setHistory(updateHistory(history, step));
     setGameWinner("");
   };
@@ -130,20 +142,13 @@ const GameDisplayPage = (props) => {
       let winner = calculateWinner(nextBoard, props.victoryCondition, x, y);
       if (winner != null) {
         setGameWinner(winner);
-        handleOpen();
+        handleModalOpen();
       } else if (winner == null) {
         // プレイヤーを変更
-        setIsNextPlayerRed(!isNextPlayerRed);
+        setPlayer1IsNext(!player1IsNext);
       }
     }
   };
-
-  let status;
-  if (props.gameWinner) {
-    status = "Winner: " + props.gameWinner;
-  } else {
-    status = "Next player: " + (props.isNextPlayerRed ? "Player2" : "Player1");
-  }
 
   return (
     <Grid sx={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
@@ -152,21 +157,23 @@ const GameDisplayPage = (props) => {
       </Typography>
       <Grid sx={{ display: "flex", justifyContent: "center", flexDirection: "row", alignItems: "flex-end", mb: 2 }}>
         <InitButton onClick={initGame} />
-        <DisplayPlayerTurn
-          playerTurn={isNextPlayerRed}
-          playerName1={props.playerName1}
-          playerName2={props.playerName2}
-        />
+        <DisplayPlayerTurn playerTurn={player1IsNext} playerName1={props.playerName1} playerName2={props.playerName2} />
       </Grid>
       <Board board={current} onClick={handleClick} />
 
       {/* それぞれの手番の情報を表示する */}
       <Grid className="game-info">
-        <Grid>{status}</Grid>
         <List>{moves}</List>
       </Grid>
       {/* 便宜的にゲームの勝者をお知らせするモーダルを貼り付けています。 */}
-      <Modal handleOpen={handleOpen} handleClose={handleClose} open={open} gameWinner={gameWinner} />
+      <Modal
+        handleClose={handleModalClose}
+        open={modalOpen}
+        gameWinner={gameWinner}
+        playerTurn={player1IsNext}
+        playerName1={props.playerName1}
+        playerName2={props.playerName2}
+      />
     </Grid>
   );
 };
