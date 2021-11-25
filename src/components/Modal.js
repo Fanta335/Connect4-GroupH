@@ -17,6 +17,9 @@ const style = {
 };
 
 const BasicModal = (props) => {
+  const playerName1 = props.playerName1;
+  const playerName2 = props.playerName2;
+
   return (
     <div>
       <Modal
@@ -29,10 +32,10 @@ const BasicModal = (props) => {
           {props.gameWinner !== "draw" ? (
             <>
               <Typography id="modal-modal-title" variant="h6" component="h2">
-                The winner is {props.gameWinner}
+                The winner is {props.gameWinner === "Player1" ? playerName1 : playerName2}
               </Typography>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                Congratulations! {props.gameWinner} won the game!
+                Congratulations! {props.gameWinner === "Player1" ? playerName1 : playerName2} win the game!
               </Typography>
             </>
           ) : (
