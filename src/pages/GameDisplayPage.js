@@ -45,7 +45,6 @@ const InitButton = (props) => {
 };
 
 const GameDisplayPage = (props) => {
-
   const initBoard = createNewBoard(props.boardSize[0], props.boardSize[1]);
   const [isPlayer1Next, setIsPlayer1Next] = useState(true);
   const [gameWinner, setGameWinner] = useState("");
@@ -70,7 +69,7 @@ const GameDisplayPage = (props) => {
       },
     ]);
     setGameWinner("");
-    setIsPlayer1Next(false);
+    setIsPlayer1Next(true);
     setStepNumber(0);
   };
 

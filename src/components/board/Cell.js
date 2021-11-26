@@ -52,7 +52,9 @@ const Cell = (props) => {
         padding: theme.spacing(1),
       }}
     >
-      <Box sx={color}></Box>
+      <Box sx={styles.white}>
+        {props.value !== null && <Box sx={color} className="drop"></Box>}
+      </Box>
     </Box>
   );
 };

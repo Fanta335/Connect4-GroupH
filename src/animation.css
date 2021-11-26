@@ -1,7 +1,6 @@
-.player-drop {
+.drop{
   animation: drop 1s linear;
 }
-
 @keyframes drop {
   0% { transform: translateY(-800px); }
   100% { transform: translateY(0px); }
