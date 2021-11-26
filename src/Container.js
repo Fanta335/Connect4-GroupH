@@ -88,6 +88,7 @@ const Container = () => {
               victoryCondition={victoryCondition}
               playerName1={playerName1}
               playerName2={playerName2}
+              gameMode={gameMode}
             />
           }
         ></Route>

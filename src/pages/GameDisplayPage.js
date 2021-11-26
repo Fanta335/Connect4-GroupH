@@ -21,7 +21,7 @@ const InitButton = (props) => {
 };
 
 const GameDisplayPage = (props) => {
-  const initBoard = createNewBoard(props.borderSizeWidth, props.borderSizeHeight);
+  const initBoard = createNewBoard(props.borderSizeWidth, props.borderSizeHeight, props.gameMode);
   const [player1IsNext, setPlayer1IsNext] = useState(true);
   const [gameWinner, setGameWinner] = useState("");
   const [history, setHistory] = useState([
@@ -155,6 +155,12 @@ const GameDisplayPage = (props) => {
       <Typography variant="h2" component="h1">
         Connect 4!
       </Typography>
+
+      {/* 開発する際、対戦形式を確認しやすくするため便宜的に書き込んでいます。 */}
+      <Typography variant="h3" component="h3">
+        {props.gameMode == "cpu" ? "vsCPU" : ""}
+      </Typography>
+
       <Grid sx={{ display: "flex", justifyContent: "center", flexDirection: "row", alignItems: "flex-end", mb: 2 }}>
         <InitButton onClick={initGame} />
         <DisplayPlayerTurn playerTurn={player1IsNext} playerName1={props.playerName1} playerName2={props.playerName2} />
