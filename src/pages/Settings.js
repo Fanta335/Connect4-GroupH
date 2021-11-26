@@ -48,7 +48,7 @@ const Settings = (props) => {
       ],
     },
     {
-      BorderSize : [
+      BoardSize : [
         {
           label: "Height",
           name: "borderSizeHeight",
@@ -136,7 +136,7 @@ const Settings = (props) => {
                 spacing={3}
                 className={classes.formBlock}
               >
-                {formItems[1].BorderSize.map((formItem,index) => {
+                {formItems[1].BoardSize.map((formItem,index) => {
                   return (
                     <Grid item sm={6} key={index}>
                       <TextField
@@ -145,7 +145,7 @@ const Settings = (props) => {
                         type="number"
                         onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
                         name={formItem.name}
-                        value={props.borderSize[index]}
+                        value={props.boardSize[index]}
                         onChange={props.onNumberChange}
                         InputLabelProps={{
                           shrink: true,

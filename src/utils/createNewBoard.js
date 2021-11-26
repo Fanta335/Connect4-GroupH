@@ -6,11 +6,11 @@
  */
 
 function createNewBoard(x, y) {
-  let result = new Array(x);
+  let board = new Array(x);
   for (let i = 0; i < x; i++) {
-    result[i] = new Array(y).fill(null);
+    board[i] = new Array(y).fill(null);
   }
-  return result;
+  return board;
 }
 
 export default createNewBoard;
