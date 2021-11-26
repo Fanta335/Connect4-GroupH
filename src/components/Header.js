@@ -7,7 +7,8 @@ import {
   Button,
   IconButton,
   MenuItem,
-  Menu
+  Menu,
+  Switch
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useTheme,createTheme } from "@mui/material/styles";
@@ -32,7 +33,7 @@ const useStyles = makeStyles({
     justifyContent: "flex-end"
   }
 });
-const Header = () => {
+const Header = (props) => {
   let navigate = useNavigate();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -70,6 +71,7 @@ const Header = () => {
           <Typography variant="h6">
             Connect4
           </Typography>
+          <Switch checked={props.darkMode} onChange={() => props.setDarkMode(!props.darkMode)}/>
           <>
             {isMobile ? (
               <>
