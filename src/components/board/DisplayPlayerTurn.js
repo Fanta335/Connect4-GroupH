@@ -1,12 +1,11 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 
 const playerTurnStyle = {
   border: 1,
-  p: 2,
-  borderRadius: 3,
+  p: 1,
+  borderRadius: 2,
   display: "flex",
   justifyContent: "center",
   flexDirection: "row",
@@ -21,15 +20,12 @@ const DisplayPlayerTurn = (props) => {
   if (props.playerTurn == false) {
     playerTurn = props.playerName1;
     backgroundColor = "red";
-  } else if (props.playerTurn == true) {
+  } else {
     playerTurn = props.playerName2;
     backgroundColor = "yellow";
   }
   return (
     <Grid sx={{ ml: 3 }}>
-      <Typography variant="h5" component="h5" sx={{ textAlign: "center" }}>
-        Player Turn
-      </Typography>
       <Grid sx={playerTurnStyle}>
         {playerTurn}
         <Box sx={{ borderRadius: "100%", background: backgroundColor, height: "2em", width: "2em", ml: 2 }}></Box>

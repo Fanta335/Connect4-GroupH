@@ -69,11 +69,9 @@ const Container = () => {
           path="/settings"
           element={
             <Settings
-              borderSizeHeight={borderSizeHeight}
-              borderSizeWidth={borderSizeWidth}
+              borderSize={[borderSizeHeight,borderSizeWidth]}
               victoryCondition={victoryCondition}
-              playerName1={playerName1}
-              playerName2={playerName2}
+              playerName={[playerName1,playerName2]}
               onPlayerNameChange={handleInputPlayerNameChange}
               onNumberChange={handleInputNumberChange}
             />

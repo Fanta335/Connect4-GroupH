@@ -1,152 +1,226 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
+import {
+  Typography,
+  Grid,
+  TextField,
+  createTheme,
+  Paper
+} from "@mui/material"
+import { makeStyles } from "@mui/styles";
 import Form from "../components/Form";
 import TransitionButton from "../components/TransitionButton";
 import "./settings.css";
-
+const theme = createTheme();
+const useStyles = makeStyles({
+  root: {
+    backgroundColor: "rgba(0,0,0,0.7)",
+    margin: "0 auto",
+    height: "calc(100vh - 64px)",
+  },
+  inner:{
+    backgroundColor: "white",
+    padding: theme.spacing(3),
+    width: "50%"
+  },
+  body: {
+    backgroundColor: "white",
+    flexBasis: "33.3333333% !important",
+    padding: theme.spacing(3)
+  },
+  formBlock : {
+    marginBottom: "20px"
+  }
+});
 const Settings = (props) => {
+  const classes = useStyles();
+  const formItems = [
+    {
+      players:[
+        {
+          label: "Player1",
+          name: "playerName1"
+        },
+        {
+          label: "Player2",
+          name: "playerName2"
+        }
+      ],
+    },
+    {
+      BorderSize : [
+        {
+          label: "Height",
+          name: "borderSizeHeight",
+          inputProps: {
+            max: 100,
+            min: 6,
+          },
+        },
+        {
+          label: "Width",
+          name: "borderSizeWidth",
+          inputProps: {
+            max: 100,
+            min: 7,
+          },
+        }
+      ],
+    },
+  ];
+  const buttons = [
+    {
+      name: "Back"
+    },
+    {
+      name: "Confirm"
+    }
+  ]
   return (
-    <Grid container alignItems="center" justifyContent="center" style={{ height: "100vh" }}>
-      <Grid container item xs={6} spacing={3}>
-        <Grid container item alignItems="center" justifyContent="center">
-          <Typography component="div">
-            <Box sx={{ fontSize: "h4.fontSize", fontWeight: "bold", m: 1 }}>Settings</Box>
-          </Typography>
-        </Grid>
-
-        <Grid container item alignItems="center" justifyContent="center">
+    <Grid container alignItems="center" justifyContent="center"
+      className={classes.root}
+    >
+      <Paper
+        className={classes.inner}
+      >
+        <Typography variant="h4" style={{ textAlign: "center", margin: "30px 0" }}>
+          Settings
+        </Typography>
+        <Grid
+          container
+          item
+          alignItems="center"
+          justifyContent="center"
+        >
           <Form
             label="Player Name"
             input={
-              <Grid container alignItems="center" justifyContent="center">
-                <Grid item xs={6}>
-                  <TextField
-                    label="Player1"
-                    variant="outlined"
-                    name="playerName1"
-                    value={props.playerName1}
-                    onChange={props.onPlayerNameChange}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    style={{ textAlign: "right", width: "90%" }}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    label="Player2"
-                    variant="outlined"
-                    name="playerName2"
-                    value={props.playerName2}
-                    onChange={props.onPlayerNameChange}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    style={{ textAlign: "right", width: "90%" }}
-                  />
-                </Grid>
+              <Grid
+                container
+                alignItems="center"
+                justifyContent="center"
+                spacing={3}
+                className={classes.formBlock}
+              >
+                {formItems[0].players.map((player,index) => {
+                  return (
+                    <Grid
+                      item
+                      sm={6}
+                      key={index}
+                    >
+                      <TextField
+                        label={player.label}
+                        variant="outlined"
+                        name={player.name}
+                        value={props.playerName[index]}
+                        onChange={props.onPlayerNameChange}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        style={{ textAlign: "right", width: "100%" }}
+                      />
+                    </Grid>
+                  );
+                })}
               </Grid>
             }
           />
-        </Grid>
-
-        <Grid container item alignItems="center" justifyContent="center">
           <Form
             label="Border Size"
             input={
-              <Grid container alignItems="center" justifyContent="center">
-                <Grid item xs={6}>
-                  <TextField
-                    label="Hight"
-                    variant="outlined"
-                    type="number"
-                    onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
-                    name="borderSizeHeight"
-                    value={props.borderSizeHeight}
-                    onChange={props.onNumberChange}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    style={{ textAlign: "right", width: "90%" }}
-                    InputProps={{
-                      inputProps: {
-                        max: 100,
-                        min: 6,
-                      },
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    label="Width"
-                    variant="outlined"
-                    type="number"
-                    onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
-                    name="borderSizeWidth"
-                    value={props.borderSizeWidth}
-                    onChange={props.onNumberChange}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    style={{ textAlign: "right", width: "90%" }}
-                    InputProps={{
-                      inputProps: {
-                        max: 100,
-                        min: 7,
-                      },
-                    }}
-                  />
-                </Grid>
+              <Grid
+                container
+                alignItems="center"
+                justifyContent="center"
+                spacing={3}
+                className={classes.formBlock}
+              >
+                {formItems[1].BorderSize.map((formItem,index) => {
+                  return (
+                    <Grid item sm={6} key={index}>
+                      <TextField
+                        label={formItem.label}
+                        variant="outlined"
+                        type="number"
+                        onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+                        name={formItem.name}
+                        value={props.borderSize[index]}
+                        onChange={props.onNumberChange}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        style={{ textAlign: "right", width: "100%" }}
+                        InputProps={formItem.inputProps}
+                      />
+                    </Grid>
+                  );
+                })}
               </Grid>
             }
           />
         </Grid>
-
-        <Grid container item alignItems="center" justifyContent="center">
+        <Grid
+          container
+          item
+          style={{marginBottom: "30px"}}
+          justifyContent="flex-start"
+        >
           <Form
             label="Victory Condition"
             input={
-              <>
-                <TextField
-                  variant="outlined"
-                  type="number"
-                  onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
-                  name="victoryCondition"
-                  value={props.victoryCondition}
-                  onChange={props.onNumberChange}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  style={{ textAlign: "right", width: "45%" }}
-                  InputProps={{
-                    inputProps: {
-                      max: 100,
-                      min: 4,
-                    },
-                  }}
-                />
-              </>
+              <Grid
+                container
+                alignItems="center"
+                justifyContent="center"
+                spacing={3}
+                className={classes.formBlock}
+              >
+                <Grid
+                  item sm={6}
+                >
+                  <TextField
+                    variant="outlined"
+                    type="number"
+                    onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+                    name="victoryCondition"
+                    value={props.victoryCondition}
+                    onChange={props.onNumberChange}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    style={{ textAlign: "right", width: "50%" }}
+                    InputProps={{
+                      inputProps: {
+                        max: 100,
+                        min: 4,
+                      },
+                    }}
+                  />
+                </Grid>
+                <Grid item sm={6}></Grid>
+              </Grid>
             }
           />
         </Grid>
-
-        <Grid container item alignItems="center" justifyContent="center" spacing={3}>
-          <Grid item xs={6}>
-            <Link to="/" style={{ textDecoration: "none" }}>
-              <TransitionButton name="Back" />
-            </Link>
-          </Grid>
-          <Grid item xs={6}>
-            <Link to="/" style={{ textDecoration: "none" }}>
-              <TransitionButton name="Confirm" />
-            </Link>
-          </Grid>
+        <Grid
+          container
+          item
+          alignItems="center"
+          justifyContent="center"
+          spacing={3}
+        >
+          {buttons.map((button,index) => {
+            return(
+              <Grid item sm={6} key={index}>
+                <Link to="/" style={{ textDecoration: "none" }}>
+                  <TransitionButton name={button.name} />
+                </Link>
+              </Grid>
+            );
+          })}
         </Grid>
-      </Grid>
+      </Paper>
     </Grid>
   );
 };

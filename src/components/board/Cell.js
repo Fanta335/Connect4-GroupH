@@ -1,11 +1,12 @@
 import React from "react";
 import "./Board.css";
 import Box from "@mui/material/Box";
-
+import { createTheme } from "@mui/material";
+const theme = createTheme();
 const styles = {
   cell: {
-    height: "7rem",
-    width: "7rem",
+    height: "4.5rem",
+    width: "4.5rem",
     background: "#1565c0",
     cursor: "pointer",
     display: "flex",
@@ -14,20 +15,20 @@ const styles = {
     alignItems: "center",
   },
   white: {
-    height: "5.5em",
-    width: "5.5em",
+    height: "3.5em",
+    width: "3.5em",
     background: "white",
     borderRadius: "100%",
   },
   red: {
-    height: "5.5em",
-    width: "5.5em",
+    height: "3.5em",
+    width: "3.5em",
     background: "red",
     borderRadius: "100%",
   },
   yellow: {
-    height: "5.5em",
-    width: "5.5em",
+    height: "3.5em",
+    width: "3.5em",
     background: "yellow",
     borderRadius: "100%",
   },
@@ -41,7 +42,13 @@ const Cell = (props) => {
     color = styles.yellow;
   }
   return (
-    <Box sx={styles.cell} data-x={props.x} data-y={props.y} onClick={props.onClick}>
+    <Box
+      sx={styles.cell}
+      data-x={props.x}
+      data-y={props.y}
+      onClick={props.onClick}
+      style={{padding: theme.spacing(1)}}
+    >
       <Box sx={color}></Box>
     </Box>
   );

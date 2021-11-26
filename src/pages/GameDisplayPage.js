@@ -1,18 +1,42 @@
 import React from "react";
 import { useState } from "react";
 import "./GameDisplayPage.css";
+import {
+  Button,
+  Grid,
+  List,
+  Card,
+  Paper,
+  Typography,
+  createTheme
+} from "@mui/material";
+
 import Modal from "../components/Modal";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
+// import Typography from "@mui/material/Typography";
 import Board from "./../components/board/Board.js";
 import DisplayPlayerTurn from "./../components/board/DisplayPlayerTurn.js";
 import createNewBoard from "../utils/createNewBoard";
 import canPutStone from "../utils/canPutStone";
 import getLowestEmptyYIndex from "../utils/getLowestEmptyYIndex";
 import calculateWinner from "../utils/calculateWinner";
-
+import { makeStyles } from "@mui/styles";
+const theme = createTheme();
+const useStyles = makeStyles({
+  root: {
+    backgroundColor: "rgba(0,0,0,0.7)"
+  },
+  history: {
+    margin: "40px",
+    padding: theme.spacing(3),
+  },
+  historyCard: {
+    textAlign: "center",
+    margin: theme.spacing(2)
+  },
+  infoCard: {
+    padding: theme.spacing(2)
+  }
+});
 const InitButton = (props) => {
   return (
     <Button variant="contained" color="primary" style={{ height: "50px" }} onClick={props.onClick}>
@@ -37,6 +61,8 @@ const GameDisplayPage = (props) => {
   // ゲームが終了した時に起動する↓
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const classes = useStyles();
 
   // ゲームの状態の初期化
   const initGame = () => {
@@ -103,9 +129,14 @@ const GameDisplayPage = (props) => {
   const moves = history.map((_, index) => {
     const desc = index ? "Go to move #" + index : "Go to game start";
     return (
-      <li key={index}>
-        <Button onClick={() => jumpTo(index)}>{desc}</Button>
-      </li>
+      <Card key={index} className={classes.historyCard}>
+        <Button
+          onClick={() => jumpTo(index)}
+          style={{
+            width: "100%",
+          }}
+        >{desc}</Button>
+      </Card>
     );
   });
 
@@ -138,32 +169,51 @@ const GameDisplayPage = (props) => {
     }
   };
 
-  let status;
-  if (props.gameWinner) {
-    status = "Winner: " + props.gameWinner;
-  } else {
-    status = "Next player: " + (props.isNextPlayerRed ? "Player2" : "Player1");
-  }
-
   return (
-    <Grid sx={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
-      <Typography variant="h2" component="h1">
-        Connect 4!
-      </Typography>
-      <Grid sx={{ display: "flex", justifyContent: "center", flexDirection: "row", alignItems: "flex-end", mb: 2 }}>
-        <InitButton onClick={initGame} />
-        <DisplayPlayerTurn
-          playerTurn={isNextPlayerRed}
-          playerName1={props.playerName1}
-          playerName2={props.playerName2}
-        />
+    <Grid
+      sx={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}
+      className={classes.root}
+    >
+      <Grid
+        sx={{ display: "flex", justifyContent: "center", flexDirection: "row", alignItems: "flex-end", mb: 2, mt:2 }}
+      >
+        <Card className={classes.infoCard}>
+          <Grid
+            container
+            justifyContent="center"
+            alignItems="flex-end"
+          >
+            <Grid flexDirection="column">
+              <Typography variant="h5" component="h5" sx={{ textAlign: "center" }}>
+                Reset
+              </Typography>
+              <InitButton onClick={initGame} item/>
+            </Grid>
+            <Grid flexDirection="column">
+              <Typography variant="h5" component="h5" sx={{ textAlign: "right" }}>
+                Next Player
+              </Typography>
+              <DisplayPlayerTurn
+                playerTurn={isNextPlayerRed}
+                playerName1={props.playerName1}
+                playerName2={props.playerName2}
+                item
+              />
+            </Grid>
+          </Grid>
+        </Card>
       </Grid>
       <Board board={current} onClick={handleClick} />
 
       {/* それぞれの手番の情報を表示する */}
-      <Grid className="game-info">
-        <Grid>{status}</Grid>
-        <List>{moves}</List>
+      <Grid
+        justifyContent="center"
+        alignItems="center"
+        style={{width: "50%"}}>
+        <Paper className={classes.history}>
+          <Typography variant="h4">History</Typography>
+          <List>{moves}</List>
+        </Paper>
       </Grid>
       {/* 便宜的にゲームの勝者をお知らせするモーダルを貼り付けています。 */}
       <Modal handleOpen={handleOpen} handleClose={handleClose} open={open} gameWinner={gameWinner} />
