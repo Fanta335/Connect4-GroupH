@@ -47,8 +47,7 @@ const InitButton = (props) => {
 const GameDisplayPage = (props) => {
 
   const initBoard = createNewBoard(props.boardSize[0], props.boardSize[1]);
-  const [isPlayer1Next, setIsPlayer1Next] = useState(false);
-
+  const [isPlayer1Next, setIsPlayer1Next] = useState(true);
   const [gameWinner, setGameWinner] = useState("");
   const [history, setHistory] = useState([
     {
@@ -71,7 +70,7 @@ const GameDisplayPage = (props) => {
       },
     ]);
     setGameWinner("");
-    setIsPlayer1Next(true);
+    setIsPlayer1Next(false);
     setStepNumber(0);
   };
 
@@ -176,7 +175,6 @@ const GameDisplayPage = (props) => {
         setGameWinner(winner);
         handleModalOpen();
       } else if (winner === null) {
-
         // プレイヤーを変更
         setIsPlayer1Next(!isPlayer1Next);
       }

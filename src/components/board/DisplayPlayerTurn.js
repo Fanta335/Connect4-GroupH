@@ -17,7 +17,7 @@ const playerTurnStyle = {
 const DisplayPlayerTurn = (props) => {
   let playerTurn = "";
   let backgroundColor = "";
-  if (props.playerTurn == false) {
+  if (props.playerTurn) {
     playerTurn = props.players[0];
     backgroundColor = "red";
   } else {
