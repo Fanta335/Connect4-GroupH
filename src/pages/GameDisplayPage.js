@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState } from "react";
 import "./GameDisplayPage.css";
 import Modal from "../components/Modal";
 import Button from "@mui/material/Button";
@@ -12,6 +12,7 @@ import canPutStone from "../utils/canPutStone";
 import getLowestEmptyYIndex from "../utils/getLowestEmptyYIndex";
 import calculateWinner from "../utils/calculateWinner";
 import displayTimer from "../utils/displayTimer";
+import useTimer from "../utils/useTimer";
 
 const InitButton = (props) => {
   return (
@@ -23,9 +24,9 @@ const InitButton = (props) => {
 
 const GameDisplayPage = (props) => {
   const initBoard = createNewBoard(props.borderSizeWidth, props.borderSizeHeight);
-  const timeControl = (props.timeMinControl * 60 + props.timeSecControl) * 100; // 1/100秒単位のタイマー
-  const [count1, setCount1] = useState(timeControl);
-  const [count2, setCount2] = useState(timeControl);
+  const timeControl = props.timeMinControl * 60 + props.timeSecControl;
+  const [count1, startTimer1, stopTimer1, resetTimer1, setTimer1] = useTimer(timeControl);
+  const [count2, startTimer2, stopTimer2, resetTimer2, setTimer2] = useTimer(timeControl);
   const [player1IsNext, setPlayer1IsNext] = useState(true);
   const [gameWinner, setGameWinner] = useState("");
   const [history, setHistory] = useState([
@@ -40,54 +41,6 @@ const GameDisplayPage = (props) => {
   const [canStartGame, setCanStartGame] = useState(false);
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
-
-  const intervalRef1 = useRef(null);
-  /**
-   * Player1のタイマーの開始
-   */
-  const startTimer1 = useCallback(() => {
-    if (intervalRef1.current !== null) {
-      return;
-    }
-    intervalRef1.current = setInterval(() => {
-      setCount1((c) => c - 1);
-    }, 10);
-  }, []);
-
-  /**
-   * Player1のタイマーの停止
-   */
-  const stopTimer1 = useCallback(() => {
-    if (intervalRef1.current === null) {
-      return;
-    }
-    clearInterval(intervalRef1.current);
-    intervalRef1.current = null;
-  }, []);
-
-  const intervalRef2 = useRef(null);
-  /**
-   * Player2のタイマーの開始
-   */
-  const startTimer2 = useCallback(() => {
-    if (intervalRef2.current !== null) {
-      return;
-    }
-    intervalRef2.current = setInterval(() => {
-      setCount2((c) => c - 1);
-    }, 10);
-  }, []);
-
-  /**
-   * Player2のタイマーの停止
-   */
-  const stopTimer2 = useCallback(() => {
-    if (intervalRef2.current === null) {
-      return;
-    }
-    clearInterval(intervalRef2.current);
-    intervalRef2.current = null;
-  }, []);
 
   const controlTimer = (player1IsNext) => {
     if (player1IsNext) {
@@ -114,10 +67,10 @@ const GameDisplayPage = (props) => {
     setPlayer1IsNext(true);
     setStepNumber(0);
     setCanStartGame(true);
-    setCount1(timeControl);
-    setCount2(timeControl);
     stopTimer1();
     stopTimer2();
+    resetTimer1();
+    resetTimer2();
     startTimer1();
   };
 
@@ -193,8 +146,8 @@ const GameDisplayPage = (props) => {
     setPlayer1IsNext(step % 2 === 0);
     setHistory(updateHistory(history, step));
     setGameWinner("");
-    setCount1(history[step].count1);
-    setCount2(history[step].count2);
+    setTimer1(history[step].count1);
+    setTimer2(history[step].count2);
     // player1IsNextの情報が即時反映されないため、一時的な変数を作成
     // 関数内だとuseEffectが使えなかったため、この方法で対処した
     const tempPlayer1IsNext = step % 2 === 0;
