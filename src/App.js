@@ -6,11 +6,10 @@ import React from "react";
 // import GameDisplayPage from "./pages/GameDisplayPage";
 // import Header from "./components/Header";
 import Container from "./Container";
+
 function App() {
   return (
-    <div>
-      <Container />
-    </div>
+    <Container />
   );
 }
 

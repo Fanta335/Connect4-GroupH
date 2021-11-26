@@ -46,7 +46,7 @@ const InitButton = (props) => {
 };
 
 const GameDisplayPage = (props) => {
-  const initBoard = createNewBoard(props.borderSizeWidth, props.borderSizeHeight);
+  const initBoard = createNewBoard(props.boardSize[0], props.boardSize[1]);
   const [isNextPlayerRed, setIsNextPlayerRed] = useState(false);
   const [gameWinner, setGameWinner] = useState("");
   const [history, setHistory] = useState([
@@ -159,10 +159,10 @@ const GameDisplayPage = (props) => {
       setStepNumber(stepNumber + 1);
       // 勝利判定
       let winner = calculateWinner(nextBoard, props.victoryCondition, x, y);
-      if (winner != null) {
+      if (winner !== null) {
         setGameWinner(winner);
         handleOpen();
-      } else if (winner == null) {
+      } else if (winner === null) {
         // プレイヤーを変更
         setIsNextPlayerRed(!isNextPlayerRed);
       }
@@ -195,8 +195,7 @@ const GameDisplayPage = (props) => {
               </Typography>
               <DisplayPlayerTurn
                 playerTurn={isNextPlayerRed}
-                playerName1={props.playerName1}
-                playerName2={props.playerName2}
+                players={props.players}
                 item
               />
             </Grid>

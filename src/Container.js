@@ -11,8 +11,8 @@ const Container = () => {
   const [gameMode, setGameMode] = useState("player");
   const [cpuStrength, setCpuStrength] = useState("easy");
   // Settings.js
-  const [borderSizeHeight, setBorderSizeHeight] = useState(6);
-  const [borderSizeWidth, setBorderSizeWidth] = useState(7);
+  const [boardSizeHeight, setBoardSizeHeight] = useState(6);
+  const [boardSizeWidth, setBoardSizeWidth] = useState(7);
   const [victoryCondition, setVictoryCondition] = useState(4);
   const [playerName1, setPlayerName1] = useState("Player1");
   const [playerName2, setPlayerName2] = useState("Player2");
@@ -47,9 +47,9 @@ const Container = () => {
     }
     const name = event.target.name;
     if (name === "borderSizeHeight") {
-      setBorderSizeHeight(tempValue);
+      setBoardSizeHeight(tempValue);
     } else if (name === "borderSizeWidth") {
-      setBorderSizeWidth(tempValue);
+      setBoardSizeWidth(tempValue);
     } else if (name === "victoryCondition") {
       setVictoryCondition(tempValue);
     }
@@ -62,14 +62,18 @@ const Container = () => {
         <Route
           path="/"
           element={
-            <Home gameMode={gameMode} cpuStrength={cpuStrength} onChange={handleInputGameModeAndCpuStrengthChange} />
+            <Home
+              gameMode={gameMode}
+              cpuStrength={cpuStrength}
+              onChange={handleInputGameModeAndCpuStrengthChange}
+            />
           }
         ></Route>
         <Route
           path="/settings"
           element={
             <Settings
-              borderSize={[borderSizeHeight,borderSizeWidth]}
+              boardSize={[boardSizeHeight,boardSizeWidth]}
               victoryCondition={victoryCondition}
               playerName={[playerName1,playerName2]}
               onPlayerNameChange={handleInputPlayerNameChange}
@@ -81,11 +85,9 @@ const Container = () => {
           path="/game"
           element={
             <GameDisplayPage
-              borderSizeHeight={borderSizeHeight}
-              borderSizeWidth={borderSizeWidth}
+              boardSize={[boardSizeWidth,boardSizeHeight]}
               victoryCondition={victoryCondition}
-              playerName1={playerName1}
-              playerName2={playerName2}
+              players={[playerName1,playerName2]}
             />
           }
         ></Route>

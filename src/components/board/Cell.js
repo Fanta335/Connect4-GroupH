@@ -2,6 +2,7 @@ import React from "react";
 import "./Board.css";
 import Box from "@mui/material/Box";
 import { createTheme } from "@mui/material";
+import "../../animation.css";
 const theme = createTheme();
 const styles = {
   cell: {
@@ -47,7 +48,9 @@ const Cell = (props) => {
       data-x={props.x}
       data-y={props.y}
       onClick={props.onClick}
-      style={{padding: theme.spacing(1)}}
+      style={{
+        padding: theme.spacing(1),
+      }}
     >
       <Box sx={color}></Box>
     </Box>
