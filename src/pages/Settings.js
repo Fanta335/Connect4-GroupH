@@ -10,6 +10,9 @@ import TransitionButton from "../components/TransitionButton";
 import "./settings.css";
 
 const Settings = (props) => {
+  const victoryConditionMax =
+    props.borderSizeWidth <= props.borderSizeHeight ? props.borderSizeWidth : props.borderSizeHeight;
+
   return (
     <Grid container alignItems="center" justifyContent="center" style={{ height: "100vh" }}>
       <Grid container item xs={6} spacing={3}>
@@ -125,7 +128,7 @@ const Settings = (props) => {
                   style={{ textAlign: "right", width: "45%" }}
                   InputProps={{
                     inputProps: {
-                      max: 100,
+                      max: victoryConditionMax,
                       min: 4,
                     },
                   }}
@@ -156,7 +159,7 @@ const Settings = (props) => {
                     InputProps={{
                       inputProps: {
                         max: 60,
-                        min: 0,
+                        min: 1,
                       },
                       endAdornment: <InputAdornment position="end">min</InputAdornment>,
                     }}
