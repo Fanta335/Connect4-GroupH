@@ -11,28 +11,46 @@ import createNewBoard from "../utils/createNewBoard";
 import canPutStone from "../utils/canPutStone";
 import getLowestEmptyYIndex from "../utils/getLowestEmptyYIndex";
 import calculateWinner from "../utils/calculateWinner";
+import displayTimer from "../utils/displayTimer";
+import useTimer from "../utils/useTimer";
 
 const InitButton = (props) => {
   return (
     <Button variant="contained" color="primary" style={{ height: "50px" }} onClick={props.onClick}>
-      New Game
+      Start New Game
     </Button>
   );
 };
 
 const GameDisplayPage = (props) => {
   const initBoard = createNewBoard(props.borderSizeWidth, props.borderSizeHeight);
+  const timeControl = props.timeMinControl * 60 + props.timeSecControl;
+  const [count1, startTimer1, stopTimer1, resetTimer1, setTimer1] = useTimer(timeControl);
+  const [count2, startTimer2, stopTimer2, resetTimer2, setTimer2] = useTimer(timeControl);
   const [player1IsNext, setPlayer1IsNext] = useState(true);
   const [gameWinner, setGameWinner] = useState("");
   const [history, setHistory] = useState([
     {
       board: initBoard,
+      count1: timeControl,
+      count2: timeControl,
     },
   ]);
   const [stepNumber, setStepNumber] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
+  const [canStartGame, setCanStartGame] = useState(false);
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
+
+  const controlTimer = (player1IsNext) => {
+    if (player1IsNext) {
+      startTimer1();
+      stopTimer2();
+    } else {
+      stopTimer1();
+      startTimer2();
+    }
+  };
 
   /**
    * ゲーム状態の初期化
@@ -41,11 +59,19 @@ const GameDisplayPage = (props) => {
     setHistory([
       {
         board: initBoard,
+        count1: timeControl,
+        count2: timeControl,
       },
     ]);
     setGameWinner("");
     setPlayer1IsNext(true);
     setStepNumber(0);
+    setCanStartGame(true);
+    stopTimer1();
+    stopTimer2();
+    resetTimer1();
+    resetTimer2();
+    startTimer1();
   };
 
   /**
@@ -54,7 +80,7 @@ const GameDisplayPage = (props) => {
    * @returns 複製した盤面を表す二次元配列
    */
   const copyBoard = (board) => {
-    let copiedBoard = [];
+    const copiedBoard = [];
     for (const array of board) {
       copiedBoard.push([...array]);
     }
@@ -69,10 +95,15 @@ const GameDisplayPage = (props) => {
   const copyHistory = (history) => {
     let copiedHistory = [];
     for (const historyItem of history) {
-      let board = historyItem.board;
-      let copiedBoard = copyBoard(board);
+      const board = historyItem.board;
+      const copiedBoard = copyBoard(board);
+      const copiedCount1 = historyItem.count1;
+      const copiedCount2 = historyItem.count2;
+
       copiedHistory.push({
         board: copiedBoard,
+        count1: copiedCount1,
+        count2: copiedCount2,
       });
     }
     return copiedHistory;
@@ -82,10 +113,15 @@ const GameDisplayPage = (props) => {
   const updateHistory = (history, step) => {
     let updatedHistory = [];
     for (let i = 0; i <= step; i++) {
-      let board = history[i].board;
-      let copiedBoard = copyBoard(board);
+      const board = history[i].board;
+      const copiedBoard = copyBoard(board);
+      const copiedCount1 = history[i].count1;
+      const copiedCount2 = history[i].count2;
+
       updatedHistory.push({
         board: copiedBoard,
+        count1: copiedCount1,
+        count2: copiedCount2,
       });
     }
     return updatedHistory;
@@ -110,6 +146,12 @@ const GameDisplayPage = (props) => {
     setPlayer1IsNext(step % 2 === 0);
     setHistory(updateHistory(history, step));
     setGameWinner("");
+    setTimer1(history[step].count1);
+    setTimer2(history[step].count2);
+    // player1IsNextの情報が即時反映されないため、一時的な変数を作成
+    // 関数内だとuseEffectが使えなかったため、この方法で対処した
+    const tempPlayer1IsNext = step % 2 === 0;
+    controlTimer(tempPlayer1IsNext);
   };
 
   const moves = history.map((_, index) => {
@@ -121,30 +163,50 @@ const GameDisplayPage = (props) => {
     );
   });
 
-  const current = history[stepNumber].board;
+  const currentBoard = history[stepNumber].board;
 
   const handleClick = (event) => {
     if (gameWinner !== "") return;
+
     const renewedHistory = copyHistory(history);
-    const current = renewedHistory[stepNumber].board;
-    let nextBoard = copyBoard(current);
+    const currentBoard = renewedHistory[stepNumber].board;
+    const nextBoard = copyBoard(currentBoard);
+    const copiedCount1 = count1;
+    const copiedCount2 = count2;
     const dataset = event.currentTarget.dataset;
     const x = parseInt(dataset.x);
 
     if (canPutStone(nextBoard, x)) {
-      let y = getLowestEmptyYIndex(nextBoard, x);
+      const y = getLowestEmptyYIndex(nextBoard, x);
       putStone(nextBoard, x, y);
-      //盤面の状態変更
-      setHistory(renewedHistory.concat([{ board: nextBoard }]));
-      //何手目かの状態変更
+      setHistory(
+        renewedHistory.concat([
+          {
+            board: nextBoard,
+            count1: copiedCount1,
+            count2: copiedCount2,
+          },
+        ])
+      );
       setStepNumber(stepNumber + 1);
-      // 勝利判定
+
       let winner = calculateWinner(nextBoard, props.victoryCondition, x, y);
+      if (count1 <= 0 && count2 > 0) {
+        winner = "Player2";
+      } else if (count2 <= 0 && count1 > 0) {
+        winner = "Player1";
+      }
       if (winner != null) {
         setGameWinner(winner);
+        console.log(gameWinner);
         handleModalOpen();
+        stopTimer1();
+        stopTimer2();
       } else if (winner == null) {
-        // プレイヤーを変更
+        // player1IsNextの情報が即時反映されないため、一時的な変数を作成
+        // 関数内・条件式内だとuseEffectが使えなかったため、この方法で対処した
+        const tempPlayer1IsNext = !player1IsNext;
+        controlTimer(tempPlayer1IsNext);
         setPlayer1IsNext(!player1IsNext);
       }
     }
@@ -158,8 +220,9 @@ const GameDisplayPage = (props) => {
       <Grid sx={{ display: "flex", justifyContent: "center", flexDirection: "row", alignItems: "flex-end", mb: 2 }}>
         <InitButton onClick={initGame} />
         <DisplayPlayerTurn playerTurn={player1IsNext} playerName1={props.playerName1} playerName2={props.playerName2} />
+        {displayTimer(count1)}/{displayTimer(count2)}
       </Grid>
-      <Board board={current} onClick={handleClick} />
+      <Board board={currentBoard} onClick={canStartGame ? handleClick : null} />
 
       {/* それぞれの手番の情報を表示する */}
       <Grid className="game-info">
