@@ -35,6 +35,9 @@ const useStyles = makeStyles({
   }
 });
 const Settings = (props) => {
+  const victoryConditionMax =
+    props.borderSizeWidth <= props.borderSizeHeight ? props.borderSizeWidth : props.borderSizeHeight;
+
   const classes = useStyles();
   const formItems = [
     {
@@ -78,6 +81,7 @@ const Settings = (props) => {
       name: "Confirm"
     }
   ]
+
   return (
     <Grid container alignItems="center" justifyContent="center"
       className={classes.root}
@@ -224,7 +228,7 @@ const Settings = (props) => {
                   style={{ textAlign: "right", width: "45%" }}
                   InputProps={{
                     inputProps: {
-                      max: 100,
+                      max: victoryConditionMax,
                       min: 4,
                     },
                   }}
@@ -254,7 +258,7 @@ const Settings = (props) => {
                     InputProps={{
                       inputProps: {
                         max: 60,
-                        min: 0,
+                        min: 1,
                       },
                       endAdornment: <InputAdornment position="end">min</InputAdornment>,
                     }}
