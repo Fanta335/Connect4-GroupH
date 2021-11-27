@@ -1,5 +1,10 @@
 import { useState, useCallback, useRef } from "react";
 
+/**
+ * タイマーのカスタムフック
+ * @param {number} timeControl - 持ち時間（秒）
+ * @returns count, startTimer, stopTimer, resetTimer, setTimer
+ */
 function useTimer(timeControl) {
   const [count, setCount] = useState(timeControl);
   const intervalRef = useRef(null);
