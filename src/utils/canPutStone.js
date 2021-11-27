@@ -1,7 +1,7 @@
 /**
  * 指定した列に石を置けるか判定する
  * @param {string[][]} board - 盤面を表す二次元配列
- * @param {*} x - 指定する列
+ * @param {number} x - 指定する列
  * @returns {boolean} - true/false
  */
 

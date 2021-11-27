@@ -1,7 +1,7 @@
 import React from "react";
 import "./Board.css";
 import Cell from "./../board/Cell.js";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 
 const Column = (props) => {
   return (

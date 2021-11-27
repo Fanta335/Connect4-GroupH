@@ -6,13 +6,13 @@ import Settings from "./pages/Settings";
 import GameDisplayPage from "./pages/GameDisplayPage";
 import Header from "./components/Header";
 
-const Container = () => {
+const Container = (props) => {
   // Home.js
   const [gameMode, setGameMode] = useState("player");
   const [cpuStrength, setCpuStrength] = useState("easy");
   // Settings.js
-  const [borderSizeHeight, setBorderSizeHeight] = useState(6);
-  const [borderSizeWidth, setBorderSizeWidth] = useState(7);
+  const [boardSizeHeight, setBoardSizeHeight] = useState(6);
+  const [boardSizeWidth, setBoardSizeWidth] = useState(7);
   const [victoryCondition, setVictoryCondition] = useState(4);
   const [timeMinControl, setTimeMinControl] = useState(20);
   const [timeSecControl, setTimeSecControl] = useState(0);
@@ -49,9 +49,9 @@ const Container = () => {
     }
     const name = event.target.name;
     if (name === "borderSizeHeight") {
-      setBorderSizeHeight(tempValue);
+      setBoardSizeHeight(tempValue);
     } else if (name === "borderSizeWidth") {
-      setBorderSizeWidth(tempValue);
+      setBoardSizeWidth(tempValue);
     } else if (name === "victoryCondition") {
       setVictoryCondition(tempValue);
     } else if (name === "timeMinControl") {
@@ -63,7 +63,7 @@ const Container = () => {
 
   return (
     <>
-      <Header />
+      <Header darkMode={props.darkMode} setDarkMode={props.setDarkMode} />
       <Routes>
         <Route
           path="/"
@@ -75,13 +75,11 @@ const Container = () => {
           path="/settings"
           element={
             <Settings
-              borderSizeHeight={borderSizeHeight}
-              borderSizeWidth={borderSizeWidth}
+              boardSize={[boardSizeHeight, boardSizeWidth]}
               victoryCondition={victoryCondition}
+              playerName={[playerName1, playerName2]}
               timeMinControl={timeMinControl}
               timeSecControl={timeSecControl}
-              playerName1={playerName1}
-              playerName2={playerName2}
               onPlayerNameChange={handleInputPlayerNameChange}
               onNumberChange={handleInputNumberChange}
             />
@@ -91,11 +89,9 @@ const Container = () => {
           path="/game"
           element={
             <GameDisplayPage
-              borderSizeHeight={borderSizeHeight}
-              borderSizeWidth={borderSizeWidth}
+              boardSize={[boardSizeWidth, boardSizeHeight]}
               victoryCondition={victoryCondition}
-              playerName1={playerName1}
-              playerName2={playerName2}
+              players={[playerName1, playerName2]}
               timeMinControl={timeMinControl}
               timeSecControl={timeSecControl}
               gameMode={gameMode}

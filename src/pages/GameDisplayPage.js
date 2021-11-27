@@ -1,19 +1,37 @@
 import React, { useState } from "react";
 import "./GameDisplayPage.css";
+import { Button, Grid, List, Card, Paper, Typography, createTheme } from "@mui/material";
+
 import Modal from "../components/Modal";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
+// import Typography from "@mui/material/Typography";
 import Board from "./../components/board/Board.js";
 import DisplayPlayerTurn from "./../components/board/DisplayPlayerTurn.js";
 import createNewBoard from "../utils/createNewBoard";
 import canPutStone from "../utils/canPutStone";
 import getLowestEmptyYIndex from "../utils/getLowestEmptyYIndex";
 import calculateWinner from "../utils/calculateWinner";
+import { makeStyles } from "@mui/styles";
 import displayTimer from "../utils/displayTimer";
 import useTimer from "../utils/useTimer";
 import Cpu from "../utils/cpu";
+
+const theme = createTheme();
+const useStyles = makeStyles({
+  root: {
+    backgroundColor: "rgba(0,0,0,0.7)",
+  },
+  history: {
+    margin: "40px",
+    padding: theme.spacing(3),
+  },
+  historyCard: {
+    textAlign: "center",
+    margin: theme.spacing(2),
+  },
+  infoCard: {
+    padding: theme.spacing(2),
+  },
+});
 
 const InitButton = (props) => {
   return (
@@ -24,11 +42,11 @@ const InitButton = (props) => {
 };
 
 const GameDisplayPage = (props) => {
-  const initBoard = createNewBoard(props.borderSizeWidth, props.borderSizeHeight, props.gameMode);
+  const initBoard = createNewBoard(props.boardSize[0], props.boardSize[1], props.gameMode);
+  const [isPlayer1Next, setIsPlayer1Next] = useState(true);
   const timeControl = props.timeMinControl * 60 + props.timeSecControl;
   const [count1, startTimer1, stopTimer1, resetTimer1, setTimer1] = useTimer(timeControl);
   const [count2, startTimer2, stopTimer2, resetTimer2, setTimer2] = useTimer(timeControl);
-  const [player1IsNext, setPlayer1IsNext] = useState(true);
   const [gameWinner, setGameWinner] = useState("");
   const [history, setHistory] = useState([
     {
@@ -39,6 +57,9 @@ const GameDisplayPage = (props) => {
   ]);
   const [stepNumber, setStepNumber] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
+  const classes = useStyles();
+
+  // ゲームが終了した時に起動する↓
   const [canStartGame, setCanStartGame] = useState(false);
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
@@ -65,7 +86,7 @@ const GameDisplayPage = (props) => {
       },
     ]);
     setGameWinner("");
-    setPlayer1IsNext(true);
+    setIsPlayer1Next(true);
     setStepNumber(0);
     setCanStartGame(true);
     stopTimer1();
@@ -135,7 +156,7 @@ const GameDisplayPage = (props) => {
    * @param {*} y - 石を置く座標y
    */
   const putStone = (board, x, y) => {
-    if (player1IsNext) {
+    if (isPlayer1Next) {
       board[x][y] = "Player1";
     } else {
       board[x][y] = "Player2";
@@ -154,7 +175,7 @@ const GameDisplayPage = (props) => {
 
   const jumpTo = (step) => {
     setStepNumber(step);
-    setPlayer1IsNext(step % 2 === 0);
+    setIsPlayer1Next(step % 2 === 0);
     setHistory(updateHistory(history, step));
     setGameWinner("");
     setTimer1(history[step].count1);
@@ -168,9 +189,16 @@ const GameDisplayPage = (props) => {
   const moves = history.map((_, index) => {
     const desc = index ? "Go to move #" + index : "Go to game start";
     return (
-      <li key={index}>
-        <Button onClick={() => jumpTo(index)}>{desc}</Button>
-      </li>
+      <Card key={index} className={classes.historyCard}>
+        <Button
+          onClick={() => jumpTo(index)}
+          style={{
+            width: "100%",
+          }}
+        >
+          {desc}
+        </Button>
+      </Card>
     );
   });
 
@@ -245,9 +273,9 @@ const GameDisplayPage = (props) => {
         } else if (winner == null) {
           // player1IsNextの情報が即時反映されないため、一時的な変数を作成
           // 関数内・条件式内だとuseEffectが使えなかったため、この方法で対処した
-          const tempPlayer1IsNext = !player1IsNext;
+          const tempPlayer1IsNext = !isPlayer1Next;
           controlTimer(tempPlayer1IsNext);
-          setPlayer1IsNext(!player1IsNext);
+          setIsPlayer1Next(!isPlayer1Next);
         }
       }
 
@@ -315,40 +343,53 @@ const GameDisplayPage = (props) => {
   };
 
   return (
-    <Grid sx={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
-      <Typography variant="h2" component="h1">
-        Connect 4!
-      </Typography>
-
-      {/* 開発する際、対戦形式を確認しやすくするため便宜的に書き込んでいます。 */}
-      <Typography variant="h3" component="h3">
-        {props.gameMode == "cpu" ? "vsCPU" : ""}
-      </Typography>
-
-      <Grid sx={{ display: "flex", justifyContent: "center", flexDirection: "row", alignItems: "flex-end", mb: 2 }}>
-        <InitButton onClick={initGame} />
-        <DisplayPlayerTurn
-          playerTurn={player1IsNext}
-          playerName1={props.playerName1}
-          playerName2={props.playerName2}
-          gameMode={props.gameMode}
-        />
-        {displayTimer(count1)}/{displayTimer(count2)}
+    <Grid
+      sx={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}
+      className={classes.root}
+    >
+      <Grid
+        sx={{ display: "flex", justifyContent: "center", flexDirection: "row", alignItems: "flex-end", mb: 2, mt: 2 }}
+      >
+        <Card className={classes.infoCard}>
+          <Grid container justifyContent="center" alignItems="flex-end">
+            <Grid>
+              {/* 開発する際、対戦形式を確認しやすくするため便宜的に書き込んでいます。 */}
+              <Typography variant="h3" component="h3">
+                {props.gameMode == "cpu" ? "vsCPU" : ""}
+              </Typography>
+            </Grid>
+            <Grid flexDirection="column">
+              <Typography variant="h5" component="h5" sx={{ textAlign: "center" }}>
+                Reset
+              </Typography>
+              <InitButton onClick={initGame} item />
+            </Grid>
+            <Grid flexDirection="column">
+              <Typography variant="h5" component="h5" sx={{ textAlign: "right" }}>
+                Next Player
+              </Typography>
+              <DisplayPlayerTurn playerTurn={isPlayer1Next} players={props.players} gameMode={props.gameMode} item />
+              {displayTimer(count1)}/{displayTimer(count2)}
+            </Grid>
+          </Grid>
+        </Card>
       </Grid>
       <Board board={currentBoard} onClick={canStartGame ? handleClick : null} />
 
       {/* それぞれの手番の情報を表示する */}
-      <Grid className="game-info">
-        <List>{moves}</List>
+      <Grid justifyContent="center" alignItems="center" style={{ width: "50%" }}>
+        <Paper className={classes.history}>
+          <Typography variant="h4">History</Typography>
+          <List>{moves}</List>
+        </Paper>
       </Grid>
       {/* 便宜的にゲームの勝者をお知らせするモーダルを貼り付けています。 */}
       <Modal
         handleClose={handleModalClose}
         open={modalOpen}
         gameWinner={gameWinner}
-        playerTurn={player1IsNext}
-        playerName1={props.playerName1}
-        playerName2={props.playerName2}
+        playerTurn={isPlayer1Next}
+        players={props.players}
       />
     </Grid>
   );
