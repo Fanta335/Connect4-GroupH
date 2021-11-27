@@ -32,6 +32,8 @@ const useStyles = makeStyles({
     justifyContent: "flex-end"
   }
 });
+
+// TODO: Yuki Ueno: ゲーム画面からホーム画面、設定画面に遷移する際にタイマーを停止する処理を追加する（参考：https://weblike-curtaincall.ssl-lolipop.jp/blog/?p=2056）
 const Header = () => {
   let navigate = useNavigate();
   const classes = useStyles();

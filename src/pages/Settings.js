@@ -1,13 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
 import {
   Typography,
   Grid,
   TextField,
   createTheme,
-  Paper
+  Paper,
+  InputAdornment
 } from "@mui/material"
 import { makeStyles } from "@mui/styles";
+
 import Form from "../components/Form";
 import TransitionButton from "../components/TransitionButton";
 import "./settings.css";
@@ -199,6 +202,86 @@ const Settings = (props) => {
                   />
                 </Grid>
                 <Grid item sm={6}></Grid>
+              </Grid>
+            }
+          />
+        </Grid>
+        <Grid container item alignItems="center" justifyContent="center">
+          <Form
+            label="Victory Condition"
+            input={
+              <>
+                <TextField
+                  variant="outlined"
+                  type="number"
+                  onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+                  name="victoryCondition"
+                  value={props.victoryCondition}
+                  onChange={props.onNumberChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  style={{ textAlign: "right", width: "45%" }}
+                  InputProps={{
+                    inputProps: {
+                      max: 100,
+                      min: 4,
+                    },
+                  }}
+                />
+              </>
+            }
+          />
+        </Grid>
+        <Grid container item alignItems="center" justifyContent="center">
+          <Form
+            label="Time Control"
+            input={
+              <Grid container alignItems="center" justifyContent="center">
+                <Grid item xs={6}>
+                  <TextField
+                    label="Minute"
+                    variant="outlined"
+                    type="number"
+                    onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+                    name="timeMinControl"
+                    value={props.timeMinControl}
+                    onChange={props.onNumberChange}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    style={{ textAlign: "right", width: "90%" }}
+                    InputProps={{
+                      inputProps: {
+                        max: 60,
+                        min: 0,
+                      },
+                      endAdornment: <InputAdornment position="end">min</InputAdornment>,
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Second"
+                    variant="outlined"
+                    type="number"
+                    onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+                    name="timeSecControl"
+                    value={props.timeSecControl}
+                    onChange={props.onNumberChange}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    style={{ textAlign: "right", width: "90%" }}
+                    InputProps={{
+                      inputProps: {
+                        max: 60,
+                        min: 0,
+                      },
+                      endAdornment: <InputAdornment position="end">sec</InputAdornment>,
+                    }}
+                  />
+                </Grid>
               </Grid>
             }
           />
