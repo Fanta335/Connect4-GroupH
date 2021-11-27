@@ -98,6 +98,8 @@ const Container = () => {
               playerName2={playerName2}
               timeMinControl={timeMinControl}
               timeSecControl={timeSecControl}
+              gameMode={gameMode}
+              cpuStrength={cpuStrength}
             />
           }
         ></Route>
