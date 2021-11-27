@@ -1,6 +1,6 @@
 import React from "react";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Grid";
+import { Grid, Box } from "@mui/material";
+
 
 const playerTurnStyle = {
   border: 1,
