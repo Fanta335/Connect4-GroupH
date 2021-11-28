@@ -8,7 +8,6 @@ const styles = {
   cell: {
     height: "4.5rem",
     width: "4.5rem",
-    background: "#1565c0",
     cursor: "pointer",
     display: "flex",
     flexDirection: "row",
@@ -44,15 +43,21 @@ const Cell = (props) => {
   }
   return (
     <Box
-      sx={styles.cell}
+      sx={{
+        ...styles.cell,
+        backgroundColor:"primary.dark"
+      }}
       data-x={props.x}
       data-y={props.y}
       onClick={props.onClick}
       style={{
         padding: theme.spacing(1),
       }}
+      backgroundColor="primary"
     >
-      <Box sx={styles.white}>
+      <Box sx={
+        styles.white
+      }>
         {props.value !== null && <Box sx={color} className="drop"></Box>}
       </Box>
     </Box>

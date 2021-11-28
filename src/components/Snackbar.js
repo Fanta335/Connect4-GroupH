@@ -1,4 +1,4 @@
-import React, {forwardRef} from "react";
+import React, {useState,forwardRef} from "react";
 import { Snackbar } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 
@@ -6,17 +6,18 @@ const Alert = forwardRef(function Alert(props,ref){
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
 });
 
-const CustomizedSnackbar = (props) => {
+const CustomizedSnackbar = () => {
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const handleSnackbarClose = (event,reason) => {
     if(reason === 'clickaway'){
       return;
     }
-    props.setSnackbarOpen(false);
+    setSnackbarOpen(false);
   }
 
   return(
     <Snackbar
-      open={props.snackbarOpen}
+      open={snackbarOpen}
       autoHideDuration={6000}
       onClose={handleSnackbarClose}
     >

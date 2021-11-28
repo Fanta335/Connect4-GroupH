@@ -16,11 +16,11 @@ import createNewBoard from "../utils/createNewBoard";
 import canPutStone from "../utils/canPutStone";
 import getLowestEmptyYIndex from "../utils/getLowestEmptyYIndex";
 import calculateWinner from "../utils/calculateWinner";
+
 import displayTimer from "../utils/displayTimer";
 import useTimer from "../utils/useTimer";
 import { makeStyles } from "@mui/styles";
-import CustomizedSnackbar from "../components/Snackbar";
-
+// import setSnackbarOpen from "../components/Snackbar";
 const theme = createTheme();
 const useStyles = makeStyles({
   root: {
@@ -51,10 +51,12 @@ const InitButton = (props) => {
 const GameDisplayPage = (props) => {
 
   const initBoard = createNewBoard(props.boardSize[0], props.boardSize[1]);
+  const [isPlayer1Next, setIsPlayer1Next] = useState(true);
+
   const timeControl = props.timeMinControl * 60 + props.timeSecControl;
   const [count1, startTimer1, stopTimer1, resetTimer1, setTimer1] = useTimer(timeControl);
   const [count2, startTimer2, stopTimer2, resetTimer2, setTimer2] = useTimer(timeControl);
-  const [isPlayer1Next, setIsPlayer1Next] = useState(true);
+
   const [gameWinner, setGameWinner] = useState("");
   const [history, setHistory] = useState([
     {
@@ -81,8 +83,6 @@ const GameDisplayPage = (props) => {
       startTimer2();
     }
   };
-
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   /**
    * ゲーム状態の初期化
@@ -203,11 +203,8 @@ const GameDisplayPage = (props) => {
   const currentBoard = history[stepNumber].board;
 
   const handleClick = (event) => {
-    if (gameWinner !== ""){
-      setSnackbarOpen(true);
-      return <CustomizedSnackbar snackbarOpen={snackbarOpen}/>;
-    }
-
+    // setSnackbarOpen(gameWinner ? true : false);
+    if (gameWinner !== "") return;
     const renewedHistory = copyHistory(history);
     const currentBoard = renewedHistory[stepNumber].board;
     const nextBoard = copyBoard(currentBoard);
@@ -239,7 +236,6 @@ const GameDisplayPage = (props) => {
       }
       if (winner != null) {
         setGameWinner(winner);
-        console.log(gameWinner);
         handleModalOpen();
         stopTimer1();
         stopTimer2();
@@ -267,6 +263,12 @@ const GameDisplayPage = (props) => {
             justifyContent="center"
             alignItems="flex-end"
           >
+            <Grid>
+              {/* 開発する際、対戦形式を確認しやすくするため便宜的に書き込んでいます。 */}
+              <Typography variant="h3" component="h3">
+                {props.gameMode == "cpu" ? "vsCPU" : ""}
+              </Typography>
+            </Grid>
             <Grid flexDirection="column">
               <Typography variant="h5" component="h5" sx={{ textAlign: "center" }}>
                 Reset
@@ -282,7 +284,9 @@ const GameDisplayPage = (props) => {
                 players={props.players}
                 item
               />
-              {displayTimer(count1)}/{displayTimer(count2)}
+              <Grid>
+                {displayTimer(count1)}/{displayTimer(count2)}
+              </Grid>
             </Grid>
           </Grid>
         </Card>

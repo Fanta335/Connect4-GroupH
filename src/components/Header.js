@@ -35,6 +35,7 @@ const useStyles = makeStyles({
 });
 
 // TODO: Yuki Ueno: ゲーム画面からホーム画面、設定画面に遷移する際にタイマーを停止する処理を追加する（参考：https://weblike-curtaincall.ssl-lolipop.jp/blog/?p=2056）
+
 const Header = (props) => {
   let navigate = useNavigate();
   const classes = useStyles();
@@ -66,6 +67,9 @@ const Header = (props) => {
     },
   ];
 
+
+// TODO: Yuki Ueno: ゲーム画面からホーム画面、設定画面に遷移する際にタイマーを停止する処理を追加する（参考：https://weblike-curtaincall.ssl-lolipop.jp/blog/?p=2056）
+
   return (
     <div className={classes.headerRoot}>
       <AppBar position="static">
@@ -73,6 +77,7 @@ const Header = (props) => {
           <Typography variant="h6">
             Connect4
           </Typography>
+          <Switch checked={props.darkMode} onChange={() => props.setDarkMode(!props.darkMode)}/>
           <>
             {isMobile ? (
               <>

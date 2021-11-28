@@ -6,7 +6,7 @@ import Settings from "./pages/Settings";
 import GameDisplayPage from "./pages/GameDisplayPage";
 import Header from "./components/Header";
 
-const Container = () => {
+const Container = (props) => {
   // Home.js
   const [gameMode, setGameMode] = useState("player");
   const [cpuStrength, setCpuStrength] = useState("easy");
@@ -63,7 +63,10 @@ const Container = () => {
 
   return (
     <>
-      <Header />
+      <Header
+        darkMode={props.darkMode}
+        setDarkMode={props.setDarkMode}
+      />
       <Routes>
         <Route
           path="/"

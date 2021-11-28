@@ -1,19 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
 import {
   Typography,
   Grid,
   TextField,
   createTheme,
   Paper,
-  InputAdornment
+  InputAdornment,
 } from "@mui/material"
 import { makeStyles } from "@mui/styles";
-
 import Form from "../components/Form";
 import TransitionButton from "../components/TransitionButton";
 import "./settings.css";
+
 const theme = createTheme();
 const useStyles = makeStyles({
   root: {
