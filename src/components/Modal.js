@@ -2,7 +2,6 @@ import React from "react";
 import {Typography, Modal, Box, Grid} from "@mui/material";
 import TransitionButton from "./TransitionButton";
 import { useNavigate } from "react-router-dom";
-let navigate = useNavigate();
 //便宜的なスタイルです。
 const style = {
   position: "absolute",
@@ -18,7 +17,7 @@ const style = {
 
 const BasicModal = (props) => {
   const [playerName1, playerName2] = props.players;
-
+  let navigate = useNavigate();
   return (
     <div>
       <Modal
