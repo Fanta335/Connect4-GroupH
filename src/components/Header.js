@@ -63,8 +63,16 @@ const Header = (props) => {
     <div className={classes.headerRoot}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6">Connect4</Typography>
+          <Link to="/" style={{textDecoration: 'none', color: "white"}}>
+            <Typography variant="h6">Connect 4</Typography>
+          </Link>
           <Switch checked={props.darkMode} onChange={() => props.setDarkMode(!props.darkMode)} />
+          <Grid>
+            {/* 開発する際、対戦形式を確認しやすくするため便宜的に書き込んでいます。 */}
+            <Typography variant="h5" component="h5">
+              {props.gameMode == "cpu" ? "vsCPU" : "vsPlayer"}
+            </Typography>
+          </Grid>
           <>
             {isMobile ? (
               <>
