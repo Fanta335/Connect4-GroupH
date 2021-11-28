@@ -1,10 +1,10 @@
+import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import { useState } from "react";
-import React from "react";
-import Home from "./pages/Home.js";
-import Settings from "./pages/Settings";
-import GameDisplayPage from "./pages/GameDisplayPage";
+
 import Header from "./components/Header";
+import GameDisplayPage from "./pages/GameDisplayPage";
+import Home from "./pages/Home";
+import Settings from "./pages/Settings";
 
 const Container = (props) => {
   // Home.js
@@ -38,11 +38,11 @@ const Container = (props) => {
   };
 
   const handleInputNumberChange = (event) => {
-    const min = parseInt(event.target.min);
-    const max = parseInt(event.target.max);
+    const min = parseInt(event.target.min, 10);
+    const max = parseInt(event.target.max, 10);
     let tempValue = "";
     if (event.target.value !== "") {
-      tempValue = parseInt(event.target.value);
+      tempValue = parseInt(event.target.value, 10);
     }
     if (tempValue > max || tempValue < min) {
       return;
@@ -63,47 +63,40 @@ const Container = (props) => {
 
   return (
     <>
-      <Header
-        darkMode={props.darkMode}
-        setDarkMode={props.setDarkMode}
-      />
+      <Header darkMode={props.darkMode} setDarkMode={props.setDarkMode} />
       <Routes>
         <Route
           path="/"
           element={
-            <Home
-              gameMode={gameMode}
-              cpuStrength={cpuStrength}
-              onChange={handleInputGameModeAndCpuStrengthChange}
-            />
+            <Home gameMode={gameMode} cpuStrength={cpuStrength} onChange={handleInputGameModeAndCpuStrengthChange} />
           }
-        ></Route>
+        />
         <Route
           path="/settings"
           element={
             <Settings
-              boardSize={[boardSizeHeight,boardSizeWidth]}
+              boardSize={[boardSizeHeight, boardSizeWidth]}
               victoryCondition={victoryCondition}
-              playerName={[playerName1,playerName2]}
+              playerName={[playerName1, playerName2]}
               timeMinControl={timeMinControl}
               timeSecControl={timeSecControl}
               onPlayerNameChange={handleInputPlayerNameChange}
               onNumberChange={handleInputNumberChange}
             />
           }
-        ></Route>
+        />
         <Route
           path="/game"
           element={
             <GameDisplayPage
-              boardSize={[boardSizeWidth,boardSizeHeight]}
+              boardSize={[boardSizeWidth, boardSizeHeight]}
               victoryCondition={victoryCondition}
-              players={[playerName1,playerName2]}
+              players={[playerName1, playerName2]}
               timeMinControl={timeMinControl}
               timeSecControl={timeSecControl}
             />
           }
-        ></Route>
+        />
       </Routes>
     </>
   );
