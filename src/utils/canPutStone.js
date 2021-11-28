@@ -6,7 +6,7 @@
  */
 
 function canPutStone(board, x) {
-  let height = board[0].length;
+  const height = board[0].length;
   return board[x][height - 1] === null;
 }
 
