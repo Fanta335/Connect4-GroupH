@@ -17,7 +17,7 @@ const style = {
 };
 
 const BasicModal = (props) => {
-  const [playerName1,playerName2] = props.players;
+  const [playerName1, playerName2] = props.players;
 
   return (
     <div>

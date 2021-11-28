@@ -63,19 +63,12 @@ const Container = (props) => {
 
   return (
     <>
-      <Header
-        darkMode={props.darkMode}
-        setDarkMode={props.setDarkMode}
-      />
+      <Header darkMode={props.darkMode} setDarkMode={props.setDarkMode} />
       <Routes>
         <Route
           path="/"
           element={
-            <Home
-              gameMode={gameMode}
-              cpuStrength={cpuStrength}
-              onChange={handleInputGameModeAndCpuStrengthChange}
-            />
+            <Home gameMode={gameMode} cpuStrength={cpuStrength} onChange={handleInputGameModeAndCpuStrengthChange} />
           }
         ></Route>
         <Route
@@ -96,11 +89,13 @@ const Container = (props) => {
           path="/game"
           element={
             <GameDisplayPage
-              boardSize={[boardSizeWidth,boardSizeHeight]}
+              boardSize={[boardSizeWidth, boardSizeHeight]}
               victoryCondition={victoryCondition}
-              players={[playerName1,playerName2]}
+              players={[playerName1, playerName2]}
               timeMinControl={timeMinControl}
               timeSecControl={timeSecControl}
+              gameMode={gameMode}
+              cpuStrength={cpuStrength}
             />
           }
         ></Route>

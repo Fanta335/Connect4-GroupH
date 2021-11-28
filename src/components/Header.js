@@ -1,37 +1,27 @@
 import React, { useState } from "react";
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  useMediaQuery,
-  Button,
-  IconButton,
-  MenuItem,
-  Menu,
-  Switch
-} from "@mui/material";
+import { AppBar, Toolbar, Typography, useMediaQuery, Button, IconButton, MenuItem, Menu, Switch } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { useTheme,createTheme } from "@mui/material/styles";
+import { useTheme, createTheme } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 const theme = createTheme();
 const useStyles = makeStyles({
-  headerRoot : {
-    flexGrow: 1
+  headerRoot: {
+    flexGrow: 1,
   },
-  menuButton : {
-    marginRight: theme.spacing(2)
+  menuButton: {
+    marginRight: theme.spacing(2),
   },
   headerTitle: {
-    [theme.breakpoints.down("sm")]:{
-      flexGrow: 1
-    }
+    [theme.breakpoints.down("sm")]: {
+      flexGrow: 1,
+    },
   },
   headerOptions: {
     display: "flex",
     flex: 1,
-    justifyContent: "flex-end"
-  }
+    justifyContent: "flex-end",
+  },
 });
 
 // TODO: Yuki Ueno: ゲーム画面からホーム画面、設定画面に遷移する際にタイマーを停止する処理を追加する（参考：https://weblike-curtaincall.ssl-lolipop.jp/blog/?p=2056）
@@ -44,40 +34,37 @@ const Header = (props) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const handleMenu = event => {
+  const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMenuClick = pageURL => {
+  const handleMenuClick = (pageURL) => {
     navigate(pageURL);
     setAnchorEl(null);
-  }
-  const handleButtonClick = pageURL => {
+  };
+  const handleButtonClick = (pageURL) => {
     navigate(pageURL);
-  }
+  };
 
   const menuItems = [
     {
       menuTitle: "Home",
-      pageURL: "/"
+      pageURL: "/",
     },
     {
       menuTitle: "Settings",
-      pageURL: "/settings"
+      pageURL: "/settings",
     },
   ];
 
-
-// TODO: Yuki Ueno: ゲーム画面からホーム画面、設定画面に遷移する際にタイマーを停止する処理を追加する（参考：https://weblike-curtaincall.ssl-lolipop.jp/blog/?p=2056）
+  // TODO: Yuki Ueno: ゲーム画面からホーム画面、設定画面に遷移する際にタイマーを停止する処理を追加する（参考：https://weblike-curtaincall.ssl-lolipop.jp/blog/?p=2056）
 
   return (
     <div className={classes.headerRoot}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6">
-            Connect4
-          </Typography>
-          <Switch checked={props.darkMode} onChange={() => props.setDarkMode(!props.darkMode)}/>
+          <Typography variant="h6">Connect4</Typography>
+          <Switch checked={props.darkMode} onChange={() => props.setDarkMode(!props.darkMode)} />
           <>
             {isMobile ? (
               <>
@@ -95,18 +82,18 @@ const Header = (props) => {
                   anchorEl={anchorEl}
                   anchorOrigin={{
                     vertical: "top",
-                    horizontal: "right"
+                    horizontal: "right",
                   }}
                   keepMounted
                   transformOrigin={{
                     vertical: "top",
-                    horizontal: "right"
+                    horizontal: "right",
                   }}
                   open={open}
                   onClose={() => setAnchorEl(null)}
                 >
-                  {menuItems.map((menuItem,index) => {
-                    const {menuTitle, pageURL} = menuItem;
+                  {menuItems.map((menuItem, index) => {
+                    const { menuTitle, pageURL } = menuItem;
                     return (
                       <MenuItem key={index} onClick={() => handleMenuClick(pageURL)}>
                         {menuTitle}
@@ -117,15 +104,15 @@ const Header = (props) => {
               </>
             ) : (
               <div className={classes.headerOptions}>
-                {menuItems.map((menuItem,index) => {
-                  const {menuTitle, pageURL} = menuItem;
+                {menuItems.map((menuItem, index) => {
+                  const { menuTitle, pageURL } = menuItem;
                   return (
                     <Button
                       key={index}
                       variant="contained"
                       color="success"
                       onClick={() => handleButtonClick(pageURL)}
-                      style={{marginLeft: "20px"}}
+                      style={{ marginLeft: "20px" }}
                     >
                       {menuTitle}
                     </Button>
@@ -138,6 +125,5 @@ const Header = (props) => {
       </AppBar>
     </div>
   );
-
-}
+};
 export default Header;
