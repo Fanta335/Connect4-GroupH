@@ -66,6 +66,7 @@ const Container = (props) => {
       <Header
         darkMode={props.darkMode}
         setDarkMode={props.setDarkMode}
+        gameMode={gameMode}
       />
       <Routes>
         <Route
