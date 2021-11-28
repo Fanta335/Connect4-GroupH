@@ -1,26 +1,53 @@
 {
-    "root": true,
-    "env": {
-      "browser": true,
-      "es6": true,
-      "node": true
-    },
-    "extends": [
-      "eslint:recommended", 
-      "plugin:react/recommended",
-      "plugin:react-hooks/recommended",
-      "prettier"
-    ],
-    "rules": {
-      "react/prop-types": "off"
-    },
-    "parserOptions": {
-      "sourceType": "module",
-      "ecmaVersion": 2018
-    },
-    "settings": {
-      "react": {
-        "version": "detect"
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    // "eslint:recommended",
+    "plugin:import/recommended",
+    // "plugin:react/recommended",
+    // "plugin:react-hooks/recommended",
+    "prettier"
+  ],
+  "plugins": [
+    "unused-imports"
+  ],
+  "rules": {
+    "react/react-in-jsx-scope": "off", // JSX 用の React インポートエラー抑制
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }], // 手動で追加: allow jsx syntax in js files (for next.js project), should add ".ts" if typescript project
+    "no-plusplus": [2, { "allowForLoopAfterthoughts": true }],
+    // "react/prop-types": "off",
+    "no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "error",
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal", ["parent", "sibling"], "object", "type", "index"],
+        "newlines-between": "always",
+        "pathGroupsExcludedImportTypes": ["react"],
+        "alphabetize": { "order": "asc", "caseInsensitive": true },
+        "pathGroups": [
+          { "pattern": "react**", "group": "builtin", "position": "before" },
+          { "pattern": "@mui/**", "group": "external", "position": "before"},
+          { "pattern": "../components/**", "group": "internal", "position": "before" },
+          { "pattern": "../pages/**", "group": "internal", "position": "before" },
+          { "pattern": "../utils/**", "group": "internal", "position": "before" },
+          { "pattern": "./**.css", "group": "index", "position": "before" }
+        ]
       }
+    ]
+  },
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
     }
   }
+}
