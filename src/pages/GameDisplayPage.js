@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 import "./GameDisplayPage.css";
-import {
-  Button,
-  Grid,
-  List,
-  Card,
-  Paper,
-  Typography,
-  createTheme
-} from "@mui/material";
+import { Button, Grid, List, Card, Paper, Typography, createTheme } from "@mui/material";
 
 import Modal from "../components/Modal";
 // import Typography from "@mui/material/Typography";
@@ -21,11 +13,12 @@ import calculateWinner from "../utils/calculateWinner";
 import { makeStyles } from "@mui/styles";
 import displayTimer from "../utils/displayTimer";
 import useTimer from "../utils/useTimer";
+import Cpu from "../utils/cpu";
 
 const theme = createTheme();
 const useStyles = makeStyles({
   root: {
-    backgroundColor: "rgba(0,0,0,0.7)"
+    backgroundColor: "rgba(0,0,0,0.7)",
   },
   history: {
     margin: "40px",
@@ -33,11 +26,11 @@ const useStyles = makeStyles({
   },
   historyCard: {
     textAlign: "center",
-    margin: theme.spacing(2)
+    margin: theme.spacing(2),
   },
   infoCard: {
-    padding: theme.spacing(2)
-  }
+    padding: theme.spacing(2),
+  },
 });
 
 const InitButton = (props) => {
@@ -49,9 +42,8 @@ const InitButton = (props) => {
 };
 
 const GameDisplayPage = (props) => {
-  const initBoard = createNewBoard(props.boardSize[0], props.boardSize[1]);
+  const initBoard = createNewBoard(props.boardSize[0], props.boardSize[1], props.gameMode);
   const [isPlayer1Next, setIsPlayer1Next] = useState(true);
-
   const timeControl = props.timeMinControl * 60 + props.timeSecControl;
   const [count1, startTimer1, stopTimer1, resetTimer1, setTimer1] = useTimer(timeControl);
   const [count2, startTimer2, stopTimer2, resetTimer2, setTimer2] = useTimer(timeControl);
@@ -171,6 +163,16 @@ const GameDisplayPage = (props) => {
     }
   };
 
+  /**
+   * CPUが選択した座標に石を置く
+   * @param {*} board - 盤面を表す二次元配列
+   * @param {*} x - 石を置く座標x
+   * @param {*} y - 石を置く座標y
+   */
+  const putStoneByCpu = (board, x, y) => {
+    board[x][y] = "Player2";
+  };
+
   const jumpTo = (step) => {
     setStepNumber(step);
     setIsPlayer1Next(step % 2 === 0);
@@ -193,56 +195,149 @@ const GameDisplayPage = (props) => {
           style={{
             width: "100%",
           }}
-        >{desc}</Button>
+        >
+          {desc}
+        </Button>
       </Card>
     );
   });
 
   const currentBoard = history[stepNumber].board;
 
-  const handleClick = (event) => {
-    if (gameWinner !== "") return;
-
-    const renewedHistory = copyHistory(history);
-    const currentBoard = renewedHistory[stepNumber].board;
-    const nextBoard = copyBoard(currentBoard);
-    const copiedCount1 = count1;
-    const copiedCount2 = count2;
-    const dataset = event.currentTarget.dataset;
-    const x = parseInt(dataset.x);
-
-    if (canPutStone(nextBoard, x)) {
-      const y = getLowestEmptyYIndex(nextBoard, x);
-      putStone(nextBoard, x, y);
-      setHistory(
-        renewedHistory.concat([
-          {
-            board: nextBoard,
-            count1: copiedCount1,
-            count2: copiedCount2,
-          },
-        ])
-      );
-      setStepNumber(stepNumber + 1);
-
-      let winner = calculateWinner(nextBoard, props.victoryCondition, x, y);
-
-      if (count1 <= 0 && count2 > 0) {
-        winner = "Player2";
-      } else if (count2 <= 0 && count1 > 0) {
-        winner = "Player1";
+  /**
+   * cpuが石を打った後、勝利判定を行い、勝者を表す文字列を返す。
+   * @param {*} board
+   * @param {*} count1
+   * @param {*} victoryCondition
+   * @returns {string} 勝者を表す文字列
+   */
+  const cpuAction = (board, count1, victoryCondition) => {
+    const cpu = new Cpu(board, victoryCondition, "CPU", "Player1");
+    let cpuX = 0;
+    let cpuY = 0;
+    const condition = true;
+    // 難易度がeasyの時、石のx座標がランダムに選択されるので、石が置けるまで探索する
+    while (condition) {
+      cpuX = cpu.cpuThink(props.cpuStrength);
+      cpuY = getLowestEmptyYIndex(board, cpuX);
+      if (cpuY !== false) {
+        putStoneByCpu(board, cpuX, cpuY);
+        break;
       }
-      if (winner != null) {
-        setGameWinner(winner);
-        handleModalOpen();
-        stopTimer1();
-        stopTimer2();
-      } else if (winner == null) {
-        // player1IsNextの情報が即時反映されないため、一時的な変数を作成
-        // 関数内・条件式内だとuseEffectが使えなかったため、この方法で対処した
-        const tempIsPlayer1Next = !isPlayer1Next;
-        controlTimer(tempIsPlayer1Next);
-        setIsPlayer1Next(!isPlayer1Next);
+    }
+    let winner = calculateWinner(board, victoryCondition, cpuX, cpuY);
+    if (count1 <= 0) {
+      winner = "Player2";
+    }
+    return winner;
+  };
+
+  const handleClick = (event) => {
+    if (props.gameMode === "player") {
+      if (gameWinner !== "") return;
+
+      const renewedHistory = copyHistory(history);
+      const currentBoard = renewedHistory[stepNumber].board;
+      const nextBoard = copyBoard(currentBoard);
+      const copiedCount1 = count1;
+      const copiedCount2 = count2;
+      const dataset = event.currentTarget.dataset;
+      const x = parseInt(dataset.x);
+
+      if (canPutStone(nextBoard, x)) {
+        const y = getLowestEmptyYIndex(nextBoard, x);
+        putStone(nextBoard, x, y);
+        setHistory(
+          renewedHistory.concat([
+            {
+              board: nextBoard,
+              count1: copiedCount1,
+              count2: copiedCount2,
+            },
+          ])
+        );
+        setStepNumber(stepNumber + 1);
+
+        let winner = calculateWinner(nextBoard, props.victoryCondition, x, y);
+        if (count1 <= 0 && count2 > 0) {
+          winner = "Player2";
+        } else if (count2 <= 0 && count1 > 0) {
+          winner = "Player1";
+        }
+        if (winner != null) {
+          setGameWinner(winner);
+          console.log(gameWinner);
+          handleModalOpen();
+          stopTimer1();
+          stopTimer2();
+        } else if (winner == null) {
+          // player1IsNextの情報が即時反映されないため、一時的な変数を作成
+          // 関数内・条件式内だとuseEffectが使えなかったため、この方法で対処した
+          const tempPlayer1IsNext = !isPlayer1Next;
+          controlTimer(tempPlayer1IsNext);
+          setIsPlayer1Next(!isPlayer1Next);
+        }
+      }
+
+      // cpu対戦時のクリックイベント
+    } else if (props.gameMode === "cpu") {
+      if (gameWinner !== "") return;
+
+      const renewedHistory = copyHistory(history);
+      const currentBoard = renewedHistory[stepNumber].board;
+      const nextBoard = copyBoard(currentBoard);
+      const copiedCount1 = count1;
+      const dataset = event.currentTarget.dataset;
+      const x = parseInt(dataset.x);
+
+      if (canPutStone(nextBoard, x)) {
+        const y = getLowestEmptyYIndex(nextBoard, x);
+        putStone(nextBoard, x, y);
+        setStepNumber(stepNumber + 1);
+
+        let winner = calculateWinner(nextBoard, props.victoryCondition, x, y);
+        if (count1 <= 0) {
+          winner = "Player2";
+        }
+        if (winner !== null) {
+          setHistory(
+            renewedHistory.concat([
+              {
+                board: nextBoard,
+                count1: copiedCount1,
+              },
+            ])
+          );
+          setGameWinner(winner);
+          console.log(gameWinner);
+          handleModalOpen();
+          stopTimer1();
+        } else if (winner == null) {
+          let winner = cpuAction(nextBoard, copiedCount1, props.victoryCondition);
+          if (winner != null) {
+            setHistory(
+              renewedHistory.concat([
+                {
+                  board: nextBoard,
+                  count1: copiedCount1,
+                },
+              ])
+            );
+            setGameWinner(winner);
+            console.log(gameWinner);
+            handleModalOpen();
+            stopTimer1();
+          } else if (winner == null) {
+            setHistory(
+              renewedHistory.concat([
+                {
+                  board: nextBoard,
+                  count1: copiedCount1,
+                },
+              ])
+            );
+          }
+        }
       }
     }
   };
@@ -253,14 +348,10 @@ const GameDisplayPage = (props) => {
       className={classes.root}
     >
       <Grid
-        sx={{ display: "flex", justifyContent: "center", flexDirection: "row", alignItems: "flex-end", mb: 2, mt:2 }}
+        sx={{ display: "flex", justifyContent: "center", flexDirection: "row", alignItems: "flex-end", mb: 2, mt: 2 }}
       >
         <Card className={classes.infoCard}>
-          <Grid
-            container
-            justifyContent="center"
-            alignItems="flex-end"
-          >
+          <Grid container justifyContent="center" alignItems="flex-end">
             <Grid>
               {/* 開発する際、対戦形式を確認しやすくするため便宜的に書き込んでいます。 */}
               <Typography variant="h3" component="h3">
@@ -271,18 +362,14 @@ const GameDisplayPage = (props) => {
               <Typography variant="h5" component="h5" sx={{ textAlign: "center" }}>
                 Reset
               </Typography>
-              <InitButton onClick={initGame} item/>
+              <InitButton onClick={initGame} item />
             </Grid>
             <Grid flexDirection="column">
               <Typography variant="h5" component="h5" sx={{ textAlign: "right" }}>
                 Next Player
               </Typography>
-              <DisplayPlayerTurn
-                playerTurn={isPlayer1Next}
-                players={props.players}
-                item
-               />
-                {displayTimer(count1)}/{displayTimer(count2)}
+              <DisplayPlayerTurn playerTurn={isPlayer1Next} players={props.players} gameMode={props.gameMode} item />
+              {displayTimer(count1)}/{displayTimer(count2)}
             </Grid>
           </Grid>
         </Card>
@@ -290,10 +377,7 @@ const GameDisplayPage = (props) => {
       <Board board={currentBoard} onClick={canStartGame ? handleClick : null} />
 
       {/* それぞれの手番の情報を表示する */}
-      <Grid
-        justifyContent="center"
-        alignItems="center"
-        style={{width: "50%"}}>
+      <Grid justifyContent="center" alignItems="center" style={{ width: "50%" }}>
         <Paper className={classes.history}>
           <Typography variant="h4">History</Typography>
           <List>{moves}</List>

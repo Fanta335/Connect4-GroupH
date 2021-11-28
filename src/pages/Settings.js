@@ -1,13 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {
-  Typography,
-  Grid,
-  TextField,
-  createTheme,
-  Paper,
-  InputAdornment,
-} from "@mui/material"
+import { Typography, Grid, TextField, createTheme, Paper, InputAdornment } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Form from "../components/Form";
 import TransitionButton from "../components/TransitionButton";
@@ -20,19 +13,19 @@ const useStyles = makeStyles({
     margin: "0 auto",
     height: "calc(100vh - 64px)",
   },
-  inner:{
+  inner: {
     backgroundColor: "white",
     padding: theme.spacing(3),
-    width: "50%"
+    width: "50%",
   },
   body: {
     backgroundColor: "white",
     flexBasis: "33.3333333% !important",
-    padding: theme.spacing(3)
+    padding: theme.spacing(3),
   },
-  formBlock : {
-    marginBottom: "20px"
-  }
+  formBlock: {
+    marginBottom: "20px",
+  },
 });
 const Settings = (props) => {
   const victoryConditionMax =
@@ -41,19 +34,19 @@ const Settings = (props) => {
   const classes = useStyles();
   const formItems = [
     {
-      players:[
+      players: [
         {
           label: "Player1",
-          name: "playerName1"
+          name: "playerName1",
         },
         {
           label: "Player2",
-          name: "playerName2"
-        }
+          name: "playerName2",
+        },
       ],
     },
     {
-      BoardSize : [
+      BoardSize: [
         {
           label: "Height",
           name: "borderSizeHeight",
@@ -69,52 +62,33 @@ const Settings = (props) => {
             max: 100,
             min: 7,
           },
-        }
+        },
       ],
     },
   ];
   const buttons = [
     {
-      name: "Back"
+      name: "Back",
     },
     {
-      name: "Confirm"
-    }
-  ]
+      name: "Confirm",
+    },
+  ];
 
   return (
-    <Grid container alignItems="center" justifyContent="center"
-      className={classes.root}
-    >
-      <Paper
-        className={classes.inner}
-      >
+    <Grid container alignItems="center" justifyContent="center" className={classes.root}>
+      <Paper className={classes.inner}>
         <Typography variant="h4" style={{ textAlign: "center", margin: "30px 0" }}>
           Settings
         </Typography>
-        <Grid
-          container
-          item
-          alignItems="center"
-          justifyContent="center"
-        >
+        <Grid container item alignItems="center" justifyContent="center">
           <Form
             label="Player Name"
             input={
-              <Grid
-                container
-                alignItems="center"
-                justifyContent="center"
-                spacing={3}
-                className={classes.formBlock}
-              >
-                {formItems[0].players.map((player,index) => {
+              <Grid container alignItems="center" justifyContent="center" spacing={3} className={classes.formBlock}>
+                {formItems[0].players.map((player, index) => {
                   return (
-                    <Grid
-                      item
-                      sm={6}
-                      key={index}
-                    >
+                    <Grid item sm={6} key={index}>
                       <TextField
                         label={player.label}
                         variant="outlined"
@@ -135,14 +109,8 @@ const Settings = (props) => {
           <Form
             label="Border Size"
             input={
-              <Grid
-                container
-                alignItems="center"
-                justifyContent="center"
-                spacing={3}
-                className={classes.formBlock}
-              >
-                {formItems[1].BoardSize.map((formItem,index) => {
+              <Grid container alignItems="center" justifyContent="center" spacing={3} className={classes.formBlock}>
+                {formItems[1].BoardSize.map((formItem, index) => {
                   return (
                     <Grid item sm={6} key={index}>
                       <TextField
@@ -166,25 +134,12 @@ const Settings = (props) => {
             }
           />
         </Grid>
-        <Grid
-          container
-          item
-          style={{marginBottom: "30px"}}
-          justifyContent="flex-start"
-        >
+        <Grid container item style={{ marginBottom: "30px" }} justifyContent="flex-start">
           <Form
             label="Victory Condition"
             input={
-              <Grid
-                container
-                alignItems="center"
-                justifyContent="center"
-                spacing={3}
-                className={classes.formBlock}
-              >
-                <Grid
-                  item sm={6}
-                >
+              <Grid container alignItems="center" justifyContent="center" spacing={3} className={classes.formBlock}>
+                <Grid item sm={6}>
                   <TextField
                     variant="outlined"
                     type="number"
@@ -291,15 +246,9 @@ const Settings = (props) => {
           />
         </Grid>
 
-        <Grid
-          container
-          item
-          alignItems="center"
-          justifyContent="center"
-          spacing={3}
-        >
-          {buttons.map((button,index) => {
-            return(
+        <Grid container item alignItems="center" justifyContent="center" spacing={3}>
+          {buttons.map((button, index) => {
+            return (
               <Grid item sm={6} key={index}>
                 <Link to="/" style={{ textDecoration: "none" }}>
                   <TransitionButton name={button.name} />
