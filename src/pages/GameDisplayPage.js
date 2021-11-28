@@ -258,13 +258,6 @@ const GameDisplayPage = (props) => {
       const copiedCount2 = count2;
       const dataset = event.currentTarget.dataset;
       const x = parseInt(dataset.x);
-      const renewedHistory = copyHistory(history);
-      const currentBoard = renewedHistory[stepNumber].board;
-      const nextBoard = copyBoard(currentBoard);
-      const copiedCount1 = count1;
-      const copiedCount2 = count2;
-      const dataset = event.currentTarget.dataset;
-      const x = parseInt(dataset.x);
 
       if (canPutStone(nextBoard, x)) {
         const y = getLowestEmptyYIndex(nextBoard, x);
