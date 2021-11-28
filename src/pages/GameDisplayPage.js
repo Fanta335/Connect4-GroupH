@@ -1,18 +1,29 @@
 import React, { useState } from "react";
 import "./GameDisplayPage.css";
-import { Button, Grid, List, Card, Paper, Typography, createTheme } from "@mui/material";
+
+import {
+  Button,
+  Grid,
+  List,
+  Card,
+  Paper,
+  Typography,
+  createTheme,
+} from "@mui/material";
 
 import Modal from "../components/Modal";
-// import Typography from "@mui/material/Typography";
 import Board from "./../components/board/Board.js";
 import DisplayPlayerTurn from "./../components/board/DisplayPlayerTurn.js";
 import createNewBoard from "../utils/createNewBoard";
 import canPutStone from "../utils/canPutStone";
 import getLowestEmptyYIndex from "../utils/getLowestEmptyYIndex";
 import calculateWinner from "../utils/calculateWinner";
-import { makeStyles } from "@mui/styles";
+
 import displayTimer from "../utils/displayTimer";
 import useTimer from "../utils/useTimer";
+
+import { makeStyles } from "@mui/styles";
+// import setSnackbarOpen from "../components/Snackbar";
 import Cpu from "../utils/cpu";
 
 const theme = createTheme();
@@ -41,12 +52,16 @@ const InitButton = (props) => {
   );
 };
 
+
 const GameDisplayPage = (props) => {
+
   const initBoard = createNewBoard(props.boardSize[0], props.boardSize[1], props.gameMode);
+
   const [isPlayer1Next, setIsPlayer1Next] = useState(true);
   const timeControl = props.timeMinControl * 60 + props.timeSecControl;
   const [count1, startTimer1, stopTimer1, resetTimer1, setTimer1] = useTimer(timeControl);
   const [count2, startTimer2, stopTimer2, resetTimer2, setTimer2] = useTimer(timeControl);
+
   const [gameWinner, setGameWinner] = useState("");
   const [history, setHistory] = useState([
     {
@@ -57,9 +72,9 @@ const GameDisplayPage = (props) => {
   ]);
   const [stepNumber, setStepNumber] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
+
   const classes = useStyles();
 
-  // ゲームが終了した時に起動する↓
   const [canStartGame, setCanStartGame] = useState(false);
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
@@ -182,8 +197,8 @@ const GameDisplayPage = (props) => {
     setTimer2(history[step].count2);
     // player1IsNextの情報が即時反映されないため、一時的な変数を作成
     // 関数内だとuseEffectが使えなかったため、この方法で対処した
-    const tempPlayer1IsNext = step % 2 === 0;
-    controlTimer(tempPlayer1IsNext);
+    const tempIsPlayer1Next = step % 2 === 0;
+    controlTimer(tempIsPlayer1Next);
   };
 
   const moves = history.map((_, index) => {
@@ -368,8 +383,14 @@ const GameDisplayPage = (props) => {
               <Typography variant="h5" component="h5" sx={{ textAlign: "right" }}>
                 Next Player
               </Typography>
-              <DisplayPlayerTurn playerTurn={isPlayer1Next} players={props.players} gameMode={props.gameMode} item />
-              {displayTimer(count1)}/{displayTimer(count2)}
+              <DisplayPlayerTurn
+                playerTurn={isPlayer1Next}
+                players={props.players}
+                item
+              />
+              <Grid>
+                {displayTimer(count1)}/{displayTimer(count2)}
+              </Grid>
             </Grid>
           </Grid>
         </Card>

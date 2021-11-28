@@ -5,7 +5,6 @@ import { makeStyles } from "@mui/styles";
 import Form from "../components/Form";
 import TransitionButton from "../components/TransitionButton";
 import "./settings.css";
-
 const theme = createTheme();
 const useStyles = makeStyles({
   root: {
@@ -28,8 +27,7 @@ const useStyles = makeStyles({
   },
 });
 const Settings = (props) => {
-  const victoryConditionMax =
-    props.borderSizeWidth <= props.borderSizeHeight ? props.borderSizeWidth : props.borderSizeHeight;
+  const victoryConditionMax = props.boardSize[1] <= props.boardSize[0] ? props.boardSize[1] : props.boardSize[0];
 
   const classes = useStyles();
   const formItems = [
@@ -49,7 +47,7 @@ const Settings = (props) => {
       BoardSize: [
         {
           label: "Height",
-          name: "borderSizeHeight",
+          name: "boardSizeHeight",
           inputProps: {
             max: 100,
             min: 6,
@@ -57,7 +55,7 @@ const Settings = (props) => {
         },
         {
           label: "Width",
-          name: "borderSizeWidth",
+          name: "boardSizeWidth",
           inputProps: {
             max: 100,
             min: 7,
@@ -71,8 +69,8 @@ const Settings = (props) => {
       name: "Back",
     },
     {
-      name: "Confirm",
-    },
+      name: "Confirm"
+    }
   ];
 
   return (
@@ -93,7 +91,7 @@ const Settings = (props) => {
                         label={player.label}
                         variant="outlined"
                         name={player.name}
-                        value={props.playerName[index]}
+                        value={props.players[index]}
                         onChange={props.onPlayerNameChange}
                         InputLabelProps={{
                           shrink: true,
@@ -134,42 +132,18 @@ const Settings = (props) => {
             }
           />
         </Grid>
-        <Grid container item style={{ marginBottom: "30px" }} justifyContent="flex-start">
+        <Grid
+          container
+          item
+          alignItems="center"
+          justifyContent="center"
+        >
           <Form
             label="Victory Condition"
             input={
-              <Grid container alignItems="center" justifyContent="center" spacing={3} className={classes.formBlock}>
-                <Grid item sm={6}>
-                  <TextField
-                    variant="outlined"
-                    type="number"
-                    onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
-                    name="victoryCondition"
-                    value={props.victoryCondition}
-                    onChange={props.onNumberChange}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    style={{ textAlign: "right", width: "50%" }}
-                    InputProps={{
-                      inputProps: {
-                        max: 100,
-                        min: 4,
-                      },
-                    }}
-                  />
-                </Grid>
-                <Grid item sm={6}></Grid>
-              </Grid>
-            }
-          />
-        </Grid>
-
-        <Grid container item alignItems="center" justifyContent="center">
-          <Form
-            label="Victory Condition"
-            input={
-              <>
+              <Grid
+                className={classes.formBlock}
+              >
                 <TextField
                   variant="outlined"
                   type="number"
@@ -180,7 +154,7 @@ const Settings = (props) => {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  style={{ textAlign: "right", width: "45%" }}
+                  style={{ textAlign: "right", width: "25%" }}
                   InputProps={{
                     inputProps: {
                       max: victoryConditionMax,
@@ -188,15 +162,26 @@ const Settings = (props) => {
                     },
                   }}
                 />
-              </>
+              </Grid>
             }
           />
         </Grid>
-        <Grid container item alignItems="center" justifyContent="center">
+        <Grid
+          container
+          item
+          alignItems="center"
+          justifyContent="center"
+        >
           <Form
             label="Time Control"
             input={
-              <Grid container alignItems="center" justifyContent="center">
+              <Grid
+                container
+                alignItems="center"
+                justifyContent="center"
+                spacing={3}
+                className={classes.formBlock}
+              >
                 <Grid item xs={6}>
                   <TextField
                     label="Minute"
@@ -209,7 +194,7 @@ const Settings = (props) => {
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    style={{ textAlign: "right", width: "90%" }}
+                    style={{ textAlign: "right", width: "100%" }}
                     InputProps={{
                       inputProps: {
                         max: 60,
@@ -231,7 +216,7 @@ const Settings = (props) => {
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    style={{ textAlign: "right", width: "90%" }}
+                    style={{ textAlign: "right", width: "100%" }}
                     InputProps={{
                       inputProps: {
                         max: 60,
@@ -245,10 +230,15 @@ const Settings = (props) => {
             }
           />
         </Grid>
-
-        <Grid container item alignItems="center" justifyContent="center" spacing={3}>
-          {buttons.map((button, index) => {
-            return (
+        <Grid
+          container
+          item
+          alignItems="center"
+          justifyContent="center"
+          spacing={3}
+        >
+          {buttons.map((button,index) => {
+            return(
               <Grid item sm={6} key={index}>
                 <Link to="/" style={{ textDecoration: "none" }}>
                   <TransitionButton name={button.name} />
