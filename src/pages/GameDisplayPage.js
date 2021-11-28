@@ -7,9 +7,8 @@ import {
   Card,
   Paper,
   Typography,
-  createTheme
+  createTheme,
 } from "@mui/material";
-
 import Modal from "../components/Modal";
 import Board from "./../components/board/Board.js";
 import DisplayPlayerTurn from "./../components/board/DisplayPlayerTurn.js";
@@ -19,8 +18,8 @@ import getLowestEmptyYIndex from "../utils/getLowestEmptyYIndex";
 import calculateWinner from "../utils/calculateWinner";
 import displayTimer from "../utils/displayTimer";
 import useTimer from "../utils/useTimer";
-
 import { makeStyles } from "@mui/styles";
+import CustomizedSnackbar from "../components/Snackbar";
 
 const theme = createTheme();
 const useStyles = makeStyles({
@@ -47,6 +46,7 @@ const InitButton = (props) => {
     </Button>
   );
 };
+
 
 const GameDisplayPage = (props) => {
 
@@ -81,6 +81,8 @@ const GameDisplayPage = (props) => {
       startTimer2();
     }
   };
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   /**
    * ゲーム状態の初期化
@@ -201,7 +203,10 @@ const GameDisplayPage = (props) => {
   const currentBoard = history[stepNumber].board;
 
   const handleClick = (event) => {
-    if (gameWinner !== "") return;
+    if (gameWinner !== ""){
+      setSnackbarOpen(true);
+      return <CustomizedSnackbar snackbarOpen={snackbarOpen}/>;
+    }
 
     const renewedHistory = copyHistory(history);
     const currentBoard = renewedHistory[stepNumber].board;
@@ -262,12 +267,6 @@ const GameDisplayPage = (props) => {
             justifyContent="center"
             alignItems="flex-end"
           >
-            <Grid>
-              {/* 開発する際、対戦形式を確認しやすくするため便宜的に書き込んでいます。 */}
-              <Typography variant="h3" component="h3">
-                {props.gameMode == "cpu" ? "vsCPU" : ""}
-              </Typography>
-            </Grid>
             <Grid flexDirection="column">
               <Typography variant="h5" component="h5" sx={{ textAlign: "center" }}>
                 Reset

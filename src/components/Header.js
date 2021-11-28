@@ -7,7 +7,8 @@ import {
   Button,
   IconButton,
   MenuItem,
-  Menu
+  Menu,
+  Switch
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useTheme,createTheme } from "@mui/material/styles";
@@ -34,7 +35,7 @@ const useStyles = makeStyles({
 });
 
 // TODO: Yuki Ueno: ゲーム画面からホーム画面、設定画面に遷移する際にタイマーを停止する処理を追加する（参考：https://weblike-curtaincall.ssl-lolipop.jp/blog/?p=2056）
-const Header = () => {
+const Header = (props) => {
   let navigate = useNavigate();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
