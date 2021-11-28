@@ -27,13 +27,7 @@ const useStyles = makeStyles({
   },
 });
 const Settings = (props) => {
-  //Hiroaki : 三項演算子での記法だと、なぜかプログラム上ではprops.boardSizeがundefinedで返ってくるようになっていたのでif文で書き換えました
-  let victoryConditionMax = null;
-  if(props.boardSize[1] <= props.boardSize[0]){
-    victoryConditionMax = props.boardSize[1];
-  }else{
-    victoryConditionMax = props.boardSize[0]
-  }
+  const victoryConditionMax = props.boardSize[1] <= props.boardSize[0] ? props.boardSize[1] : props.boardSize[0];
 
   const classes = useStyles();
   const formItems = [
