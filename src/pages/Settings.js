@@ -1,39 +1,37 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {
-  Typography,
-  Grid,
-  TextField,
-  createTheme,
-  Paper,
-  InputAdornment,
-} from "@mui/material"
+
+import { Typography, Grid, TextField, createTheme, Paper, InputAdornment } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+
 import Form from "../components/Form";
 import TransitionButton from "../components/TransitionButton";
+
 import "./settings.css";
 
 const theme = createTheme();
+
 const useStyles = makeStyles({
   root: {
     backgroundColor: "rgba(0,0,0,0.7)",
     margin: "0 auto",
     height: "calc(100vh - 64px)",
   },
-  inner:{
+  inner: {
     backgroundColor: "white",
     padding: theme.spacing(3),
-    width: "50%"
+    width: "50%",
   },
   body: {
     backgroundColor: "white",
     flexBasis: "33.3333333% !important",
-    padding: theme.spacing(3)
+    padding: theme.spacing(3),
   },
-  formBlock : {
-    marginBottom: "20px"
-  }
+  formBlock: {
+    marginBottom: "20px",
+  },
 });
+
 const Settings = (props) => {
   const victoryConditionMax =
     props.borderSizeWidth <= props.borderSizeHeight ? props.borderSizeWidth : props.borderSizeHeight;
@@ -41,19 +39,19 @@ const Settings = (props) => {
   const classes = useStyles();
   const formItems = [
     {
-      players:[
+      players: [
         {
           label: "Player1",
-          name: "playerName1"
+          name: "playerName1",
         },
         {
           label: "Player2",
-          name: "playerName2"
-        }
+          name: "playerName2",
+        },
       ],
     },
     {
-      BoardSize : [
+      BoardSize: [
         {
           label: "Height",
           name: "borderSizeHeight",
@@ -69,122 +67,80 @@ const Settings = (props) => {
             max: 100,
             min: 7,
           },
-        }
+        },
       ],
     },
   ];
   const buttons = [
     {
-      name: "Back"
+      name: "Back",
     },
     {
-      name: "Confirm"
-    }
-  ]
+      name: "Confirm",
+    },
+  ];
 
   return (
-    <Grid container alignItems="center" justifyContent="center"
-      className={classes.root}
-    >
-      <Paper
-        className={classes.inner}
-      >
+    <Grid container alignItems="center" justifyContent="center" className={classes.root}>
+      <Paper className={classes.inner}>
         <Typography variant="h4" style={{ textAlign: "center", margin: "30px 0" }}>
           Settings
         </Typography>
-        <Grid
-          container
-          item
-          alignItems="center"
-          justifyContent="center"
-        >
+        <Grid container item alignItems="center" justifyContent="center">
           <Form
             label="Player Name"
             input={
-              <Grid
-                container
-                alignItems="center"
-                justifyContent="center"
-                spacing={3}
-                className={classes.formBlock}
-              >
-                {formItems[0].players.map((player,index) => {
-                  return (
-                    <Grid
-                      item
-                      sm={6}
-                      key={index}
-                    >
-                      <TextField
-                        label={player.label}
-                        variant="outlined"
-                        name={player.name}
-                        value={props.playerName[index]}
-                        onChange={props.onPlayerNameChange}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        style={{ textAlign: "right", width: "100%" }}
-                      />
-                    </Grid>
-                  );
-                })}
+              <Grid container alignItems="center" justifyContent="center" spacing={3} className={classes.formBlock}>
+                {formItems[0].players.map((player, index) => (
+                  <Grid item sm={6} key={index}>
+                    <TextField
+                      label={player.label}
+                      variant="outlined"
+                      name={player.name}
+                      value={props.playerName[index]}
+                      onChange={props.onPlayerNameChange}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      style={{ textAlign: "right", width: "100%" }}
+                    />
+                  </Grid>
+                ))}
               </Grid>
             }
           />
           <Form
             label="Border Size"
             input={
-              <Grid
-                container
-                alignItems="center"
-                justifyContent="center"
-                spacing={3}
-                className={classes.formBlock}
-              >
-                {formItems[1].BoardSize.map((formItem,index) => {
-                  return (
-                    <Grid item sm={6} key={index}>
-                      <TextField
-                        label={formItem.label}
-                        variant="outlined"
-                        type="number"
-                        onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
-                        name={formItem.name}
-                        value={props.boardSize[index]}
-                        onChange={props.onNumberChange}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        style={{ textAlign: "right", width: "100%" }}
-                        InputProps={formItem.inputProps}
-                      />
-                    </Grid>
-                  );
-                })}
+              <Grid container alignItems="center" justifyContent="center" spacing={3} className={classes.formBlock}>
+                {formItems[1].BoardSize.map((formItem, index) => (
+                  <Grid item sm={6} key={index}>
+                    <TextField
+                      label={formItem.label}
+                      variant="outlined"
+                      type="number"
+                      onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+                      name={formItem.name}
+                      value={props.boardSize[index]}
+                      onChange={props.onNumberChange}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      style={{ textAlign: "right", width: "100%" }}
+                      InputProps={formItem.inputProps}
+                    />
+                  </Grid>
+                ))}
               </Grid>
             }
           />
         </Grid>
-        <Grid
-          container
-          item
-          style={{marginBottom: "30px"}}
-          justifyContent="flex-start"
-        >
+        <Grid container item style={{ marginBottom: "30px" }} justifyContent="flex-start">
           <Form
             label="Victory Condition"
             input={
-              <Grid
-                container
-                alignItems="center"
-                justifyContent="center"
-                spacing={3}
-                className={classes.formBlock}
-              >
-                <Grid
-                  item sm={6}
-                >
+              <Grid container alignItems="center" justifyContent="center" spacing={3} className={classes.formBlock}>
+                <Grid item sm={6}>
                   <TextField
                     variant="outlined"
                     type="number"
@@ -204,7 +160,7 @@ const Settings = (props) => {
                     }}
                   />
                 </Grid>
-                <Grid item sm={6}></Grid>
+                <Grid item sm={6} />
               </Grid>
             }
           />
@@ -214,26 +170,24 @@ const Settings = (props) => {
           <Form
             label="Victory Condition"
             input={
-              <>
-                <TextField
-                  variant="outlined"
-                  type="number"
-                  onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
-                  name="victoryCondition"
-                  value={props.victoryCondition}
-                  onChange={props.onNumberChange}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  style={{ textAlign: "right", width: "45%" }}
-                  InputProps={{
-                    inputProps: {
-                      max: victoryConditionMax,
-                      min: 4,
-                    },
-                  }}
-                />
-              </>
+              <TextField
+                variant="outlined"
+                type="number"
+                onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+                name="victoryCondition"
+                value={props.victoryCondition}
+                onChange={props.onNumberChange}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                style={{ textAlign: "right", width: "45%" }}
+                InputProps={{
+                  inputProps: {
+                    max: victoryConditionMax,
+                    min: 4,
+                  },
+                }}
+              />
             }
           />
         </Grid>
@@ -291,22 +245,14 @@ const Settings = (props) => {
           />
         </Grid>
 
-        <Grid
-          container
-          item
-          alignItems="center"
-          justifyContent="center"
-          spacing={3}
-        >
-          {buttons.map((button,index) => {
-            return(
-              <Grid item sm={6} key={index}>
-                <Link to="/" style={{ textDecoration: "none" }}>
-                  <TransitionButton name={button.name} />
-                </Link>
-              </Grid>
-            );
-          })}
+        <Grid container item alignItems="center" justifyContent="center" spacing={3}>
+          {buttons.map((button, index) => (
+            <Grid item sm={6} key={index}>
+              <Link to="/" style={{ textDecoration: "none" }}>
+                <TransitionButton name={button.name} />
+              </Link>
+            </Grid>
+          ))}
         </Grid>
       </Paper>
     </Grid>
