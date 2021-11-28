@@ -82,9 +82,9 @@ const Container = (props) => {
           path="/settings"
           element={
             <Settings
-              boardSize={[boardSizeHeight,boardSizeWidth]}
+              boardSize={[boardSizeWidth,boardSizeHeight]}
               victoryCondition={victoryCondition}
-              playerName={[playerName1,playerName2]}
+              players={[playerName1,playerName2]}
               timeMinControl={timeMinControl}
               timeSecControl={timeSecControl}
               onPlayerNameChange={handleInputPlayerNameChange}
