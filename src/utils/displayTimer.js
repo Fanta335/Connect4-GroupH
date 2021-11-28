@@ -1,6 +1,6 @@
 /**
  * タイマーの時間表示
- * @param {number} count
+ * @param {number} count - 時間(秒)
  * @returns タイマー表示（mm:ss）
  */
 const displayTimer = (count) => {
