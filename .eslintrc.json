@@ -18,10 +18,19 @@
     "unused-imports"
   ],
   "rules": {
-    "react/react-in-jsx-scope": "off", // JSX 用の React インポートエラー抑制
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }], // 手動で追加: allow jsx syntax in js files (for next.js project), should add ".ts" if typescript project
+    "arrow-body-style": ["error", "as-needed"],
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "no-plusplus": [2, { "allowForLoopAfterthoughts": true }],
-    // "react/prop-types": "off",
+    "no-param-reassign": "off",
+    "prefer-destructuring": "off",
+    "react/destructuring-assignment": "off",
+    "react/prop-types": "off",
+    "react/no-array-index-key": "off",
+    "react/function-component-definition": [2, {
+      "namedComponents": "arrow-function",
+      "unnamedComponents": "arrow-function"
+    }],
     "no-unused-vars": "off",
     "unused-imports/no-unused-imports": "error",
     "import/order": [
@@ -37,7 +46,7 @@
           { "pattern": "../components/**", "group": "internal", "position": "before" },
           { "pattern": "../pages/**", "group": "internal", "position": "before" },
           { "pattern": "../utils/**", "group": "internal", "position": "before" },
-          { "pattern": "./**.css", "group": "index", "position": "before" }
+          { "pattern": "*.css", "group": "index", "patternOptions": { "matchBase": true }, "position": "before" } // don't work (https://github.com/import-js/eslint-plugin-import/issues/1239)
         ]
       }
     ]
