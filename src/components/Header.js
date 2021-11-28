@@ -104,6 +104,13 @@ const Header = (props) => {
               </>
             ) : (
               <div className={classes.headerOptions}>
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={() => {props.setOpenHistory(!props.openHistory)}}
+                >
+                  {props.openHistory ? "Close" : "History"}
+                </Button>
                 {menuItems.map((menuItem, index) => {
                   const { menuTitle, pageURL } = menuItem;
                   return (

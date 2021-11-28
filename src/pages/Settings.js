@@ -111,7 +111,7 @@ const Settings = (props) => {
             }
           />
           <Form
-            label="Border Size"
+            label="Board Size"
             input={
               <Grid container alignItems="center" justifyContent="center" spacing={3} className={classes.formBlock}>
                 {formItems[1].BoardSize.map((formItem, index) => {

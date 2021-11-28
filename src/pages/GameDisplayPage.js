@@ -32,7 +32,7 @@ const useStyles = makeStyles({
     backgroundColor: "rgba(0,0,0,0.7)",
   },
   history: {
-    margin: "40px",
+    marginLeft: "40px",
     padding: theme.spacing(3),
   },
   historyCard: {
@@ -395,15 +395,27 @@ const GameDisplayPage = (props) => {
           </Grid>
         </Card>
       </Grid>
-      <Board board={currentBoard} onClick={canStartGame ? handleClick : null} />
-
-      {/* それぞれの手番の情報を表示する */}
-      <Grid justifyContent="center" alignItems="center" style={{ width: "50%" }}>
-        <Paper className={classes.history}>
-          <Typography variant="h4">History</Typography>
-          <List>{moves}</List>
-        </Paper>
+      <Grid container justifyContent="center" style={{marginBottom: "200px"}}>
+        <Grid item>
+          <Board board={currentBoard} onClick={canStartGame ? handleClick : null} />
+        </Grid>
+        <Grid item>
+          {/* それぞれの手番の情報を表示する */}
+          {props.openHistory &&
+            <Grid
+              justifyContent="center"
+              alignItems="center"
+              style={{ width: "100%" }}
+            >
+              <Paper className={classes.history}>
+                <Typography variant="h4">History</Typography>
+                <List>{moves}</List>
+              </Paper>
+            </Grid>
+          }
+        </Grid>
       </Grid>
+
       {/* 便宜的にゲームの勝者をお知らせするモーダルを貼り付けています。 */}
       <Modal
         handleClose={handleModalClose}
