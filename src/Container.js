@@ -19,6 +19,9 @@ const Container = (props) => {
   const [playerName1, setPlayerName1] = useState("Player1");
   const [playerName2, setPlayerName2] = useState("Player2");
 
+  const [openHistory, setOpenHistory] = useState(false);
+
+
   const handleInputGameModeAndCpuStrengthChange = (event) => {
     const name = event.target.name;
     if (name === "gameMode") {
@@ -63,7 +66,13 @@ const Container = (props) => {
 
   return (
     <>
-      <Header darkMode={props.darkMode} setDarkMode={props.setDarkMode} />
+      <Header
+        darkMode={props.darkMode}
+        setDarkMode={props.setDarkMode}
+        openHistory={openHistory}
+        setOpenHistory={setOpenHistory}
+        gameMode={gameMode}
+      />
       <Routes>
         <Route
           path="/"
@@ -96,6 +105,8 @@ const Container = (props) => {
               timeSecControl={timeSecControl}
               gameMode={gameMode}
               cpuStrength={cpuStrength}
+              openHistory={openHistory}
+              setOpenHistory={setOpenHistory}
             />
           }
         ></Route>

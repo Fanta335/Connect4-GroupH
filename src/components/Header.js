@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { AppBar, Toolbar, Typography, useMediaQuery, Button, IconButton, MenuItem, Menu, Switch } from "@mui/material";
+import { AppBar, Toolbar, Typography, useMediaQuery, Button, IconButton, MenuItem, Menu, Switch, Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useTheme, createTheme } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 const theme = createTheme();
 const useStyles = makeStyles({
   headerRoot: {
@@ -63,8 +63,16 @@ const Header = (props) => {
     <div className={classes.headerRoot}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6">Connect4</Typography>
+          <Link to="/" style={{textDecoration: 'none', color: "white"}}>
+            <Typography variant="h6">Connect 4</Typography>
+          </Link>
           <Switch checked={props.darkMode} onChange={() => props.setDarkMode(!props.darkMode)} />
+          <Grid>
+            {/* 開発する際、対戦形式を確認しやすくするため便宜的に書き込んでいます。 */}
+            <Typography variant="h5" component="h5">
+              {props.gameMode == "cpu" ? "vsCPU" : "vsPlayer"}
+            </Typography>
+          </Grid>
           <>
             {isMobile ? (
               <>
@@ -104,6 +112,13 @@ const Header = (props) => {
               </>
             ) : (
               <div className={classes.headerOptions}>
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={() => {props.setOpenHistory(!props.openHistory)}}
+                >
+                  {props.openHistory ? "Close" : "History"}
+                </Button>
                 {menuItems.map((menuItem, index) => {
                   const { menuTitle, pageURL } = menuItem;
                   return (
