@@ -71,6 +71,7 @@ const Container = (props) => {
         setDarkMode={props.setDarkMode}
         openHistory={openHistory}
         setOpenHistory={setOpenHistory}
+        gameMode={gameMode}
       />
       <Routes>
         <Route

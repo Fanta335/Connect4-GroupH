@@ -367,12 +367,6 @@ const GameDisplayPage = (props) => {
       >
         <Card className={classes.infoCard}>
           <Grid container justifyContent="center" alignItems="flex-end">
-            <Grid>
-              {/* 開発する際、対戦形式を確認しやすくするため便宜的に書き込んでいます。 */}
-              <Typography variant="h3" component="h3">
-                {props.gameMode == "cpu" ? "vsCPU" : ""}
-              </Typography>
-            </Grid>
             <Grid flexDirection="column">
               <Typography variant="h5" component="h5" sx={{ textAlign: "center" }}>
                 Reset
