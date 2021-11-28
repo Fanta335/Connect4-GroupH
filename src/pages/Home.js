@@ -1,10 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {Typography,Grid, Radio, RadioGroup, FormControlLabel, createTheme } from "@mui/material";
+
+import { Typography, Grid, Radio, RadioGroup, FormControlLabel, createTheme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+
 import Form from "../components/Form";
 import TransitionButton from "../components/TransitionButton";
+
 import "./Home.css";
-import { makeStyles } from "@mui/styles";
+
 const theme = createTheme();
 const useStyles = makeStyles({
   root: {
@@ -13,40 +17,24 @@ const useStyles = makeStyles({
     marginLeft: "auto",
     marginRight: "auto",
   },
-  inner:{
-    height: "calc(100vh  - 88px)"
+  inner: {
+    height: "calc(100vh  - 88px)",
   },
   body: {
     backgroundColor: "white",
     flexBasis: "33.3333333% !important",
-    padding: theme.spacing(3)
-  }
+    padding: theme.spacing(3),
+  },
 });
 const Home = (props) => {
   const gameMode = props.gameMode;
   const cpuStrength = props.cpuStrength;
   const classes = useStyles();
   return (
-    <div
-      className={classes.root}
-    >
-      <Grid
-        container
-        alignItems="center"
-        justifyContent="center"
-        flexDirection="column"
-        className={classes.inner}
-        >
-        <Grid
-          container
-          item
-          sm={6}
-          spacing={3}
-          justifyContent="center"
-          className={classes.body}>
-          <Typography variant="h3">
-            Connect4!
-          </Typography>
+    <div className={classes.root}>
+      <Grid container alignItems="center" justifyContent="center" flexDirection="column" className={classes.inner}>
+        <Grid container item sm={6} spacing={3} justifyContent="center" className={classes.body}>
+          <Typography variant="h3">Connect4!</Typography>
           <Grid container item alignItems="center" justifyContent="center">
             <Grid item sm={6}>
               <Form
