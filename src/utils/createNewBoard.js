@@ -8,7 +8,7 @@
 import isPlayerFirst from "./isPlayerFirst";
 
 function createNewBoard(x, y, gameMode) {
-  let board = new Array(x);
+  const board = new Array(x);
   for (let i = 0; i < x; i++) {
     board[i] = new Array(y).fill(null);
   }
