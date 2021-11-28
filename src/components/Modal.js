@@ -1,9 +1,10 @@
 import React from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
 
-//便宜的なスタイルです。
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
+
+// 便宜的なスタイルです。
 const style = {
   position: "absolute",
   top: "50%",
@@ -17,7 +18,7 @@ const style = {
 };
 
 const BasicModal = (props) => {
-  const [playerName1,playerName2] = props.players;
+  const [playerName1, playerName2] = props.players;
 
   return (
     <div>
