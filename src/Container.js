@@ -94,6 +94,8 @@ const Container = (props) => {
               players={[playerName1, playerName2]}
               timeMinControl={timeMinControl}
               timeSecControl={timeSecControl}
+              gameMode={gameMode}
+              cpuStrength={cpuStrength}
             />
           }
         />

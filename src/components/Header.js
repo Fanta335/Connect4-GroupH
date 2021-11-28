@@ -25,6 +25,7 @@ const useStyles = makeStyles({
     justifyContent: "flex-end",
   },
 });
+
 const Header = (props) => {
   const navigate = useNavigate();
   const classes = useStyles();
