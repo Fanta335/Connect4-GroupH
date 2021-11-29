@@ -267,7 +267,7 @@ const GameDisplayPage = (props) => {
           }
           setIsPlayer1Next(!isPlayer1Next);
         }
-      }, 2000);
+      }, 3000);
     }
   }, [cpuTurn]);
 
@@ -293,7 +293,7 @@ const GameDisplayPage = (props) => {
               <Typography variant="h5" component="h5" sx={{ textAlign: "right" }}>
                 Next Player
               </Typography>
-              <DisplayPlayerTurn playerTurn={isPlayer1Next} players={props.players} item />
+              <DisplayPlayerTurn playerTurn={isPlayer1Next} players={props.players} gameMode={props.gameMode} item />
               <Grid>
                 {displayTimer(count1)}/{displayTimer(count2)}
               </Grid>

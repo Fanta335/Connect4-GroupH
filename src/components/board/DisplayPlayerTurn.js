@@ -21,8 +21,12 @@ const DisplayPlayerTurn = (props) => {
     playerTurn = props.players[0];
     backgroundColor = "red";
   } else {
-    playerTurn = props.players[1];
     backgroundColor = "yellow";
+    if (props.gameMode === "player") {
+      playerTurn = props.players[1];
+    } else if (props.gameMode === "cpu") {
+      playerTurn = "CPU";
+    }
   }
 
   return (
