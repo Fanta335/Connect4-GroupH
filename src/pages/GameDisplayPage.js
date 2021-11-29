@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import "./GameDisplayPage.css";
 
 import { Button, Grid, List, Card, Paper, Typography, createTheme } from "@mui/material";
@@ -6,7 +6,8 @@ import { makeStyles } from "@mui/styles";
 
 import Board from "../components/board/Board";
 import DisplayPlayerTurn from "../components/board/DisplayPlayerTurn";
-import Modal from "../components/Modal";
+import InitButton from "../components/board/InitButton";
+import { GameStartModal, GameFinishModal } from "../components/Modal";
 
 import calculateWinner from "../utils/calculateWinner";
 import canPutStone from "../utils/canPutStone";
@@ -36,20 +37,13 @@ const useStyles = makeStyles({
   },
 });
 
-const InitButton = (props) => (
-  <Button variant="contained" color="primary" style={{ height: "50px" }} onClick={props.onClick}>
-    Start New Game
-  </Button>
-);
-
 const GameDisplayPage = (props) => {
   const initBoard = createNewBoard(props.boardSize[0], props.boardSize[1], props.gameMode);
+  const timeControl = props.timeMinControl * 60 + props.timeSecControl;
 
   const [isPlayer1Next, setIsPlayer1Next] = useState(true);
-  const timeControl = props.timeMinControl * 60 + props.timeSecControl;
   const [count1, startTimer1, stopTimer1, resetTimer1, setTimer1] = useTimer(timeControl);
   const [count2, startTimer2, stopTimer2, resetTimer2, setTimer2] = useTimer(timeControl);
-
   const [gameWinner, setGameWinner] = useState("");
   const [history, setHistory] = useState([
     {
@@ -59,15 +53,18 @@ const GameDisplayPage = (props) => {
     },
   ]);
   const [stepNumber, setStepNumber] = useState(0);
-  const [modalOpen, setModalOpen] = useState(false);
-
   const classes = useStyles();
-
   const [canStartGame, setCanStartGame] = useState(false);
-  const handleModalOpen = () => setModalOpen(true);
-  const handleModalClose = () => setModalOpen(false);
-
   const [openHistory, setOpenHistory] = useState(false);
+  const [gameStartModalOpen, setGameStartModalOpen] = useState(true);
+  const [gameFinishModalOpen, setGameFinishModalOpen] = useState(false);
+  const [countModal, setCountModal] = useState(0);
+
+  const handleGameStartModalClose = () => setGameStartModalOpen(false);
+  const handleGameFinishModalOpen = useCallback(() => {
+    setTimeout(() => setGameFinishModalOpen(true), 500);
+  }, []);
+  const handleGameFinishModalClose = () => setGameFinishModalOpen(false);
 
   const controlTimer = (player1IsNext) => {
     if (player1IsNext) {
@@ -269,9 +266,9 @@ const GameDisplayPage = (props) => {
         }
         if (winner != null) {
           setGameWinner(winner);
-          handleModalOpen();
           stopTimer1();
           stopTimer2();
+          handleGameFinishModalOpen();
         } else if (winner == null) {
           // player1IsNextの情報が即時反映されないため、一時的な変数を作成
           // 関数内・条件式内だとuseEffectが使えなかったため、この方法で対処した
@@ -311,8 +308,8 @@ const GameDisplayPage = (props) => {
             ])
           );
           setGameWinner(winner);
-          handleModalOpen();
           stopTimer1();
+          handleGameFinishModalOpen();
         } else if (winner == null) {
           const newWinner = cpuAction(nextBoard, copiedCount1, props.victoryCondition);
           if (newWinner != null) {
@@ -325,8 +322,8 @@ const GameDisplayPage = (props) => {
               ])
             );
             setGameWinner(newWinner);
-            handleModalOpen();
             stopTimer1();
+            handleGameFinishModalOpen();
           } else if (newWinner == null) {
             setHistory(
               renewedHistory.concat([
@@ -355,9 +352,6 @@ const GameDisplayPage = (props) => {
         <Card className={classes.infoCard}>
           <Grid container justifyContent="center" alignItems="flex-end">
             <Grid flexDirection="column">
-              <Typography variant="h5" component="h5" sx={{ textAlign: "center" }}>
-                Reset
-              </Typography>
               <InitButton onClick={initGame} item />
             </Grid>
             <Grid flexDirection="column">
@@ -400,10 +394,12 @@ const GameDisplayPage = (props) => {
         </Grid>
       </Grid>
 
-      {/* 便宜的にゲームの勝者をお知らせするモーダルを貼り付けています。 */}
-      <Modal
-        handleClose={handleModalClose}
-        open={modalOpen}
+      <GameStartModal handleClose={handleGameStartModalClose} handleStart={initGame} open={gameStartModalOpen} />
+
+      <GameFinishModal
+        handleClose={handleGameFinishModalClose}
+        handleStart={initGame}
+        open={gameFinishModalOpen}
         gameWinner={gameWinner}
         playerTurn={isPlayer1Next}
         players={props.players}
