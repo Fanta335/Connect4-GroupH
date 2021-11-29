@@ -10,8 +10,6 @@ const useStyles = makeStyles({
   root: {
     backgroundColor: "rgba(0,0,0,0.7)",
     paddingTop: "24px",
-    marginLeft: "auto",
-    marginRight: "auto",
   },
   inner: {
     height: "calc(100vh  - 88px)",
@@ -28,15 +26,45 @@ const Home = (props) => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Grid container alignItems="center" justifyContent="center" flexDirection="column" className={classes.inner}>
-        <Grid container item sm={6} spacing={3} justifyContent="center" className={classes.body}>
-          <Typography variant="h3">Connect4!</Typography>
-          <Grid container item alignItems="center" justifyContent="center">
-            <Grid item sm={6}>
+      <Grid
+        container
+        alignItems="center"
+        justifyContent="center"
+        flexDirection="column"
+        className={classes.inner}
+      >
+        <Grid
+          container
+          item
+          xs={10}
+          md={6}
+          justifyContent="center"
+          alignItems="center"
+          className={classes.body}
+        >
+          <Typography variant="h3" style={{textAlign: "center",paddingBottom: "24px"}}>Connect4!</Typography>
+          <Grid
+            container
+            item
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Grid
+              item
+              xs={7}
+              md={8}
+              style={{paddingBottom: "24px"}}
+              >
               <Form
                 label="Game Mode"
                 input={
-                  <RadioGroup row aria-label="gameMode" name="gameMode" value={gameMode} onChange={props.onChange}>
+                  <RadioGroup
+                    row
+                    aria-label="gameMode"
+                    name="gameMode"
+                    value={gameMode}
+                    onChange={props.onChange}
+                  >
                     <FormControlLabel value="player" control={<Radio />} label="vs Player" />
                     <FormControlLabel value="cpu" control={<Radio />} label="vs CPU" />
                   </RadioGroup>
@@ -46,8 +74,21 @@ const Home = (props) => {
           </Grid>
 
           {gameMode === "cpu" && (
-            <Grid container item alignItems="center" justifyContent="center">
-              <Grid item xs={6}>
+            <Grid
+              container
+              item
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Grid
+                item
+                xs={7}
+                md={8}
+                style={{
+                  paddingBottom: "24px"
+                }}
+                justifyContent="center"
+                >
                 <Form
                   label="CPU Strength"
                   input={
@@ -68,7 +109,12 @@ const Home = (props) => {
             </Grid>
           )}
 
-          <Grid container item alignItems="center" justifyContent="center" spacing={3}>
+          <Grid
+            container
+            item
+            alignItems="center"
+            justifyContent="center"
+          >
             <Grid item xs={8}>
               <Link to="/game" style={{ textDecoration: "none" }}>
                 <TransitionButton name="Start!" />

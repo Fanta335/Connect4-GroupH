@@ -5,7 +5,11 @@ import { Grid } from "@mui/material";
 
 const Column = (props) => {
   return (
-    <Grid sx={{ display: "flex", flexDirection: "column-reverse" }}>
+    <Grid
+      item
+      sx={{ display: "flex", flexDirection: "column-reverse" }}
+      xs={12}
+    >
       {props.column.map((y, i) => (
         <Cell value={y} key={i} x={props.x} y={i} onClick={props.onClick} />
       ))}

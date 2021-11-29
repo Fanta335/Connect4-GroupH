@@ -70,13 +70,13 @@ const Header = (props) => {
           <Switch checked={props.darkMode} onChange={() => props.setDarkMode(!props.darkMode)} />
           <Grid>
             {/* 開発する際、対戦形式を確認しやすくするため便宜的に書き込んでいます。 */}
-            <Typography variant="h5" component="h5">
+            <Typography variant="h6" component="h6">
               {props.gameMode == "cpu" ? "vsCPU" : "vsPlayer"}
             </Typography>
           </Grid>
           <>
             {isMobile ? (
-              <>
+              <div className={classes.headerOptions}>
                 <IconButton
                   edge="start"
                   color="inherit"
@@ -110,7 +110,7 @@ const Header = (props) => {
                     );
                   })}
                 </Menu>
-              </>
+              </div>
             ) : (
               <div className={classes.headerOptions}>
                 {menuItems.map((menuItem, index) => {

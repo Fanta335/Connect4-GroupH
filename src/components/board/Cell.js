@@ -1,13 +1,13 @@
 import React from "react";
 import "./Board.css";
 import Box from "@mui/material/Box";
-import { createTheme } from "@mui/material";
+// import { createTheme } from "@mui/material";
 import "../../animation.css";
-const theme = createTheme();
+// const theme = createTheme();
 const styles = {
   cell: {
-    height: "4.5rem",
-    width: "4.5rem",
+    width: "100%",
+    padding: "12.5% 0",
     cursor: "pointer",
     display: "flex",
     flexDirection: "row",
@@ -15,22 +15,31 @@ const styles = {
     alignItems: "center",
   },
   white: {
-    height: "3.5em",
-    width: "3.5em",
+    paddingTop: "75%",
+    width: "75%",
     background: "white",
     borderRadius: "100%",
+    position: "relative"
   },
   red: {
-    height: "3.5em",
-    width: "3.5em",
+    width: "100%",
+    paddingTop: "100%",
     background: "red",
     borderRadius: "100%",
+    position: "absolute",
+    left : "0",
+    top: "0",
+    zIndex: "10"
   },
   yellow: {
-    height: "3.5em",
-    width: "3.5em",
+    width: "100%",
+    paddingTop: "100%",
     background: "yellow",
     borderRadius: "100%",
+    position: "absolute",
+    left : "0",
+    top: "0",
+    zIndex: "10"
   },
 };
 
@@ -51,9 +60,8 @@ const Cell = (props) => {
       data-y={props.y}
       onClick={props.onClick}
       style={{
-        padding: theme.spacing(1),
+
       }}
-      backgroundColor="primary"
     >
       <Box sx={styles.white}>{props.value !== null && <Box sx={color} className="drop"></Box>}</Box>
     </Box>
