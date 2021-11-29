@@ -6,11 +6,9 @@ import { makeStyles } from "@mui/styles";
 
 import Form from "../components/Form";
 import TransitionButton from "../components/TransitionButton";
-
 import "./settings.css";
 
 const theme = createTheme();
-
 const useStyles = makeStyles({
   root: {
     backgroundColor: "rgba(0,0,0,0.7)",
@@ -96,7 +94,7 @@ const Settings = (props) => {
                       label={player.label}
                       variant="outlined"
                       name={player.name}
-                      value={props.playerName[index]}
+                      value={props.players[index]}
                       onChange={props.onPlayerNameChange}
                       InputLabelProps={{
                         shrink: true,

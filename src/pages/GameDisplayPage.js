@@ -63,7 +63,6 @@ const GameDisplayPage = (props) => {
 
   const classes = useStyles();
 
-  // ゲームが終了した時に起動する
   const [canStartGame, setCanStartGame] = useState(false);
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
@@ -141,7 +140,7 @@ const GameDisplayPage = (props) => {
   const updateHistory = (originalHistory, step) => {
     const updatedHistory = [];
     for (let i = 0; i <= step; i++) {
-      const { board } = originalHistory[i];
+      const board = originalHistory[i].board;
       const copiedBoard = copyBoard(board);
       const copiedCount1 = originalHistory[i].count1;
       const copiedCount2 = originalHistory[i].count2;
@@ -197,9 +196,7 @@ const GameDisplayPage = (props) => {
     return (
       <Card key={index} className={classes.historyCard}>
         <Button
-          onClick={() => {
-            jumpTo(index);
-          }}
+          onClick={() => jumpTo(index)}
           style={{
             width: "100%",
           }}
@@ -317,8 +314,8 @@ const GameDisplayPage = (props) => {
           handleModalOpen();
           stopTimer1();
         } else if (winner == null) {
-          winner = cpuAction(nextBoard, copiedCount1, props.victoryCondition);
-          if (winner != null) {
+          const newWinner = cpuAction(nextBoard, copiedCount1, props.victoryCondition);
+          if (newWinner != null) {
             setHistory(
               renewedHistory.concat([
                 {
@@ -327,10 +324,10 @@ const GameDisplayPage = (props) => {
                 },
               ])
             );
-            setGameWinner(winner);
+            setGameWinner(newWinner);
             handleModalOpen();
             stopTimer1();
-          } else if (winner == null) {
+          } else if (newWinner == null) {
             setHistory(
               renewedHistory.concat([
                 {
