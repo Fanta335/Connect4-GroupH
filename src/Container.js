@@ -48,9 +48,9 @@ const Container = (props) => {
       return;
     }
     const name = event.target.name;
-    if (name === "borderSizeHeight") {
+    if (name === "boardSizeHeight") {
       setBoardSizeHeight(tempValue);
-    } else if (name === "borderSizeWidth") {
+    } else if (name === "boardSizeWidth") {
       setBoardSizeWidth(tempValue);
     } else if (name === "victoryCondition") {
       setVictoryCondition(tempValue);
@@ -63,7 +63,7 @@ const Container = (props) => {
 
   return (
     <>
-      <Header darkMode={props.darkMode} setDarkMode={props.setDarkMode} />
+      <Header darkMode={props.darkMode} setDarkMode={props.setDarkMode} gameMode={gameMode} />
       <Routes>
         <Route
           path="/"
@@ -77,7 +77,7 @@ const Container = (props) => {
             <Settings
               boardSize={[boardSizeHeight, boardSizeWidth]}
               victoryCondition={victoryCondition}
-              playerName={[playerName1, playerName2]}
+              players={[playerName1, playerName2]}
               timeMinControl={timeMinControl}
               timeSecControl={timeSecControl}
               onPlayerNameChange={handleInputPlayerNameChange}

@@ -1,8 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import Typography from "@mui/material/Typography";
+import { Typography, Modal, Box, Grid } from "@mui/material";
+
+import TransitionButton from "./TransitionButton";
 
 // 便宜的なスタイルです。
 const style = {
@@ -19,7 +20,7 @@ const style = {
 
 const BasicModal = (props) => {
   const [playerName1, playerName2] = props.players;
-
+  const navigate = useNavigate();
   return (
     <div>
       <Modal
@@ -48,6 +49,14 @@ const BasicModal = (props) => {
               </Typography>
             </>
           )}
+          <Grid container item alignItems="center" justifyContent="center" spacing={3}>
+            <Grid item sm={6}>
+              <TransitionButton name="Back to Home" onClick={() => navigate("/")} />
+            </Grid>
+            <Grid item sm={6}>
+              <TransitionButton name="Retry" onClick={props.handleClose} />
+            </Grid>
+          </Grid>
         </Box>
       </Modal>
     </div>

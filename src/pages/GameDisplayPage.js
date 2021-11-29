@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./GameDisplayPage.css";
 
 import { Button, Grid, List, Card, Paper, Typography, createTheme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
@@ -15,7 +16,7 @@ import displayTimer from "../utils/displayTimer";
 import getLowestEmptyYIndex from "../utils/getLowestEmptyYIndex";
 import useTimer from "../utils/useTimer";
 
-import "./GameDisplayPage.css";
+// import setSnackbarOpen from "../components/Snackbar";
 
 const theme = createTheme();
 const useStyles = makeStyles({
@@ -23,7 +24,7 @@ const useStyles = makeStyles({
     backgroundColor: "rgba(0,0,0,0.7)",
   },
   history: {
-    margin: "40px",
+    marginLeft: "40px",
     padding: theme.spacing(3),
   },
   historyCard: {
@@ -43,10 +44,12 @@ const InitButton = (props) => (
 
 const GameDisplayPage = (props) => {
   const initBoard = createNewBoard(props.boardSize[0], props.boardSize[1], props.gameMode);
+
   const [isPlayer1Next, setIsPlayer1Next] = useState(true);
   const timeControl = props.timeMinControl * 60 + props.timeSecControl;
   const [count1, startTimer1, stopTimer1, resetTimer1, setTimer1] = useTimer(timeControl);
   const [count2, startTimer2, stopTimer2, resetTimer2, setTimer2] = useTimer(timeControl);
+
   const [gameWinner, setGameWinner] = useState("");
   const [history, setHistory] = useState([
     {
@@ -57,12 +60,15 @@ const GameDisplayPage = (props) => {
   ]);
   const [stepNumber, setStepNumber] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
+
   const classes = useStyles();
 
   // ゲームが終了した時に起動する
   const [canStartGame, setCanStartGame] = useState(false);
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
+
+  const [openHistory, setOpenHistory] = useState(false);
 
   const controlTimer = (player1IsNext) => {
     if (player1IsNext) {
@@ -182,8 +188,8 @@ const GameDisplayPage = (props) => {
     setTimer2(history[step].count2);
     // player1IsNextの情報が即時反映されないため、一時的な変数を作成
     // 関数内だとuseEffectが使えなかったため、この方法で対処した
-    const tempPlayer1IsNext = step % 2 === 0;
-    controlTimer(tempPlayer1IsNext);
+    const tempIsPlayer1Next = step % 2 === 0;
+    controlTimer(tempIsPlayer1Next);
   };
 
   const moves = history.map((_, index) => {
@@ -351,12 +357,6 @@ const GameDisplayPage = (props) => {
       >
         <Card className={classes.infoCard}>
           <Grid container justifyContent="center" alignItems="flex-end">
-            <Grid>
-              {/* 開発する際、対戦形式を確認しやすくするため便宜的に書き込んでいます。 */}
-              <Typography variant="h3" component="h3">
-                {props.gameMode === "cpu" ? "vsCPU" : ""}
-              </Typography>
-            </Grid>
             <Grid flexDirection="column">
               <Typography variant="h5" component="h5" sx={{ textAlign: "center" }}>
                 Reset
@@ -367,21 +367,42 @@ const GameDisplayPage = (props) => {
               <Typography variant="h5" component="h5" sx={{ textAlign: "right" }}>
                 Next Player
               </Typography>
-              <DisplayPlayerTurn playerTurn={isPlayer1Next} players={props.players} gameMode={props.gameMode} item />
-              {displayTimer(count1)}/{displayTimer(count2)}
+              <DisplayPlayerTurn playerTurn={isPlayer1Next} players={props.players} item />
+              <Grid>
+                {displayTimer(count1)}/{displayTimer(count2)}
+              </Grid>
+            </Grid>
+            <Grid>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={() => {
+                  setOpenHistory(!openHistory);
+                }}
+              >
+                {props.openHistory ? "Close" : "History"}
+              </Button>
             </Grid>
           </Grid>
         </Card>
       </Grid>
-      <Board board={currentBoard} onClick={canStartGame ? handleClick : null} />
-
-      {/* それぞれの手番の情報を表示する */}
-      <Grid justifyContent="center" alignItems="center" style={{ width: "50%" }}>
-        <Paper className={classes.history}>
-          <Typography variant="h4">History</Typography>
-          <List>{moves}</List>
-        </Paper>
+      <Grid container justifyContent="center" style={{ marginBottom: "200px" }}>
+        <Grid item>
+          <Board board={currentBoard} onClick={canStartGame ? handleClick : null} />
+        </Grid>
+        <Grid item>
+          {/* それぞれの手番の情報を表示する */}
+          {openHistory && (
+            <Grid justifyContent="center" alignItems="center" style={{ width: "100%" }}>
+              <Paper className={classes.history}>
+                <Typography variant="h4">History</Typography>
+                <List>{moves}</List>
+              </Paper>
+            </Grid>
+          )}
+        </Grid>
       </Grid>
+
       {/* 便宜的にゲームの勝者をお知らせするモーダルを貼り付けています。 */}
       <Modal
         handleClose={handleModalClose}

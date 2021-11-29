@@ -1,8 +1,19 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import MenuIcon from "@mui/icons-material/Menu";
-import { AppBar, Toolbar, Typography, useMediaQuery, Button, IconButton, MenuItem, Menu, Switch } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  useMediaQuery,
+  Button,
+  IconButton,
+  MenuItem,
+  Menu,
+  Switch,
+  Grid,
+} from "@mui/material";
 import { useTheme, createTheme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 
@@ -26,13 +37,15 @@ const useStyles = makeStyles({
   },
 });
 
+// TODO: Yuki Ueno: ゲーム画面からホーム画面、設定画面に遷移する際にタイマーを停止する処理を追加する（参考：https://weblike-curtaincall.ssl-lolipop.jp/blog/?p=2056）
+
 const Header = (props) => {
   const navigate = useNavigate();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const usedTheme = useTheme();
-  const isMobile = useMediaQuery(usedTheme.breakpoints.down("sm"));
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -63,8 +76,16 @@ const Header = (props) => {
     <div className={classes.headerRoot}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6">Connect4</Typography>
+          <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+            <Typography variant="h6">Connect 4</Typography>
+          </Link>
           <Switch checked={props.darkMode} onChange={() => props.setDarkMode(!props.darkMode)} />
+          <Grid>
+            {/* 開発する際、対戦形式を確認しやすくするため便宜的に書き込んでいます。 */}
+            <Typography variant="h5" component="h5">
+              {props.gameMode === "cpu" ? "vsCPU" : "vsPlayer"}
+            </Typography>
+          </Grid>
           {isMobile ? (
             <>
               <IconButton
