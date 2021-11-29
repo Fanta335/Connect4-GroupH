@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+<!-- 参考 -->
+<!-- https://qiita.com/koeri3/items/f85a617dcb6efebb2cab -->
+<!-- https://qiita.com/aocattleya/items/5f836e9c65ba3eb3af03 -->
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+gifを挿入予定
 
-## Available Scripts
+<h1 align="center">Connect4</h2>
 
-In the project directory, you can run:
+<p align="center">
+    <a href="https://jp.vuejs.org/index.html"><img src="document/img/react_icon.png" width="120px;" /></a><br>
+</p>
 
-### `yarn start`
+# :globe_with_meridians: App URL
+https://connect4-group-h.vercel.app/
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# :syringe: Install
+```bash
+git clone https://github.com/Fanta335/Connect4-GroupH.git
+npm install
+npm start
+```
+:point_right: http://localhost:3000
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+# :speech_balloon: Usage
+1. ホーム画面からゲームモードを選択します
+1. 石を置きたい列をクリックし、Player1とPlayer2もしくはCPUで交互に石を置いていきます
+1. 先に縦・横・斜めのいずれかで4つ連続で石を並べた方が勝ちです
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# :package: Features
+## 選べる対戦モード :video_game:
+ホーム画面にてGame Modeを選択できます
 
-### `yarn build`
+- vs Player
+    
+    プレイヤー同士の対戦ができます
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- vs CPU
+    
+    CPUとの対戦ができます
+    
+    強さはEasy/Medium/Hardから選べます
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## ゲームのカスタマイズ :wrench:
+設定画面からゲームに関するいくつかの設定を変更することが可能です
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+| 項目 | 意味 |説明 |
+| --- | --- | --- |
+| Player Name | プレイヤーの名前 | ゲーム画面で表示するプレイヤーの名前 |
+| Board Size | 盤面のサイズ | デフォルトは Height: 6, Width: 7 |
+| Victory Condition | 勝利条件 | デフォルトは4で、縦・横・斜めに石を4つ揃えると勝ち |
+| Time Control | 持ち時間 | 持ち時間制になっており、各プレイヤーにここで設定した時間が与えられる |
 
-### `yarn eject`
+## 手番の履歴 :scroll:
+ゲームの手番を戻すことができます
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## ライトモード/ダークモード :first_quarter_moon:
+画面左上のスイッチからダークモードとライトモードを切り替えられます
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# :ticket: License
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- [MIT](https://raw.githubusercontent.com/aocattleya/Ramen-Timer/master/LICENSE)  
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+# :construction_worker: Contributors
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/YuyaNakamura0139"><img src="https://github.com/YuyaNakamura0139.png" width="100px;"/></td>
+    <td align="center"><a href="https://github.com/y0uk1"><img src="https://github.com/y0uk1.png" width="100px;"/></td>
+    <td align="center"><a href="https://github.com/kingyo298"><img src="https://github.com/kingyo298.png" width="100px;"/></td>
+    <td align="center"><a href="https://github.com/Fanta335"><img src="https://github.com/Fanta335.png" width="100px;"/></td>
+  </tr>
+</table>
