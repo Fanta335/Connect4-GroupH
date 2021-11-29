@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { AppBar, Toolbar, Typography, useMediaQuery, Button, IconButton, MenuItem, Menu, Switch, Grid } from "@mui/material";
+
 import { makeStyles } from "@mui/styles";
 import { useTheme, createTheme } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -112,13 +113,6 @@ const Header = (props) => {
               </>
             ) : (
               <div className={classes.headerOptions}>
-                <Button
-                  variant="contained"
-                  color="success"
-                  onClick={() => {props.setOpenHistory(!props.openHistory)}}
-                >
-                  {props.openHistory ? "Close" : "History"}
-                </Button>
                 {menuItems.map((menuItem, index) => {
                   const { menuTitle, pageURL } = menuItem;
                   return (

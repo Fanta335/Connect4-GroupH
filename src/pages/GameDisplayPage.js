@@ -79,6 +79,8 @@ const GameDisplayPage = (props) => {
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
 
+  const [openHistory, setOpenHistory] = useState(false);
+
   const controlTimer = (player1IsNext) => {
     if (player1IsNext) {
       startTimer1();
@@ -281,7 +283,6 @@ const GameDisplayPage = (props) => {
         }
         if (winner != null) {
           setGameWinner(winner);
-          console.log(gameWinner);
           handleModalOpen();
           stopTimer1();
           stopTimer2();
@@ -386,6 +387,15 @@ const GameDisplayPage = (props) => {
                 {displayTimer(count1)}/{displayTimer(count2)}
               </Grid>
             </Grid>
+            <Grid>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={() => {setOpenHistory(!openHistory)}}
+              >
+                {props.openHistory ? "Close" : "History"}
+              </Button>
+            </Grid>
           </Grid>
         </Card>
       </Grid>
@@ -395,7 +405,7 @@ const GameDisplayPage = (props) => {
         </Grid>
         <Grid item>
           {/* それぞれの手番の情報を表示する */}
-          {props.openHistory &&
+          {openHistory &&
             <Grid
               justifyContent="center"
               alignItems="center"
