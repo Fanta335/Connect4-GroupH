@@ -58,7 +58,6 @@ const GameDisplayPage = (props) => {
   const [openHistory, setOpenHistory] = useState(false);
   const [gameStartModalOpen, setGameStartModalOpen] = useState(true);
   const [gameFinishModalOpen, setGameFinishModalOpen] = useState(false);
-  const [countModal, setCountModal] = useState(0);
 
   const handleGameStartModalClose = () => setGameStartModalOpen(false);
   const handleGameFinishModalOpen = useCallback(() => {
