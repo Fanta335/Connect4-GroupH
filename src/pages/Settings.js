@@ -13,7 +13,8 @@ const useStyles = makeStyles({
   root: {
     backgroundColor: "rgba(0,0,0,0.7)",
     margin: "0 auto",
-    height: "calc(100vh - 64px)",
+    minHeight: "calc(100vh - 64px)",
+    padding: "40px 0"
   },
   inner: {
     backgroundColor: "white",
@@ -89,7 +90,7 @@ const Settings = (props) => {
             input={
               <Grid container alignItems="center" justifyContent="center" spacing={3} className={classes.formBlock}>
                 {formItems[0].players.map((player, index) => (
-                  <Grid item sm={6} key={index}>
+                  <Grid item xs={12} md={6} key={index}>
                     <TextField
                       label={player.label}
                       variant="outlined"
@@ -111,7 +112,7 @@ const Settings = (props) => {
             input={
               <Grid container alignItems="center" justifyContent="center" spacing={3} className={classes.formBlock}>
                 {formItems[1].BoardSize.map((formItem, index) => (
-                  <Grid item sm={6} key={index}>
+                  <Grid item xs={12} md={6} key={index}>
                     <TextField
                       label={formItem.label}
                       variant="outlined"
@@ -132,39 +133,61 @@ const Settings = (props) => {
             }
           />
         </Grid>
-        <Grid container item alignItems="center" justifyContent="center">
-          <Form
-            label="Victory Condition"
-            input={
-              <Grid className={classes.formBlock}>
-                <TextField
-                  variant="outlined"
-                  type="number"
-                  onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
-                  name="victoryCondition"
-                  value={props.victoryCondition}
-                  onChange={props.onNumberChange}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  style={{ textAlign: "right", width: "25%" }}
-                  InputProps={{
-                    inputProps: {
-                      max: victoryConditionMax,
-                      min: 4,
-                    },
-                  }}
-                />
-              </Grid>
-            }
-          />
-        </Grid>
-        <Grid container item alignItems="center" justifyContent="center">
+        <div className={classes.formBlock}>
+          <Grid
+            container
+            item
+            alignItems="center"
+            justifyContent="center"
+            xs={8}
+            sm={3}
+          >
+            <Form
+              label="Victory Condition"
+              input={
+                <Grid
+                  item
+                >
+                  <TextField
+                    variant="outlined"
+                    type="number"
+                    onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+                    name="victoryCondition"
+                    value={props.victoryCondition}
+                    onChange={props.onNumberChange}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    InputProps={{
+                      inputProps: {
+                        max: victoryConditionMax,
+                        min: 4,
+                      },
+                    }}
+                    style={{width: "100%"}}
+                  />
+                </Grid>
+              }
+            />
+          </Grid>
+        </div>
+        <Grid
+          container
+          item
+          alignItems="center"
+          justifyContent="center"
+        >
           <Form
             label="Time Control"
             input={
-              <Grid container alignItems="center" justifyContent="center" spacing={3} className={classes.formBlock}>
-                <Grid item xs={6}>
+              <Grid
+                container
+                alignItems="center"
+                justifyContent="center"
+                spacing={3}
+                className={classes.formBlock}
+              >
+                <Grid item xs={12} md={6}>
                   <TextField
                     label="Minute"
                     variant="outlined"
@@ -186,7 +209,7 @@ const Settings = (props) => {
                     }}
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <TextField
                     label="Second"
                     variant="outlined"
@@ -212,14 +235,20 @@ const Settings = (props) => {
             }
           />
         </Grid>
-        <Grid container item alignItems="center" justifyContent="center" spacing={3}>
-          {buttons.map((button, index) => (
-            <Grid item sm={6} key={index}>
+        <Grid
+          container
+          item
+          alignItems="center"
+          justifyContent="center"
+          spacing={3}
+        >
+          {buttons.map((button,index) => (
+            <Grid item xs={12} md={6} key={index}>
               <Link to="/" style={{ textDecoration: "none" }}>
                 <TransitionButton name={button.name} />
               </Link>
             </Grid>
-          ))}
+            ))}
         </Grid>
       </Paper>
     </Grid>
