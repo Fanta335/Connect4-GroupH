@@ -5,9 +5,9 @@
  */
 const copyBoard = (board) => {
   const copiedBoard = [];
-  for (let i = 0; i < board.length; i++) {
-    copiedBoard.push(board[i]);
-  }
+  board.forEach((array) => {
+    copiedBoard.push([...array]);
+  });
   return copiedBoard;
 };
 
