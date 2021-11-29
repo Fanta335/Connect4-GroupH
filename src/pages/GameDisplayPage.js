@@ -236,7 +236,7 @@ const GameDisplayPage = (props) => {
     const copiedCount1 = count1;
     const copiedCount2 = count2;
 
-    if (props.gameMode === "cpu") {
+    if (props.gameMode === "cpu" && stepNumber !== 0) {
       setTimeout(() => {
         const cpuX = getCpuX(nextBoard, props.victoryCondition, props.cpuStrength);
         const cpuY = getLowestEmptyYIndex(nextBoard, cpuX);
