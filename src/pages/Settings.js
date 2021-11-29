@@ -89,8 +89,7 @@ const Settings = (props) => {
             label="Player Name"
             input={
               <Grid container alignItems="center" justifyContent="center" spacing={3} className={classes.formBlock}>
-                {formItems[0].players.map((player, index) => {
-                  return (
+                {formItems[0].players.map((player, index) => (
                     <Grid item xs={12} md={6} key={index}>
                       <TextField
                         label={player.label}
@@ -104,8 +103,7 @@ const Settings = (props) => {
                         style={{ textAlign: "right", width: "100%" }}
                       />
                     </Grid>
-                  );
-                })}
+                  ))};
               </Grid>
             }
           />
@@ -113,8 +111,7 @@ const Settings = (props) => {
             label="Board Size"
             input={
               <Grid container alignItems="center" justifyContent="center" spacing={3} className={classes.formBlock}>
-                {formItems[1].BoardSize.map((formItem, index) => {
-                  return (
+                {formItems[1].BoardSize.map((formItem, index) => (
                     <Grid item xs={12} md={6} key={index}>
                       <TextField
                         label={formItem.label}
@@ -136,8 +133,7 @@ const Settings = (props) => {
                         }}
                       />
                     </Grid>
-                  );
-                })}
+                  ))}
               </Grid>
             }
           />
@@ -251,15 +247,13 @@ const Settings = (props) => {
           justifyContent="center"
           spacing={3}
         >
-          {buttons.map((button,index) => {
-            return(
+          {buttons.map((button,index) => (
               <Grid item xs={12} md={6} key={index}>
                 <Link to="/" style={{ textDecoration: "none" }}>
                   <TransitionButton name={button.name} />
                 </Link>
               </Grid>
-            );
-          })}
+            ))}
         </Grid>
       </Paper>
     </Grid>

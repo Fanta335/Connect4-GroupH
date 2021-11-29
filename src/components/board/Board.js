@@ -1,9 +1,10 @@
 import React from "react";
-import Column from "./Column";
+
 import { Grid } from "@mui/material";
 
-const Board = (props) => {
-  return (
+import Column from "./Column";
+
+const Board = (props) => (
     <Grid
       item
       sx={{display: "flex", flexDirection: "row"}}
@@ -13,7 +14,6 @@ const Board = (props) => {
         <Column column={x} key={i} x={i} onClick={props.onClick} />
       ))}
     </Grid>
-  );
-};
+);
 
 export default Board;
