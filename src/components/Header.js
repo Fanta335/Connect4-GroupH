@@ -86,7 +86,6 @@ const Header = (props) => {
               {props.gameMode === "cpu" ? "vsCPU" : "vsPlayer"}
             </Typography>
           </Grid>
-
             {isMobile ? (
               <div className={classes.headerOptions}>
                 <IconButton
