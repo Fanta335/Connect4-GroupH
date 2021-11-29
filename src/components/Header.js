@@ -83,10 +83,10 @@ const Header = (props) => {
           <Grid>
             {/* 開発する際、対戦形式を確認しやすくするため便宜的に書き込んでいます。 */}
             <Typography variant="h6" component="h6">
-              {props.gameMode == "cpu" ? "vsCPU" : "vsPlayer"}
+              {props.gameMode === "cpu" ? "vsCPU" : "vsPlayer"}
             </Typography>
           </Grid>
-          <>
+
             {isMobile ? (
               <div className={classes.headerOptions}>
                 <IconButton
@@ -141,7 +141,6 @@ const Header = (props) => {
               })}
             </div>
           )}
-          </>
         </Toolbar>
       </AppBar>
     </div>
