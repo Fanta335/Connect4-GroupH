@@ -349,7 +349,6 @@ const GameDisplayPage = (props) => {
         item
         sx={{ display: "flex", justifyContent: "center", flexDirection: "row", alignItems: "flex-end", mb: 2, mt: 2 }}
         xs={10}
-
       >
         <Card className={classes.infoCard}>
           <Grid container justifyContent="center" alignItems="flex-end">
@@ -379,13 +378,12 @@ const GameDisplayPage = (props) => {
           </Grid>
         </Card>
       </Grid>
-      <Grid container justifyContent="center" style={{marginBottom: "200px"}}>
-        <Grid
-          item
-          xs={10}
-        >
+      <Grid container justifyContent="center" style={{ marginBottom: "200px" }}>
+        <Grid item xs={10}>
           <Board
             board={currentBoard}
+            playerColor1={props.colors[0]}
+            playerColor2={props.colors[1]}
             onClick={canStartGame ? handleClick : null}
           />
         </Grid>

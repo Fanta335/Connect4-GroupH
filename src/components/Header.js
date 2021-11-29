@@ -17,7 +17,6 @@ import {
 import { useTheme, createTheme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 
-
 const createdTheme = createTheme();
 const useStyles = makeStyles({
   headerRoot: {
@@ -87,43 +86,43 @@ const Header = (props) => {
               {props.gameMode === "cpu" ? "vsCPU" : "vsPlayer"}
             </Typography>
           </Grid>
-            {isMobile ? (
-              <div className={classes.headerOptions}>
-                <IconButton
-                  edge="start"
-                  color="inherit"
-                  aria-label="menu"
-                  className={classes.menuButton}
-                  onClick={handleMenu}
-                >
-                  <MenuIcon />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={open}
-                  onClose={() => setAnchorEl(null)}
-                >
-                  {menuItems.map((menuItem, index) => {
-                    const { menuTitle, pageURL } = menuItem;
-                    return (
-                      <MenuItem key={index} onClick={() => handleMenuClick(pageURL)}>
-                        {menuTitle}
-                      </MenuItem>
-                    );
-                  })}
-                </Menu>
-              </div>
-            ) : (
+          {isMobile ? (
+            <div className={classes.headerOptions}>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                className={classes.menuButton}
+                onClick={handleMenu}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={open}
+                onClose={() => setAnchorEl(null)}
+              >
+                {menuItems.map((menuItem, index) => {
+                  const { menuTitle, pageURL } = menuItem;
+                  return (
+                    <MenuItem key={index} onClick={() => handleMenuClick(pageURL)}>
+                      {menuTitle}
+                    </MenuItem>
+                  );
+                })}
+              </Menu>
+            </div>
+          ) : (
             <div className={classes.headerOptions}>
               {menuItems.map((menuItem, index) => {
                 const { menuTitle, pageURL } = menuItem;
