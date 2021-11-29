@@ -180,7 +180,7 @@ const GameDisplayPage = (props) => {
   };
 
   const handleClick = (event) => {
-    if (isPlayer1Next === true) {
+    if (!(props.gameMode === "cpu" && isPlayer1Next === false)) {
       if (gameWinner !== "") return;
 
       const renewedHistory = copyHistory(history);
