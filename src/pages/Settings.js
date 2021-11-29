@@ -248,11 +248,11 @@ const Settings = (props) => {
           spacing={3}
         >
           {buttons.map((button,index) => (
-              <Grid item xs={12} md={6} key={index}>
-                <Link to="/" style={{ textDecoration: "none" }}>
-                  <TransitionButton name={button.name} />
-                </Link>
-              </Grid>
+            <Grid item xs={12} md={6} key={index}>
+              <Link to="/" style={{ textDecoration: "none" }}>
+                <TransitionButton name={button.name} />
+              </Link>
+            </Grid>
             ))}
         </Grid>
       </Paper>

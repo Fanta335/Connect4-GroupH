@@ -4,6 +4,7 @@ import React from "react";
 import { Grid } from "@mui/material";
 
 import Cell from "./Cell";
+
 import "./Board.css";
 
 const Column = (props) => (

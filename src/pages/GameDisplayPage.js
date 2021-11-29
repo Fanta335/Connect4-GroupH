@@ -392,7 +392,6 @@ const GameDisplayPage = (props) => {
           </Grid>
         </Card>
       </Grid>
-
       <Grid container justifyContent="center" style={{marginBottom: "200px"}}>
         <Grid
           item
