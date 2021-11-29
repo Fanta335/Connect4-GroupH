@@ -1,10 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
 import { Typography, Grid, TextField, createTheme, Paper, InputAdornment } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+
 import Form from "../components/Form";
 import TransitionButton from "../components/TransitionButton";
 import "./settings.css";
+
 const theme = createTheme();
 const useStyles = makeStyles({
   root: {
@@ -27,6 +30,7 @@ const useStyles = makeStyles({
     marginBottom: "20px",
   },
 });
+
 const Settings = (props) => {
   const victoryConditionMax = props.boardSize[1] <= props.boardSize[0] ? props.boardSize[1] : props.boardSize[0];
 
@@ -70,8 +74,8 @@ const Settings = (props) => {
       name: "Back",
     },
     {
-      name: "Confirm"
-    }
+      name: "Confirm",
+    },
   ];
 
   return (

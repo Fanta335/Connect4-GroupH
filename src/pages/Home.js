@@ -1,10 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
 import { Typography, Grid, Radio, RadioGroup, FormControlLabel, createTheme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+
 import Form from "../components/Form";
 import TransitionButton from "../components/TransitionButton";
+
 import "./Home.css";
-import { makeStyles } from "@mui/styles";
+
 const theme = createTheme();
 const useStyles = makeStyles({
   root: {

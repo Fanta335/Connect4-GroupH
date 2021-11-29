@@ -1,26 +1,63 @@
 {
-    "root": true,
-    "env": {
-      "browser": true,
-      "es6": true,
-      "node": true
-    },
-    "extends": [
-      "eslint:recommended", 
-      "plugin:react/recommended",
-      "plugin:react-hooks/recommended",
-      "prettier"
-    ],
-    "rules": {
-      "react/prop-types": "off"
-    },
-    "parserOptions": {
-      "sourceType": "module",
-      "ecmaVersion": 2018
-    },
-    "settings": {
-      "react": {
-        "version": "detect"
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    // "eslint:recommended",
+    "plugin:import/recommended",
+    // "plugin:react/recommended",
+    // "plugin:react-hooks/recommended",
+    "prettier"
+  ],
+  "plugins": [
+    "unused-imports"
+  ],
+  "rules": {
+    "arrow-body-style": ["error", "as-needed"],
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "no-plusplus": [2, { "allowForLoopAfterthoughts": true }],
+    "no-param-reassign": "off",
+    "prefer-destructuring": "off",
+    "react/destructuring-assignment": "off",
+    "react/prop-types": "off",
+    "react/no-array-index-key": "off",
+    "react/function-component-definition": [2, {
+      "namedComponents": "arrow-function",
+      "unnamedComponents": "arrow-function"
+    }],
+    "no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "error",
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal", ["parent", "sibling"], "object", "type", "index"],
+        "newlines-between": "always",
+        "pathGroupsExcludedImportTypes": ["react"],
+        "alphabetize": { "order": "asc", "caseInsensitive": true },
+        "pathGroups": [
+          { "pattern": "react**", "group": "builtin", "position": "before" },
+          { "pattern": "@mui/**", "group": "external", "position": "before"},
+          { "pattern": "../components/**", "group": "internal", "position": "before" },
+          { "pattern": "../pages/**", "group": "internal", "position": "before" },
+          { "pattern": "../utils/**", "group": "internal", "position": "before" },
+          { "pattern": "*.css", "group": "index", "patternOptions": { "matchBase": true }, "position": "before" } // don't work (https://github.com/import-js/eslint-plugin-import/issues/1239)
+        ]
       }
+    ]
+  },
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
     }
   }
+}

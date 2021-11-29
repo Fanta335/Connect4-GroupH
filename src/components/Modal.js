@@ -1,8 +1,11 @@
 import React from "react";
-import {Typography, Modal, Box, Grid} from "@mui/material";
-import TransitionButton from "./TransitionButton";
 import { useNavigate } from "react-router-dom";
-//便宜的なスタイルです。
+
+import { Typography, Modal, Box, Grid } from "@mui/material";
+
+import TransitionButton from "./TransitionButton";
+
+// 便宜的なスタイルです。
 const style = {
   position: "absolute",
   top: "50%",
@@ -17,7 +20,7 @@ const style = {
 
 const BasicModal = (props) => {
   const [playerName1, playerName2] = props.players;
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <div>
       <Modal
@@ -46,18 +49,12 @@ const BasicModal = (props) => {
               </Typography>
             </>
           )}
-          <Grid
-            container
-            item
-            alignItems="center"
-            justifyContent="center"
-            spacing={3}
-          >
+          <Grid container item alignItems="center" justifyContent="center" spacing={3}>
             <Grid item sm={6}>
-              <TransitionButton name={"Back to Home"} onClick={() => navigate("/")}/>
+              <TransitionButton name="Back to Home" onClick={() => navigate("/")} />
             </Grid>
             <Grid item sm={6}>
-              <TransitionButton name={"Retry"} onClick={props.handleClose}/>
+              <TransitionButton name="Retry" onClick={props.handleClose} />
             </Grid>
           </Grid>
         </Box>

@@ -1,30 +1,22 @@
 import React, { useState } from "react";
 import "./GameDisplayPage.css";
 
-import {
-  Button,
-  Grid,
-  List,
-  Card,
-  Paper,
-  Typography,
-  createTheme,
-} from "@mui/material";
+import { Button, Grid, List, Card, Paper, Typography, createTheme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
+import Board from "../components/board/Board";
+import DisplayPlayerTurn from "../components/board/DisplayPlayerTurn";
 import Modal from "../components/Modal";
-import Board from "./../components/board/Board.js";
-import DisplayPlayerTurn from "./../components/board/DisplayPlayerTurn.js";
-import createNewBoard from "../utils/createNewBoard";
-import canPutStone from "../utils/canPutStone";
-import getLowestEmptyYIndex from "../utils/getLowestEmptyYIndex";
-import calculateWinner from "../utils/calculateWinner";
 
+import calculateWinner from "../utils/calculateWinner";
+import canPutStone from "../utils/canPutStone";
+import Cpu from "../utils/cpu";
+import createNewBoard from "../utils/createNewBoard";
 import displayTimer from "../utils/displayTimer";
+import getLowestEmptyYIndex from "../utils/getLowestEmptyYIndex";
 import useTimer from "../utils/useTimer";
 
-import { makeStyles } from "@mui/styles";
 // import setSnackbarOpen from "../components/Snackbar";
-import Cpu from "../utils/cpu";
 
 const theme = createTheme();
 const useStyles = makeStyles({
@@ -44,17 +36,13 @@ const useStyles = makeStyles({
   },
 });
 
-const InitButton = (props) => {
-  return (
-    <Button variant="contained" color="primary" style={{ height: "50px" }} onClick={props.onClick}>
-      Start New Game
-    </Button>
-  );
-};
-
+const InitButton = (props) => (
+  <Button variant="contained" color="primary" style={{ height: "50px" }} onClick={props.onClick}>
+    Start New Game
+  </Button>
+);
 
 const GameDisplayPage = (props) => {
-
   const initBoard = createNewBoard(props.boardSize[0], props.boardSize[1], props.gameMode);
 
   const [isPlayer1Next, setIsPlayer1Next] = useState(true);
@@ -120,22 +108,21 @@ const GameDisplayPage = (props) => {
    */
   const copyBoard = (board) => {
     const copiedBoard = [];
-    for (const array of board) {
+    board.forEach((array) => {
       copiedBoard.push([...array]);
-    }
+    });
     return copiedBoard;
   };
 
   /**
    * historyの深いコピーを作成する
-   * @param {*} history
+   * @param {*} originalHistory
    * @returns 複製したhistoryオブジェクト
    */
-  const copyHistory = (history) => {
-    let copiedHistory = [];
-    for (const historyItem of history) {
-      const board = historyItem.board;
-      const copiedBoard = copyBoard(board);
+  const copyHistory = (originalHistory) => {
+    const copiedHistory = [];
+    originalHistory.forEach((historyItem) => {
+      const copiedBoard = copyBoard(historyItem.board);
       const copiedCount1 = historyItem.count1;
       const copiedCount2 = historyItem.count2;
 
@@ -144,18 +131,19 @@ const GameDisplayPage = (props) => {
         count1: copiedCount1,
         count2: copiedCount2,
       });
-    }
+    });
+
     return copiedHistory;
   };
 
   // historyを任意の手番に遡る際にhistoryを更新する
-  const updateHistory = (history, step) => {
-    let updatedHistory = [];
+  const updateHistory = (originalHistory, step) => {
+    const updatedHistory = [];
     for (let i = 0; i <= step; i++) {
-      const board = history[i].board;
+      const board = originalHistory[i].board;
       const copiedBoard = copyBoard(board);
-      const copiedCount1 = history[i].count1;
-      const copiedCount2 = history[i].count2;
+      const copiedCount1 = originalHistory[i].count1;
+      const copiedCount2 = originalHistory[i].count2;
 
       updatedHistory.push({
         board: copiedBoard,
@@ -204,7 +192,7 @@ const GameDisplayPage = (props) => {
   };
 
   const moves = history.map((_, index) => {
-    const desc = index ? "Go to move #" + index : "Go to game start";
+    const desc = index ? `Go to move #${index}` : "Go to game start";
     return (
       <Card key={index} className={classes.historyCard}>
         <Button
@@ -219,16 +207,14 @@ const GameDisplayPage = (props) => {
     );
   });
 
-  const currentBoard = history[stepNumber].board;
-
   /**
    * cpuが石を打った後、勝利判定を行い、勝者を表す文字列を返す。
    * @param {*} board
-   * @param {*} count1
+   * @param {*} count
    * @param {*} victoryCondition
    * @returns {string} 勝者を表す文字列
    */
-  const cpuAction = (board, count1, victoryCondition) => {
+  const cpuAction = (board, count, victoryCondition) => {
     const cpu = new Cpu(board, victoryCondition, "CPU", "Player1");
     let cpuX = 0;
     let cpuY = 0;
@@ -243,7 +229,7 @@ const GameDisplayPage = (props) => {
       }
     }
     let winner = calculateWinner(board, victoryCondition, cpuX, cpuY);
-    if (count1 <= 0) {
+    if (count <= 0) {
       winner = "Player2";
     }
     return winner;
@@ -259,7 +245,7 @@ const GameDisplayPage = (props) => {
       const copiedCount1 = count1;
       const copiedCount2 = count2;
       const dataset = event.currentTarget.dataset;
-      const x = parseInt(dataset.x);
+      const x = parseInt(dataset.x, 10);
 
       if (canPutStone(nextBoard, x)) {
         const y = getLowestEmptyYIndex(nextBoard, x);
@@ -304,7 +290,7 @@ const GameDisplayPage = (props) => {
       const nextBoard = copyBoard(currentBoard);
       const copiedCount1 = count1;
       const dataset = event.currentTarget.dataset;
-      const x = parseInt(dataset.x);
+      const x = parseInt(dataset.x, 10);
 
       if (canPutStone(nextBoard, x)) {
         const y = getLowestEmptyYIndex(nextBoard, x);
@@ -325,12 +311,11 @@ const GameDisplayPage = (props) => {
             ])
           );
           setGameWinner(winner);
-          console.log(gameWinner);
           handleModalOpen();
           stopTimer1();
         } else if (winner == null) {
-          let winner = cpuAction(nextBoard, copiedCount1, props.victoryCondition);
-          if (winner != null) {
+          const newWinner = cpuAction(nextBoard, copiedCount1, props.victoryCondition);
+          if (newWinner != null) {
             setHistory(
               renewedHistory.concat([
                 {
@@ -339,11 +324,10 @@ const GameDisplayPage = (props) => {
                 },
               ])
             );
-            setGameWinner(winner);
-            console.log(gameWinner);
+            setGameWinner(newWinner);
             handleModalOpen();
             stopTimer1();
-          } else if (winner == null) {
+          } else if (newWinner == null) {
             setHistory(
               renewedHistory.concat([
                 {
@@ -358,6 +342,8 @@ const GameDisplayPage = (props) => {
     }
   };
 
+  const currentBoard = history[stepNumber].board;
+
   return (
     <Grid
       sx={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}
@@ -367,7 +353,7 @@ const GameDisplayPage = (props) => {
         item
         sx={{ display: "flex", justifyContent: "center", flexDirection: "row", alignItems: "flex-end", mb: 2, mt: 2 }}
         xs={10}
-        
+
       >
         <Card className={classes.infoCard}>
           <Grid container justifyContent="center" alignItems="flex-end">
@@ -381,11 +367,7 @@ const GameDisplayPage = (props) => {
               <Typography variant="h5" component="h5" sx={{ textAlign: "right" }}>
                 Next Player
               </Typography>
-              <DisplayPlayerTurn
-                playerTurn={isPlayer1Next}
-                players={props.players}
-                item
-              />
+              <DisplayPlayerTurn playerTurn={isPlayer1Next} players={props.players} item />
               <Grid>
                 {displayTimer(count1)}/{displayTimer(count2)}
               </Grid>
@@ -394,7 +376,9 @@ const GameDisplayPage = (props) => {
               <Button
                 variant="contained"
                 color="success"
-                onClick={() => {setOpenHistory(!openHistory)}}
+                onClick={() => {
+                  setOpenHistory(!openHistory);
+                }}
               >
                 {props.openHistory ? "Close" : "History"}
               </Button>
@@ -414,18 +398,14 @@ const GameDisplayPage = (props) => {
         </Grid>
         <Grid item>
           {/* それぞれの手番の情報を表示する */}
-          {openHistory &&
-            <Grid
-              justifyContent="center"
-              alignItems="center"
-              style={{ width: "100%" }}
-            >
+          {openHistory && (
+            <Grid justifyContent="center" alignItems="center" style={{ width: "100%" }}>
               <Paper className={classes.history}>
                 <Typography variant="h4">History</Typography>
                 <List>{moves}</List>
               </Paper>
             </Grid>
-          }
+          )}
         </Grid>
       </Grid>
 

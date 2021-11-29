@@ -1,9 +1,11 @@
 import React from "react";
+
+import { Box } from "@mui/material";
 import "./Board.css";
-import Box from "@mui/material/Box";
 // import { createTheme } from "@mui/material";
 import "../../animation.css";
 // const theme = createTheme();
+
 const styles = {
   cell: {
     width: "100%",
@@ -63,7 +65,7 @@ const Cell = (props) => {
 
       }}
     >
-      <Box sx={styles.white}>{props.value !== null && <Box sx={color} className="drop"></Box>}</Box>
+      <Box sx={styles.white}>{props.value !== null && <Box sx={color} className="drop" />}</Box>
     </Box>
   );
 };
