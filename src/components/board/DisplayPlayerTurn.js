@@ -16,18 +16,14 @@ const playerTurnStyle = {
 const DisplayPlayerTurn = (props) => {
   let playerTurn = "";
   let backgroundColor = "";
-  if (props.gameMode == "cpu") {
+  if (props.playerTurn) {
     playerTurn = props.players[0];
     backgroundColor = "red";
-  } else if (props.gameMode == "player") {
-    if (props.playerTurn) {
-      playerTurn = props.players[0];
-      backgroundColor = "red";
-    } else {
-      playerTurn = props.players[1];
-      backgroundColor = "yellow";
-    }
+  } else {
+    playerTurn = props.players[1];
+    backgroundColor = "yellow";
   }
+
   return (
     <Grid sx={{ ml: 3 }}>
       <Grid sx={playerTurnStyle}>

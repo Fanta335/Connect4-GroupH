@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from "react";
 import "./GameDisplayPage.css";
 import { Button, Grid, List, Card, Paper, Typography, createTheme } from "@mui/material";
 
@@ -10,6 +11,8 @@ import createNewBoard from "../utils/createNewBoard";
 import canPutStone from "../utils/canPutStone";
 import getLowestEmptyYIndex from "../utils/getLowestEmptyYIndex";
 import calculateWinner from "../utils/calculateWinner";
+import copyHistory from "../utils/copyHistroy";
+import copyBoard from "../utils/copyBoard";
 import { makeStyles } from "@mui/styles";
 import displayTimer from "../utils/displayTimer";
 import useTimer from "../utils/useTimer";
@@ -48,6 +51,7 @@ const GameDisplayPage = (props) => {
   const [count1, startTimer1, stopTimer1, resetTimer1, setTimer1] = useTimer(timeControl);
   const [count2, startTimer2, stopTimer2, resetTimer2, setTimer2] = useTimer(timeControl);
   const [gameWinner, setGameWinner] = useState("");
+  const [cpuTurn, setCpuTurn] = useState(true);
   const [history, setHistory] = useState([
     {
       board: initBoard,
@@ -63,6 +67,42 @@ const GameDisplayPage = (props) => {
   const [canStartGame, setCanStartGame] = useState(false);
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
+
+  // cpuTurnをトリガーにcpuが石を打つ
+  useEffect(() => {
+    const renewedHistory = copyHistory(history);
+    const currentBoard = renewedHistory[stepNumber].board;
+    const nextBoard = copyBoard(currentBoard);
+    const copiedCount1 = count1;
+    const copiedCount2 = count2;
+
+    if (props.gameMode == "cpu") {
+      setTimeout(function () {
+        const cpuX = getCpuX(nextBoard, props.victoryCondition, props.cpuStrength);
+        const cpuY = getLowestEmptyYIndex(nextBoard, cpuX);
+        nextBoard[cpuX][cpuY] = "Player2";
+        updateRenewedHistory(renewedHistory, nextBoard, copiedCount1, copiedCount2);
+        setStepNumber(stepNumber + 1);
+        let winner = calculateWinner(nextBoard, props.victoryCondition, cpuX, cpuY);
+        if (winner != null) {
+          setGameWinner(winner);
+          console.log(gameWinner);
+          handleModalOpen();
+          stopTimer1();
+        } else if (winner == null) {
+          const tempPlayer1IsNext = !isPlayer1Next;
+          if (tempPlayer1IsNext) {
+            startTimer1();
+            stopTimer2();
+          } else {
+            stopTimer1();
+            startTimer2();
+          }
+          setIsPlayer1Next(!isPlayer1Next);
+        }
+      }, 2000);
+    }
+  }, [cpuTurn]);
 
   const controlTimer = (player1IsNext) => {
     if (player1IsNext) {
@@ -94,41 +134,6 @@ const GameDisplayPage = (props) => {
     resetTimer1();
     resetTimer2();
     startTimer1();
-  };
-
-  /**
-   * ボードの深いコピーを作成する
-   * @param {string[][]} board - 盤面を表す二次元配列
-   * @returns 複製した盤面を表す二次元配列
-   */
-  const copyBoard = (board) => {
-    const copiedBoard = [];
-    for (const array of board) {
-      copiedBoard.push([...array]);
-    }
-    return copiedBoard;
-  };
-
-  /**
-   * historyの深いコピーを作成する
-   * @param {*} history
-   * @returns 複製したhistoryオブジェクト
-   */
-  const copyHistory = (history) => {
-    let copiedHistory = [];
-    for (const historyItem of history) {
-      const board = historyItem.board;
-      const copiedBoard = copyBoard(board);
-      const copiedCount1 = historyItem.count1;
-      const copiedCount2 = historyItem.count2;
-
-      copiedHistory.push({
-        board: copiedBoard,
-        count1: copiedCount1,
-        count2: copiedCount2,
-      });
-    }
-    return copiedHistory;
   };
 
   // historyを任意の手番に遡る際にhistoryを更新する
@@ -163,16 +168,6 @@ const GameDisplayPage = (props) => {
     }
   };
 
-  /**
-   * CPUが選択した座標に石を置く
-   * @param {*} board - 盤面を表す二次元配列
-   * @param {*} x - 石を置く座標x
-   * @param {*} y - 石を置く座標y
-   */
-  const putStoneByCpu = (board, x, y) => {
-    board[x][y] = "Player2";
-  };
-
   const jumpTo = (step) => {
     setStepNumber(step);
     setIsPlayer1Next(step % 2 === 0);
@@ -205,138 +200,74 @@ const GameDisplayPage = (props) => {
   const currentBoard = history[stepNumber].board;
 
   /**
-   * cpuが石を打った後、勝利判定を行い、勝者を表す文字列を返す。
+   * cpuが打つx座標を返す
    * @param {*} board
-   * @param {*} count1
    * @param {*} victoryCondition
-   * @returns {string} 勝者を表す文字列
+   * @param {*} cpuStrength
+   * @return {*} cpuが打つ石のx座標
    */
-  const cpuAction = (board, count1, victoryCondition) => {
+  const getCpuX = (board, victoryCondition, cpuStrength) => {
     const cpu = new Cpu(board, victoryCondition, "CPU", "Player1");
-    let cpuX = 0;
-    let cpuY = 0;
-    const condition = true;
-    // 難易度がeasyの時、石のx座標がランダムに選択されるので、石が置けるまで探索する
-    while (condition) {
-      cpuX = cpu.cpuThink(props.cpuStrength);
-      cpuY = getLowestEmptyYIndex(board, cpuX);
-      if (cpuY !== false) {
-        putStoneByCpu(board, cpuX, cpuY);
-        break;
-      }
-    }
-    let winner = calculateWinner(board, victoryCondition, cpuX, cpuY);
-    if (count1 <= 0) {
-      winner = "Player2";
-    }
-    return winner;
+    const cpuX = cpu.cpuThink(cpuStrength);
+    return cpuX;
+  };
+
+  /**
+   * historyの更新
+   * @param {*} history - 最新のhistoryのコピー
+   * @param {*} board - 新しいボード情報
+   * @param {*} count1 - プレイヤー1の持ち時間
+   * @param {*} count2 - プレイヤー2の持ち時間
+   */
+  const updateRenewedHistory = (history, board, count1, count2) => {
+    setHistory(
+      history.concat([
+        {
+          board: board,
+          count1: count1,
+          count2: count2,
+        },
+      ])
+    );
   };
 
   const handleClick = (event) => {
-    if (props.gameMode === "player") {
-      if (gameWinner !== "") return;
+    if (gameWinner !== "") return;
 
-      const renewedHistory = copyHistory(history);
-      const currentBoard = renewedHistory[stepNumber].board;
-      const nextBoard = copyBoard(currentBoard);
-      const copiedCount1 = count1;
-      const copiedCount2 = count2;
-      const dataset = event.currentTarget.dataset;
-      const x = parseInt(dataset.x);
+    const renewedHistory = copyHistory(history);
+    const currentBoard = renewedHistory[stepNumber].board;
+    const nextBoard = copyBoard(currentBoard);
+    const copiedCount1 = count1;
+    const copiedCount2 = count2;
+    const dataset = event.currentTarget.dataset;
+    const x = parseInt(dataset.x);
 
-      if (canPutStone(nextBoard, x)) {
-        const y = getLowestEmptyYIndex(nextBoard, x);
-        putStone(nextBoard, x, y);
-        setHistory(
-          renewedHistory.concat([
-            {
-              board: nextBoard,
-              count1: copiedCount1,
-              count2: copiedCount2,
-            },
-          ])
-        );
-        setStepNumber(stepNumber + 1);
+    if (canPutStone(nextBoard, x)) {
+      const y = getLowestEmptyYIndex(nextBoard, x);
+      putStone(nextBoard, x, y);
+      updateRenewedHistory(renewedHistory, nextBoard, copiedCount1, copiedCount2);
+      setStepNumber(stepNumber + 1);
 
-        let winner = calculateWinner(nextBoard, props.victoryCondition, x, y);
-        if (count1 <= 0 && count2 > 0) {
-          winner = "Player2";
-        } else if (count2 <= 0 && count1 > 0) {
-          winner = "Player1";
-        }
-        if (winner != null) {
-          setGameWinner(winner);
-          console.log(gameWinner);
-          handleModalOpen();
-          stopTimer1();
-          stopTimer2();
-        } else if (winner == null) {
-          // player1IsNextの情報が即時反映されないため、一時的な変数を作成
-          // 関数内・条件式内だとuseEffectが使えなかったため、この方法で対処した
-          const tempPlayer1IsNext = !isPlayer1Next;
-          controlTimer(tempPlayer1IsNext);
-          setIsPlayer1Next(!isPlayer1Next);
-        }
+      let winner = calculateWinner(nextBoard, props.victoryCondition, x, y);
+      if (count1 <= 0 && count2 > 0) {
+        winner = "Player2";
+      } else if (count2 <= 0 && count1 > 0) {
+        winner = "Player1";
       }
-
-      // cpu対戦時のクリックイベント
-    } else if (props.gameMode === "cpu") {
-      if (gameWinner !== "") return;
-
-      const renewedHistory = copyHistory(history);
-      const currentBoard = renewedHistory[stepNumber].board;
-      const nextBoard = copyBoard(currentBoard);
-      const copiedCount1 = count1;
-      const dataset = event.currentTarget.dataset;
-      const x = parseInt(dataset.x);
-
-      if (canPutStone(nextBoard, x)) {
-        const y = getLowestEmptyYIndex(nextBoard, x);
-        putStone(nextBoard, x, y);
-        setStepNumber(stepNumber + 1);
-
-        let winner = calculateWinner(nextBoard, props.victoryCondition, x, y);
-        if (count1 <= 0) {
-          winner = "Player2";
-        }
-        if (winner !== null) {
-          setHistory(
-            renewedHistory.concat([
-              {
-                board: nextBoard,
-                count1: copiedCount1,
-              },
-            ])
-          );
-          setGameWinner(winner);
-          console.log(gameWinner);
-          handleModalOpen();
-          stopTimer1();
-        } else if (winner == null) {
-          let winner = cpuAction(nextBoard, copiedCount1, props.victoryCondition);
-          if (winner != null) {
-            setHistory(
-              renewedHistory.concat([
-                {
-                  board: nextBoard,
-                  count1: copiedCount1,
-                },
-              ])
-            );
-            setGameWinner(winner);
-            console.log(gameWinner);
-            handleModalOpen();
-            stopTimer1();
-          } else if (winner == null) {
-            setHistory(
-              renewedHistory.concat([
-                {
-                  board: nextBoard,
-                  count1: copiedCount1,
-                },
-              ])
-            );
-          }
+      if (winner != null) {
+        setGameWinner(winner);
+        console.log(gameWinner);
+        handleModalOpen();
+        stopTimer1();
+        stopTimer2();
+      } else if (winner == null) {
+        // player1IsNextの情報が即時反映されないため、一時的な変数を作成
+        // 関数内・条件式内だとuseEffectが使えなかったため、この方法で対処した
+        const tempPlayer1IsNext = !isPlayer1Next;
+        controlTimer(tempPlayer1IsNext);
+        setIsPlayer1Next(!isPlayer1Next);
+        if (props.gameMode === "cpu" && isPlayer1Next == true) {
+          setCpuTurn(!cpuTurn);
         }
       }
     }
@@ -368,7 +299,7 @@ const GameDisplayPage = (props) => {
               <Typography variant="h5" component="h5" sx={{ textAlign: "right" }}>
                 Next Player
               </Typography>
-              <DisplayPlayerTurn playerTurn={isPlayer1Next} players={props.players} gameMode={props.gameMode} item />
+              <DisplayPlayerTurn playerTurn={isPlayer1Next} players={props.players} item />
               {displayTimer(count1)}/{displayTimer(count2)}
             </Grid>
           </Grid>
