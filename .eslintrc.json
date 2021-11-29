@@ -20,6 +20,7 @@
   "rules": {
     "arrow-body-style": ["error", "as-needed"],
     "react/react-in-jsx-scope": "off",
+    "react/jsx-props-no-spreading": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "no-plusplus": [2, { "allowForLoopAfterthoughts": true }],
     "no-param-reassign": "off",
