@@ -1,3 +1,5 @@
+import isPlayerFirst from "./isPlayerFirst";
+
 /**
  * Boardを新規作成する
  * @param {number} x - boardの幅
@@ -5,10 +7,9 @@
  * @param {string} gameMode - 対戦形式
  * @return {string[][]} - 新規作成したboard
  */
-import isPlayerFirst from "./isPlayerFirst";
 
 function createNewBoard(x, y, gameMode) {
-  let board = new Array(x);
+  const board = new Array(x);
   for (let i = 0; i < x; i++) {
     board[i] = new Array(y).fill(null);
   }

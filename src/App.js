@@ -1,14 +1,14 @@
 // import { Route, Routes } from "react-router-dom";
 
-import { createTheme } from "@mui/material";
 import React, { useState } from "react";
-// import Home from "./pages/Home.js";
-// import Settings from "./pages/Settings";
-// import GameDisplayPage from "./pages/GameDisplayPage";
-// import Header from "./components/Header";
-import Container from "./Container";
+
+import { createTheme } from "@mui/material";
+
 import { ThemeProvider } from "@emotion/react";
-function App() {
+
+import Container from "./Container";
+
+const App = () => {
   const [darkMode, setDarkMode] = useState(false);
   const darkTheme = createTheme({
     palette: {
@@ -22,6 +22,6 @@ function App() {
       <Container darkMode={darkMode} setDarkMode={setDarkMode} />
     </ThemeProvider>
   );
-}
+};
 
 export default App;

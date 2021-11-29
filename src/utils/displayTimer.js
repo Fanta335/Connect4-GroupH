@@ -6,13 +6,12 @@
 const displayTimer = (count) => {
   if (count >= 0) {
     const minute = Math.floor(count / 60);
-    const displayMinute = minute >= 10 ? String(minute) : "0" + String(minute);
+    const displayMinute = minute >= 10 ? String(minute) : `0${String(minute)}`;
     const second = count % 60;
-    const displaySecond = second >= 10 ? String(second) : "0" + String(second);
+    const displaySecond = second >= 10 ? String(second) : `0${String(second)}`;
     return `${displayMinute}:${displaySecond}`;
-  } else {
-    return "Time is up!";
   }
+  return "Time is up!";
 };
 
 export default displayTimer;
