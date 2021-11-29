@@ -193,7 +193,6 @@ const GameDisplayPage = (props) => {
     if (canPutStone(nextBoard, x)) {
       const y = getLowestEmptyYIndex(nextBoard, x);
       putStone(nextBoard, x, y);
-      // updateRenewedHistory(renewedHistory, nextBoard, copiedCount1, copiedCount2);
       setHistory(
         renewedHistory.concat([
           {
@@ -242,7 +241,6 @@ const GameDisplayPage = (props) => {
         const cpuX = getCpuX(nextBoard, props.victoryCondition, props.cpuStrength);
         const cpuY = getLowestEmptyYIndex(nextBoard, cpuX);
         nextBoard[cpuX][cpuY] = "Player2";
-        // updateRenewedHistory(renewedHistory, nextBoard, copiedCount1, copiedCount2);
         setHistory(
           renewedHistory.concat([
             {
