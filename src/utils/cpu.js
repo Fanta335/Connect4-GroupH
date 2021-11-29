@@ -25,7 +25,7 @@ class Cpu {
     this.victoryCondition = victoryCondition;
     this.cpuName = cpuName;
     this.playerName = playerName;
-    this.myTurn = false; // false: CPU, true: Player
+    this.playerTurn = false;
     this.state = GameState.game;
   }
 
@@ -33,7 +33,7 @@ class Cpu {
    * ターンを交代する
    */
   changeTurn() {
-    this.myTurn = !this.myTurn;
+    this.playerTurn = !this.playerTurn;
   }
 
   /**
@@ -52,7 +52,11 @@ class Cpu {
    * @param {number} y - 石を置く座標y
    */
   putStone(x, y) {
-    this.myTurn ? (this.board[x][y] = this.playerName) : (this.board[x][y] = this.cpuName);
+    if (this.playerTurn) {
+      this.board[x][y] = this.playerName;
+    } else {
+      this.board[x][y] = this.cpuName;
+    }
     this.checkState(x, y);
     this.changeTurn();
   }
@@ -87,11 +91,11 @@ class Cpu {
     const winner = calculateWinner(this.board, this.victoryCondition, x, y);
     if (winner === this.cpuName) {
       return maxScore - depth;
-    } else if (winner == this.playerName) {
-      return depth - maxScore;
-    } else {
-      return 0;
     }
+    if (winner === this.playerName) {
+      return depth - maxScore;
+    }
+    return 0;
   }
 
   /**
@@ -103,11 +107,14 @@ class Cpu {
     const maxScore = this.board.length * this.board[0].length + 1;
     if (mode === "easy") {
       return this.random(); // ランダム
-    } else if (mode === "medium") {
+    }
+    if (mode === "medium") {
       return this.minmax(0, -maxScore, maxScore, null, null, 3); // 3手先まで読む
-    } else if (mode === "hard") {
+    }
+    if (mode === "hard") {
       return this.minmax(0, -maxScore, maxScore, null, null, 10); // 10手先まで読む
     }
+    return null;
   }
 
   /**
@@ -137,60 +144,65 @@ class Cpu {
    * @returns
    */
   minmax(depth, alpha, beta, x, y, limit) {
+    let innerAlpha = alpha;
+    let innerBeta = beta;
+
     if (this.state !== GameState.game || depth >= limit) {
       return this.evaluate(x, y, depth);
     }
 
-    let best_value = 0;
+    let bestValue = 0;
     let value = null;
-    this.myTurn ? (value = Infinity) : (value = -Infinity);
+    if (this.playerTurn) {
+      value = Infinity;
+    } else {
+      value = -Infinity;
+    }
 
     // 盤面の中央から探索した方が、早く良い手を見つけられる可能性が高いので、中央から外に向かって探索していく
-    let searchXIndex = [...Array(this.board.length)].map((_, i) => i); //=> [0, 1, 2, 3, 4]
-    searchXIndex.sort(function (a, b) {
-      return (
+    const searchXIndex = [...Array(this.board.length)].map((_, i) => i); //= > [0, 1, 2, 3, 4]
+    searchXIndex.sort(
+      (a, b) =>
         Math.abs(a - searchXIndex[Math.floor(searchXIndex.length / 2)]) -
         Math.abs(b - searchXIndex[Math.floor(searchXIndex.length / 2)])
-      );
-    }); //=> [2, 1, 3, 0, 4]
+    ); //= > [2, 1, 3, 0, 4]
 
     for (let i = 0; i < searchXIndex.length; i++) {
-      const x = searchXIndex[i];
-      if (canPutStone(this.board, x)) {
-        const y = getLowestEmptyYIndex(this.board, x);
-        this.putStone(x, y);
-        const childValue = this.minmax(depth + 1, alpha, beta, x, y, limit);
+      const candidateX = searchXIndex[i];
+      if (canPutStone(this.board, candidateX)) {
+        const candidateY = getLowestEmptyYIndex(this.board, candidateX);
+        this.putStone(candidateX, candidateY);
+        const childValue = this.minmax(depth + 1, innerAlpha, innerBeta, candidateX, candidateY, limit);
 
-        if (this.myTurn) {
-          if (beta <= childValue) {
-            this.undoValue(x, y);
+        if (this.playerTurn) {
+          if (innerBeta <= childValue) {
+            this.undoValue(candidateX, candidateY);
             return childValue;
           }
           if (childValue > value) {
             value = childValue;
-            best_value = x;
-            alpha = childValue;
+            bestValue = candidateX;
+            innerAlpha = childValue;
           }
         } else {
-          if (alpha >= childValue) {
-            this.undoValue(x, y);
+          if (innerAlpha >= childValue) {
+            this.undoValue(candidateX, candidateY);
             return childValue;
           }
           if (childValue < value) {
             value = childValue;
-            best_value = x;
-            beta = childValue;
+            bestValue = candidateX;
+            innerBeta = childValue;
           }
         }
-        this.undoValue(x, y);
+        this.undoValue(candidateX, candidateY);
       }
     }
 
     if (depth === 0) {
-      return best_value;
-    } else {
-      return value;
+      return bestValue;
     }
+    return value;
   }
 
   static getRandomInt(max) {

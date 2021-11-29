@@ -1,10 +1,12 @@
 import React from "react";
-import "./Board.css";
-import Cell from "./../board/Cell.js";
+
 import { Grid } from "@mui/material";
 
-const Column = (props) => {
-  return (
+import Cell from "./Cell";
+
+import "./Board.css";
+
+const Column = (props) => (
     <Grid
       item
       sx={{ display: "flex", flexDirection: "column-reverse" }}
@@ -14,7 +16,6 @@ const Column = (props) => {
         <Cell value={y} key={i} x={props.x} y={i} onClick={props.onClick} />
       ))}
     </Grid>
-  );
-};
+);
 
 export default Column;

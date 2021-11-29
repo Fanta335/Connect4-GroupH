@@ -1,20 +1,33 @@
 import React, { useState } from "react";
-import { AppBar, Toolbar, Typography, useMediaQuery, Button, IconButton, MenuItem, Menu, Switch, Grid } from "@mui/material";
+import { useNavigate, Link } from "react-router-dom";
 
-import { makeStyles } from "@mui/styles";
-import { useTheme, createTheme } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useNavigate,Link } from "react-router-dom";
-const theme = createTheme();
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  useMediaQuery,
+  Button,
+  IconButton,
+  MenuItem,
+  Menu,
+  Switch,
+  Grid,
+} from "@mui/material";
+import { useTheme, createTheme } from "@mui/material/styles";
+import { makeStyles } from "@mui/styles";
+
+
+const createdTheme = createTheme();
 const useStyles = makeStyles({
   headerRoot: {
     flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: createdTheme.spacing(2),
   },
   headerTitle: {
-    [theme.breakpoints.down("sm")]: {
+    [createdTheme.breakpoints.down("sm")]: {
       flexGrow: 1,
     },
   },
@@ -28,7 +41,7 @@ const useStyles = makeStyles({
 // TODO: Yuki Ueno: ゲーム画面からホーム画面、設定画面に遷移する際にタイマーを停止する処理を追加する（参考：https://weblike-curtaincall.ssl-lolipop.jp/blog/?p=2056）
 
 const Header = (props) => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -64,17 +77,16 @@ const Header = (props) => {
     <div className={classes.headerRoot}>
       <AppBar position="static">
         <Toolbar>
-          <Link to="/" style={{textDecoration: 'none', color: "white"}}>
+          <Link to="/" style={{ textDecoration: "none", color: "white" }}>
             <Typography variant="h6">Connect 4</Typography>
           </Link>
           <Switch checked={props.darkMode} onChange={() => props.setDarkMode(!props.darkMode)} />
           <Grid>
             {/* 開発する際、対戦形式を確認しやすくするため便宜的に書き込んでいます。 */}
             <Typography variant="h6" component="h6">
-              {props.gameMode == "cpu" ? "vsCPU" : "vsPlayer"}
+              {props.gameMode === "cpu" ? "vsCPU" : "vsPlayer"}
             </Typography>
           </Grid>
-          <>
             {isMobile ? (
               <div className={classes.headerOptions}>
                 <IconButton
@@ -112,24 +124,23 @@ const Header = (props) => {
                 </Menu>
               </div>
             ) : (
-              <div className={classes.headerOptions}>
-                {menuItems.map((menuItem, index) => {
-                  const { menuTitle, pageURL } = menuItem;
-                  return (
-                    <Button
-                      key={index}
-                      variant="contained"
-                      color="success"
-                      onClick={() => handleButtonClick(pageURL)}
-                      style={{ marginLeft: "20px" }}
-                    >
-                      {menuTitle}
-                    </Button>
-                  );
-                })}
-              </div>
-            )}
-          </>
+            <div className={classes.headerOptions}>
+              {menuItems.map((menuItem, index) => {
+                const { menuTitle, pageURL } = menuItem;
+                return (
+                  <Button
+                    key={index}
+                    variant="contained"
+                    color="success"
+                    onClick={() => handleButtonClick(pageURL)}
+                    style={{ marginLeft: "20px" }}
+                  >
+                    {menuTitle}
+                  </Button>
+                );
+              })}
+            </div>
+          )}
         </Toolbar>
       </AppBar>
     </div>

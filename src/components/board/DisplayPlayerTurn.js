@@ -1,4 +1,5 @@
 import React from "react";
+
 import { Grid, Box } from "@mui/material";
 
 const playerTurnStyle = {
@@ -12,14 +13,14 @@ const playerTurnStyle = {
   background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 80%)",
   color: "white",
 };
-// TODO: Player1とPlayer2を定数ファイルに入れる
+
 const DisplayPlayerTurn = (props) => {
   let playerTurn = "";
   let backgroundColor = "";
-  if (props.gameMode == "cpu") {
+  if (props.gameMode === "cpu") {
     playerTurn = props.players[0];
     backgroundColor = "red";
-  } else if (props.gameMode == "player") {
+  } else if (props.gameMode === "player") {
     if (props.playerTurn) {
       playerTurn = props.players[0];
       backgroundColor = "red";
@@ -32,7 +33,7 @@ const DisplayPlayerTurn = (props) => {
     <Grid sx={{ ml: 3 }}>
       <Grid sx={playerTurnStyle}>
         {playerTurn}
-        <Box sx={{ borderRadius: "100%", background: backgroundColor, height: "2em", width: "2em", ml: 2 }}></Box>
+        <Box sx={{ borderRadius: "100%", background: backgroundColor, height: "2em", width: "2em", ml: 2 }} />
       </Grid>
     </Grid>
   );
