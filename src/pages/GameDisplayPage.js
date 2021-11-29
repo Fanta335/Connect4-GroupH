@@ -180,49 +180,51 @@ const GameDisplayPage = (props) => {
   };
 
   const handleClick = (event) => {
-    if (gameWinner !== "") return;
+    if (isPlayer1Next === true) {
+      if (gameWinner !== "") return;
 
-    const renewedHistory = copyHistory(history);
-    const currentBoard = renewedHistory[stepNumber].board;
-    const nextBoard = copyBoard(currentBoard);
-    const copiedCount1 = count1;
-    const copiedCount2 = count2;
-    const dataset = event.currentTarget.dataset;
-    const x = parseInt(dataset.x, 10);
+      const renewedHistory = copyHistory(history);
+      const currentBoard = renewedHistory[stepNumber].board;
+      const nextBoard = copyBoard(currentBoard);
+      const copiedCount1 = count1;
+      const copiedCount2 = count2;
+      const dataset = event.currentTarget.dataset;
+      const x = parseInt(dataset.x, 10);
 
-    if (canPutStone(nextBoard, x)) {
-      const y = getLowestEmptyYIndex(nextBoard, x);
-      putStone(nextBoard, x, y);
-      setHistory(
-        renewedHistory.concat([
-          {
-            board: nextBoard,
-            count1: copiedCount1,
-            count2: copiedCount2,
-          },
-        ])
-      );
-      setStepNumber(stepNumber + 1);
+      if (canPutStone(nextBoard, x)) {
+        const y = getLowestEmptyYIndex(nextBoard, x);
+        putStone(nextBoard, x, y);
+        setHistory(
+          renewedHistory.concat([
+            {
+              board: nextBoard,
+              count1: copiedCount1,
+              count2: copiedCount2,
+            },
+          ])
+        );
+        setStepNumber(stepNumber + 1);
 
-      let winner = calculateWinner(nextBoard, props.victoryCondition, x, y);
-      if (count1 <= 0 && count2 > 0) {
-        winner = "Player2";
-      } else if (count2 <= 0 && count1 > 0) {
-        winner = "Player1";
-      }
-      if (winner != null) {
-        setGameWinner(winner);
-        handleModalOpen();
-        stopTimer1();
-        stopTimer2();
-      } else if (winner == null) {
-        // player1IsNextの情報が即時反映されないため、一時的な変数を作成
-        // 関数内・条件式内だとuseEffectが使えなかったため、この方法で対処した
-        const tempPlayer1IsNext = !isPlayer1Next;
-        controlTimer(tempPlayer1IsNext);
-        setIsPlayer1Next(!isPlayer1Next);
-        if (props.gameMode === "cpu" && isPlayer1Next === true) {
-          setCpuTurn(!cpuTurn);
+        let winner = calculateWinner(nextBoard, props.victoryCondition, x, y);
+        if (count1 <= 0 && count2 > 0) {
+          winner = "Player2";
+        } else if (count2 <= 0 && count1 > 0) {
+          winner = "Player1";
+        }
+        if (winner != null) {
+          setGameWinner(winner);
+          handleModalOpen();
+          stopTimer1();
+          stopTimer2();
+        } else if (winner == null) {
+          // player1IsNextの情報が即時反映されないため、一時的な変数を作成
+          // 関数内・条件式内だとuseEffectが使えなかったため、この方法で対処した
+          const tempPlayer1IsNext = !isPlayer1Next;
+          controlTimer(tempPlayer1IsNext);
+          setIsPlayer1Next(!isPlayer1Next);
+          if (props.gameMode === "cpu" && isPlayer1Next === true) {
+            setCpuTurn(!cpuTurn);
+          }
         }
       }
     }
