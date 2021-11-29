@@ -7,12 +7,12 @@ import copyBoard from "./copyBoard";
  */
 
 const copyHistory = (history) => {
-  let copiedHistory = [];
-  for (const historyItem of history) {
-    const board = historyItem.board;
+  const copiedHistory = [];
+  for (let i = 0; i < history.length; i++) {
+    const board = history[i].board;
     const copiedBoard = copyBoard(board);
-    const copiedCount1 = historyItem.count1;
-    const copiedCount2 = historyItem.count2;
+    const copiedCount1 = history[i].count1;
+    const copiedCount2 = history[i].count2;
 
     copiedHistory.push({
       board: copiedBoard,
