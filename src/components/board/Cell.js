@@ -34,6 +34,8 @@ const styles = {
     top: "0",
     zIndex: "10",
     background: "transparent",
+    boxShadow: "1px 1px 2px rgba( 0, 0, 0, 1) inset",
+    border: "4px solid transparent",
   },
 };
 
@@ -41,8 +43,10 @@ const Cell = (props) => {
   const discStyle = styles.disc;
   if (props.value === "Player1") {
     discStyle.background = props.playerColor1;
+    discStyle.border = `4px solid ${props.playerColor1}`;
   } else if (props.value === "Player2") {
     discStyle.background = props.playerColor2;
+    discStyle.border = `4px solid ${props.playerColor2}`;
   }
   return (
     <Box
@@ -53,7 +57,7 @@ const Cell = (props) => {
       data-x={props.x}
       data-y={props.y}
       onClick={props.onClick}
-      
+
     >
       <Box sx={styles.white}>{props.value !== null && <Box sx={discStyle} className="drop" />}</Box>
     </Box>
