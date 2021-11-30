@@ -48,7 +48,7 @@ const Header = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const timeControl = props.timeMinControl * 60 + props.timeSecControl;
   const [count1, startTimer1, stopTimer1, resetTimer1, setTimer1] = useTimer(timeControl);
@@ -122,6 +122,9 @@ const Header = (props) => {
                 open={open}
                 onClose={() => setAnchorEl(null)}
               >
+                {location.pathname === "/game" &&
+                  <MenuItem onClick={props.handleHowToPlayModalOpen}>How to play?</MenuItem>
+                }
                 {menuItems.map((menuItem, index) => {
                   const { menuTitle, pageURL } = menuItem;
                   return (
