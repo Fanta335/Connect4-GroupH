@@ -376,10 +376,14 @@ const GameDisplayPage = (props) => {
           </Grid>
         </Card>
       </Grid>
-
       <Grid container justifyContent="center" style={{ marginBottom: "200px" }}>
         <Grid item xs={10} md={6}>
-          <Board board={currentBoard} onClick={canStartGame ? handleClick : null} />
+          <Board
+            board={currentBoard}
+            playerColor1={props.colors[0]}
+            playerColor2={props.colors[1]}
+            onClick={canStartGame ? handleClick : null}
+          />
         </Grid>
         <Grid item>
           {/* それぞれの手番の情報を表示する */}
