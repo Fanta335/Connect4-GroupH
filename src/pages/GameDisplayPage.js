@@ -342,7 +342,13 @@ const GameDisplayPage = (props) => {
         <Card className={classes.infoCard}>
           <Grid container justifyContent="center" flexDirection="column" alignItems="center">
             <Grid sx={{ mb: 1 }}>
-              <DisplayPlayer1Turn playerTurn={isPlayer1Next} players={props.players} gameMode={props.gameMode} item />
+              <DisplayPlayer1Turn
+                playerTurn={isPlayer1Next}
+                players={props.players}
+                playerColor1={props.colors[0]}
+                gameMode={props.gameMode}
+                item
+              />
             </Grid>
             <Grid>{displayTimer(count1)}</Grid>
           </Grid>
@@ -370,7 +376,13 @@ const GameDisplayPage = (props) => {
         <Card className={classes.infoCard}>
           <Grid container justifyContent="center" flexDirection="column" alignItems="center">
             <Grid sx={{ mb: 1 }}>
-              <DisplayPlayer2Turn playerTurn={isPlayer1Next} players={props.players} gameMode={props.gameMode} item />
+              <DisplayPlayer2Turn
+                playerTurn={isPlayer1Next}
+                players={props.players}
+                playerColor1={props.colors[1]}
+                gameMode={props.gameMode}
+                item
+              />
             </Grid>
             <Grid>{displayTimer(count2)}</Grid>
           </Grid>
