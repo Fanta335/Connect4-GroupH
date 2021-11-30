@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import {
@@ -17,6 +17,7 @@ import {
 import { useTheme, createTheme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 
+import useTimer from "../utils/useTimer";
 
 const createdTheme = createTheme();
 const useStyles = makeStyles({
@@ -42,11 +43,16 @@ const useStyles = makeStyles({
 
 const Header = (props) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const timeControl = props.timeMinControl * 60 + props.timeSecControl;
+  const [count1, startTimer1, stopTimer1, resetTimer1, setTimer1] = useTimer(timeControl);
+  const [count2, startTimer2, stopTimer2, resetTimer2, setTimer2] = useTimer(timeControl);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -57,6 +63,10 @@ const Header = (props) => {
     setAnchorEl(null);
   };
   const handleButtonClick = (pageURL) => {
+    if (location.pathname !== "/game") {
+      stopTimer1();
+      stopTimer2();
+    }
     navigate(pageURL);
   };
 
@@ -87,43 +97,43 @@ const Header = (props) => {
               {props.gameMode === "cpu" ? "vsCPU" : "vsPlayer"}
             </Typography>
           </Grid>
-            {isMobile ? (
-              <div className={classes.headerOptions}>
-                <IconButton
-                  edge="start"
-                  color="inherit"
-                  aria-label="menu"
-                  className={classes.menuButton}
-                  onClick={handleMenu}
-                >
-                  <MenuIcon />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={open}
-                  onClose={() => setAnchorEl(null)}
-                >
-                  {menuItems.map((menuItem, index) => {
-                    const { menuTitle, pageURL } = menuItem;
-                    return (
-                      <MenuItem key={index} onClick={() => handleMenuClick(pageURL)}>
-                        {menuTitle}
-                      </MenuItem>
-                    );
-                  })}
-                </Menu>
-              </div>
-            ) : (
+          {isMobile ? (
+            <div className={classes.headerOptions}>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                className={classes.menuButton}
+                onClick={handleMenu}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={open}
+                onClose={() => setAnchorEl(null)}
+              >
+                {menuItems.map((menuItem, index) => {
+                  const { menuTitle, pageURL } = menuItem;
+                  return (
+                    <MenuItem key={index} onClick={() => handleMenuClick(pageURL)}>
+                      {menuTitle}
+                    </MenuItem>
+                  );
+                })}
+              </Menu>
+            </div>
+          ) : (
             <div className={classes.headerOptions}>
               {menuItems.map((menuItem, index) => {
                 const { menuTitle, pageURL } = menuItem;

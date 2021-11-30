@@ -29,8 +29,14 @@ const useStyles = makeStyles({
     backgroundColor: "rgba(0,0,0,0.7)",
   },
   history: {
-    marginLeft: "40px",
     padding: theme.spacing(3),
+    marginTop: "40px",
+    [theme.breakpoints.up("md")]: {
+      marginLeft: "40px",
+    },
+    [theme.breakpoints.down("md")]: {
+      marginLeft: "0",
+    },
   },
   historyCard: {
     textAlign: "center",
@@ -362,8 +368,13 @@ const GameDisplayPage = (props) => {
         </Card>
       </Grid>
       <Grid container justifyContent="center" style={{ marginBottom: "200px" }}>
-        <Grid item xs={10}>
-          <Board board={currentBoard} onClick={canStartGame ? handleClick : null} />
+        <Grid item xs={10} md={6}>
+          <Board
+            board={currentBoard}
+            playerColor1={props.colors[0]}
+            playerColor2={props.colors[1]}
+            onClick={canStartGame ? handleClick : null}
+          />
         </Grid>
         <Grid item>
           {/* それぞれの手番の情報を表示する */}
