@@ -133,7 +133,7 @@ const Settings = (props) => {
                       }}
                     />
                   </Grid>
-                  ))}
+                ))}
               </Grid>
             }
           />

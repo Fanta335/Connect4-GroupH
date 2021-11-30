@@ -3,12 +3,18 @@ import React from "react";
 import { Box } from "@mui/material";
 
 import "./Board.css";
+<<<<<<< HEAD
 
+=======
+>>>>>>> develop
 // import { createTheme } from "@mui/material";
 import "../../animation.css";
 
+<<<<<<< HEAD
 // const theme = createTheme();
 
+=======
+>>>>>>> develop
 const styles = {
   cell: {
     width: "100%",
