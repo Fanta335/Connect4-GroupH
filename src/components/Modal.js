@@ -158,9 +158,9 @@ const HowToPlayModal = (props) => {
                 <Grid container spacing={2}>
                   <Grid item xs={6}>
                     <TransitionButton
-                        // disabled={activeStep === 0}
-                        onClick={handleBack}
-                        name="戻る"
+                      disabled={activeStep === 0}
+                      onClick={handleBack}
+                      name="戻る"
                     />
                   </Grid>
                   <Grid item xs={6}>
