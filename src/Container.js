@@ -25,11 +25,11 @@ const Container = (props) => {
 
   const handleHowToPlayModalOpen = () => {
     setHowToPlayModalOpen(true);
-  }
+  };
 
   const handleHowToPlayModalClose = () => {
     setHowToPlayModalOpen(false);
-  }
+  };
 
   const handleInputGameModeAndCpuStrengthChange = (event) => {
     const name = event.target.name;
@@ -87,7 +87,7 @@ const Container = (props) => {
         timeSecControl={timeSecControl}
         handleHowToPlayModalOpen={handleHowToPlayModalOpen}
       />
-      <HowToPlayModal handleClose={handleHowToPlayModalClose} open={howToPlayModalOpen}/>
+      <HowToPlayModal handleClose={handleHowToPlayModalClose} open={howToPlayModalOpen} />
       <Routes>
         <Route
           path="/"
