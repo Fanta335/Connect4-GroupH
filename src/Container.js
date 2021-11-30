@@ -20,6 +20,15 @@ const Container = (props) => {
   const [playerName2, setPlayerName2] = useState("Player2");
   const [playerColor1, setPlayerColor1] = useState("red");
   const [playerColor2, setPlayerColor2] = useState("yellow");
+  const [howToPlayModalOpen, setHowToPlayModalOpen] = useState(false);
+
+  const handleHowToPlayModalOpen = () => {
+    setHowToPlayModalOpen(true);
+  }
+
+  const handleHowToPlayModalClose = () => {
+    setHowToPlayModalOpen(false);
+  }
 
   const handleInputGameModeAndCpuStrengthChange = (event) => {
     const name = event.target.name;
@@ -75,6 +84,7 @@ const Container = (props) => {
         gameMode={gameMode}
         timeMinControl={timeMinControl}
         timeSecControl={timeSecControl}
+        handleHowToPlayModalOpen={handleHowToPlayModalOpen}
       />
       <Routes>
         <Route
@@ -110,6 +120,8 @@ const Container = (props) => {
               timeSecControl={timeSecControl}
               gameMode={gameMode}
               cpuStrength={cpuStrength}
+              howToPlayModalOpen={howToPlayModalOpen}
+              handleHowToPlayModalClose={handleHowToPlayModalClose}
             />
           }
         />

@@ -92,7 +92,6 @@ const Header = (props) => {
           </Link>
           <Switch checked={props.darkMode} onChange={() => props.setDarkMode(!props.darkMode)} />
           <Grid>
-            {/* 開発する際、対戦形式を確認しやすくするため便宜的に書き込んでいます。 */}
             <Typography variant="h6" component="h6">
               {props.gameMode === "cpu" ? "vsCPU" : "vsPlayer"}
             </Typography>
@@ -135,6 +134,13 @@ const Header = (props) => {
             </div>
           ) : (
             <div className={classes.headerOptions}>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={props.handleHowToPlayModalOpen}
+              >
+                How to play?
+              </Button>
               {menuItems.map((menuItem, index) => {
                 const { menuTitle, pageURL } = menuItem;
                 return (
