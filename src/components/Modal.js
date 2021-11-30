@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
+import CloseIcon from '@mui/icons-material/Close';
 import { Typography, Modal, Box, Grid } from "@mui/material";
 
 import TransitionButton from "./TransitionButton";
@@ -67,7 +68,10 @@ const GameFinishModal = (props) => {
     >
       <Box item sx={style}>
         <Grid container spacing={2}>
-          <Grid item sm={12} alignItems="center">
+          <Grid style={{width: "100%", textAlign: "right"}}>
+            <CloseIcon onClick={props.handleClose}/>
+          </Grid>
+          <Grid item sm={12} alignItems="center" style={{paddingTop: "0"}}>
             <Typography id="modal-modal-title" variant="h4" align="center" color="primary">
               {statement}
             </Typography>
