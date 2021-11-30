@@ -3,6 +3,8 @@ import React from "react";
 import { Box } from "@mui/material";
 
 import "./Board.css";
+
+// import { createTheme } from "@mui/material";
 import "../../animation.css";
 
 const styles = {
