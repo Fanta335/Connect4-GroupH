@@ -48,7 +48,7 @@ const Header = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const timeControl = props.timeMinControl * 60 + props.timeSecControl;
   const [count1, startTimer1, stopTimer1, resetTimer1, setTimer1] = useTimer(timeControl);
@@ -92,7 +92,6 @@ const Header = (props) => {
           </Link>
           <Switch checked={props.darkMode} onChange={() => props.setDarkMode(!props.darkMode)} />
           <Grid>
-            {/* 開発する際、対戦形式を確認しやすくするため便宜的に書き込んでいます。 */}
             <Typography variant="h6" component="h6">
               {props.gameMode === "cpu" ? "vsCPU" : "vsPlayer"}
             </Typography>
@@ -123,6 +122,9 @@ const Header = (props) => {
                 open={open}
                 onClose={() => setAnchorEl(null)}
               >
+                {location.pathname === "/game" &&
+                  <MenuItem onClick={props.handleHowToPlayModalOpen}>How to play?</MenuItem>
+                }
                 {menuItems.map((menuItem, index) => {
                   const { menuTitle, pageURL } = menuItem;
                   return (
@@ -135,6 +137,13 @@ const Header = (props) => {
             </div>
           ) : (
             <div className={classes.headerOptions}>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={props.handleHowToPlayModalOpen}
+              >
+                How to play?
+              </Button>
               {menuItems.map((menuItem, index) => {
                 const { menuTitle, pageURL } = menuItem;
                 return (
