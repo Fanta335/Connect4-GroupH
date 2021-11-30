@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import Header from "./components/Header";
+import { HowToPlayModal } from "./components/Modal";
 import GameDisplayPage from "./pages/GameDisplayPage";
 import Home from "./pages/Home";
 import Settings from "./pages/Settings";
@@ -20,6 +21,15 @@ const Container = (props) => {
   const [playerName2, setPlayerName2] = useState("Player2");
   const [playerColor1, setPlayerColor1] = useState("red");
   const [playerColor2, setPlayerColor2] = useState("yellow");
+  const [howToPlayModalOpen, setHowToPlayModalOpen] = useState(false);
+
+  const handleHowToPlayModalOpen = () => {
+    setHowToPlayModalOpen(true);
+  }
+
+  const handleHowToPlayModalClose = () => {
+    setHowToPlayModalOpen(false);
+  }
 
   const handleInputGameModeAndCpuStrengthChange = (event) => {
     const name = event.target.name;
@@ -75,7 +85,9 @@ const Container = (props) => {
         gameMode={gameMode}
         timeMinControl={timeMinControl}
         timeSecControl={timeSecControl}
+        handleHowToPlayModalOpen={handleHowToPlayModalOpen}
       />
+      <HowToPlayModal handleClose={handleHowToPlayModalClose} open={howToPlayModalOpen}/>
       <Routes>
         <Route
           path="/"
@@ -110,6 +122,8 @@ const Container = (props) => {
               timeSecControl={timeSecControl}
               gameMode={gameMode}
               cpuStrength={cpuStrength}
+              howToPlayModalOpen={howToPlayModalOpen}
+              handleHowToPlayModalClose={handleHowToPlayModalClose}
             />
           }
         />
