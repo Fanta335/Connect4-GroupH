@@ -19,6 +19,10 @@ const style = {
   p: 4,
 };
 
+const betweenParagraphSpace = {
+  marginBottom: "0.8rem"
+}
+
 const GameStartModal = (props) => (
   <Modal
     open={props.open}
@@ -95,7 +99,7 @@ const GameFinishModal = (props) => {
 };
 
 const getSteps = () => (
-  ['ルール1','ルール2','ルール3','ルール4']
+  ['基本ルール','対戦モード','カスタマイズ','History機能']
 );
 
 const HowToPlayModal = (props) => {
@@ -114,13 +118,41 @@ const HowToPlayModal = (props) => {
   const getStepContent = (stepIndex) => {
     switch(stepIndex){
       case 0:
-        return (<Typography>コンテンツ1</Typography>);
+        return (
+          <Grid>
+            <Typography variant="h5" component="h5" style={{textAlign: "center", padding:"20px 0"}}>基本ルール</Typography>
+            <Typography style={betweenParagraphSpace}>1:ホーム画面からゲームモードを選択します</Typography>
+            <Typography style={betweenParagraphSpace}>2:石を置きたい列をクリックし、Player1とPlayer2もしくはCPUで交互に石を置いていきます</Typography>
+            <Typography style={betweenParagraphSpace}>3:先に縦・横・斜めのいずれかで4つ連続で石を並べた方が勝ちです</Typography>
+          </Grid>
+        );
       case 1:
-        return (<Typography>コンテンツ2</Typography>);
+        return (
+          <Grid>
+            <Typography variant="h5" component="h5" style={{textAlign: "center",padding:"20px 0"}}>選べる対戦モード</Typography>
+            <Typography>・vs Player</Typography>
+            <Typography style={betweenParagraphSpace}>プレイヤー同士で対戦できます</Typography>
+            <Typography>・vs CPU</Typography>
+            <Typography style={betweenParagraphSpace}>CPUとの対戦ができます。強さはEasy/Medium/Hardから選べます</Typography>
+          </Grid>
+        );
       case 2:
-        return (<Typography>コンテンツ3</Typography>);
+        return (
+          <Grid>
+            <Typography variant="h5" component="h5" style={{textAlign: "center",padding:"20px 0"}}>自由にカスタマイズ</Typography>
+            <Typography style={betweenParagraphSpace}>Settingsボタンをクリックすると設定を変更できます。好みの設定で遊んでみましょう！</Typography>
+            <Typography style={betweenParagraphSpace}>Playerの名前、ゲームボードの大きさ、勝利条件、持ち時間を変更できます</Typography>
+            <Typography style={{paddingBottom: "20px"}}>左上のスイッチでダークモードとライトモードを切り替えられます。</Typography>
+          </Grid>
+        );
       case 3:
-        return (<Typography>コンテンツ4</Typography>);
+        return (
+          <Grid>
+            <Typography variant="h5" component="h5" style={{textAlign: "center",padding:"20px 0"}}>History機能で手番を記録！</Typography>
+            <Typography style={betweenParagraphSpace}>historyボタンを押すと、対戦の履歴を確認できます。</Typography>
+            <Typography style={{paddingBottom: "20px"}}>好きな手番に戻り、その手番から試合をし直すこともできます</Typography>
+          </Grid>
+        );
       default:
         return "Unknown stepIndex";
     }
@@ -134,9 +166,8 @@ const HowToPlayModal = (props) => {
       aria-describedby="modal-modal-description"
     >
       <Box item sx={style}>
-        <Grid container>
-          <Grid sm={2} />
-          <Grid lg={8} sm={8} spacing={10}>
+        <Grid container justifyContent="center" spacing={3}>
+          <Grid item lg={10} sm={10} xs={8}>
             <Stepper activeStep={activeStep} alternativeLabel>
               {steps.map((label) => (
                 <Step key={label}>
@@ -146,7 +177,7 @@ const HowToPlayModal = (props) => {
             </Stepper>
             {activeStep === steps.length ? (
               <div>
-                <Typography >全ステップの表示を完了</Typography>
+                <Typography variant="h5" component="h5" style={{textAlign: "center",padding:"20px 0"}}>Let&apos;s enjoy playing!</Typography>
                 <TransitionButton variant="contained" color="primary" name="Return to Game" onClick={() => {
                   handleReset();
                   props.handleClose();
@@ -154,7 +185,7 @@ const HowToPlayModal = (props) => {
               </div>
             ) : (
               <div>
-                <Typography >{getStepContent(activeStep)}</Typography>
+                <div>{getStepContent(activeStep)}</div>
                 <Grid container spacing={2}>
                   <Grid item xs={6}>
                     <TransitionButton
