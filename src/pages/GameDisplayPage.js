@@ -6,7 +6,7 @@ import { Button, Grid, List, Card, createTheme, Typography } from "@mui/material
 import { makeStyles } from "@mui/styles";
 
 import Board from "../components/board/Board";
-import DisplayPlayerTurn from "../components/board/DisplayPlayerTurn";
+import { DisplayPlayer1Turn, DisplayPlayer2Turn } from "../components/board/DisplayPlayerTurn";
 import InitButton from "../components/board/InitButton";
 import HistoryDrawer from "../components/HistoryDrawer";
 import { GameStartModal, GameFinishModal } from "../components/Modal";
@@ -19,6 +19,7 @@ import Cpu from "../utils/cpu";
 import createNewBoard from "../utils/createNewBoard";
 import displayTimer from "../utils/displayTimer";
 import getLowestEmptyYIndex from "../utils/getLowestEmptyYIndex";
+import isPlayerFirst from "../utils/isPlayerFirst";
 import useTimer from "../utils/useTimer";
 
 // import setSnackbarOpen from "../components/Snackbar";
@@ -48,10 +49,12 @@ const useStyles = makeStyles({
 });
 
 const GameDisplayPage = (props) => {
-  const initBoard = createNewBoard(props.boardSize[0], props.boardSize[1], props.gameMode);
+  const initBoard = createNewBoard(props.boardSize[0], props.boardSize[1]);
   const timeControl = props.timeMinControl * 60 + props.timeSecControl;
-
-  const [isPlayer1Next, setIsPlayer1Next] = useState(true);
+  const tempIsPlayer1NextInitialFlag = isPlayerFirst();
+  const [isPlayer1Next, setIsPlayer1Next] = useState(tempIsPlayer1NextInitialFlag);
+  const [IsPlayer1NextInitialFlag, setIsPlayer1NextInitialFlag] = useState(tempIsPlayer1NextInitialFlag);
+  const [ifInitGame, setIfInitGame] = useState(false);
   const [count1, startTimer1, stopTimer1, resetTimer1, setTimer1] = useTimer(timeControl);
   const [count2, startTimer2, stopTimer2, resetTimer2, setTimer2] = useTimer(timeControl);
   const [gameWinner, setGameWinner] = useState("");
@@ -85,6 +88,11 @@ const GameDisplayPage = (props) => {
   const handleHistoryDrawerOpen = () => setHistoryDrawerOpen(true);
   const handleHistoryDrawerClose = () => setHistoryDrawerOpen(false);
 
+  const pageName = "Game";
+  useEffect(() => {
+    document.title = `Connect4 - ${pageName}`;
+  });
+
   const controlTimer = (player1IsNext) => {
     if (player1IsNext) {
       startTimer1();
@@ -99,6 +107,7 @@ const GameDisplayPage = (props) => {
    * ゲーム状態の初期化
    */
   const initGame = () => {
+    const tempIsPlayerFirst = isPlayerFirst();
     setHistory([
       {
         board: initBoard,
@@ -107,14 +116,16 @@ const GameDisplayPage = (props) => {
       },
     ]);
     setGameWinner("");
-    setIsPlayer1Next(true);
+    setIsPlayer1Next(tempIsPlayerFirst);
     setStepNumber(0);
     setCanStartGame(true);
     stopTimer1();
     stopTimer2();
     resetTimer1();
     resetTimer2();
-    startTimer1();
+    controlTimer(tempIsPlayerFirst);
+    setIsPlayer1NextInitialFlag(tempIsPlayerFirst);
+    setIfInitGame(!ifInitGame);
   };
 
   // historyを任意の手番に遡る際にhistoryを更新する
@@ -151,14 +162,24 @@ const GameDisplayPage = (props) => {
 
   const jumpTo = (step) => {
     setStepNumber(step);
-    setIsPlayer1Next(step % 2 === 0);
+    let tempIsPlayer1Next;
+    if (props.gameMode === "player") {
+      tempIsPlayer1Next = step % 2 === 0;
+      setIsPlayer1Next(tempIsPlayer1Next);
+    } else if (props.gameMode === "cpu") {
+      if (IsPlayer1NextInitialFlag === false) {
+        tempIsPlayer1Next = step % 2 !== 0;
+        setIsPlayer1Next(tempIsPlayer1Next);
+      } else {
+        tempIsPlayer1Next = step % 2 === 0;
+        setIsPlayer1Next(tempIsPlayer1Next);
+      }
+      setIfInitGame(!ifInitGame);
+    }
     setHistory(updateHistory(history, step));
     setGameWinner("");
     setTimer1(history[step].count1);
     setTimer2(history[step].count2);
-    // player1IsNextの情報が即時反映されないため、一時的な変数を作成
-    // 関数内だとuseEffectが使えなかったため、この方法で対処した
-    const tempIsPlayer1Next = step % 2 === 0;
     controlTimer(tempIsPlayer1Next);
   };
 
@@ -242,7 +263,43 @@ const GameDisplayPage = (props) => {
     }
   };
 
-  // cpuTurnをトリガーにcpuが石を打つ
+  // cpuが先攻の時、ifInitGame(initGameの実行で更新)をフラグにcpuが先に石を打つ
+  useEffect(() => {
+    const renewedHistory = copyHistory(history);
+    const currentBoard = renewedHistory[stepNumber].board;
+    const nextBoard = copyBoard(currentBoard);
+    const copiedCount1 = count1;
+    const copiedCount2 = count2;
+
+    if (props.gameMode === "cpu" && isPlayer1Next === false && gameStartModalOpen === false) {
+      setTimeout(() => {
+        const cpuX = getCpuX(nextBoard, props.victoryCondition, props.cpuStrength);
+        const cpuY = getLowestEmptyYIndex(nextBoard, cpuX);
+        nextBoard[cpuX][cpuY] = "Player2";
+        setHistory(
+          renewedHistory.concat([
+            {
+              board: nextBoard,
+              count1: copiedCount1,
+              count2: copiedCount2,
+            },
+          ])
+        );
+        setStepNumber(stepNumber + 1);
+        const tempPlayer1IsNext = !isPlayer1Next;
+        if (tempPlayer1IsNext) {
+          startTimer1();
+          stopTimer2();
+        } else {
+          stopTimer1();
+          startTimer2();
+        }
+        setIsPlayer1Next(!isPlayer1Next);
+      }, 3000);
+    }
+  }, [ifInitGame]);
+
+  // cpuTurnをフラグにcpuが石を打つ
   useEffect(() => {
     const renewedHistory = copyHistory(history);
     const currentBoard = renewedHistory[stepNumber].board;
@@ -298,24 +355,45 @@ const GameDisplayPage = (props) => {
         xs={10}
       >
         <Card className={classes.infoCard}>
-          <Grid container justifyContent="center" alignItems="flex-end">
-            <Grid flexDirection="column">
-              <InitButton onClick={initGame} item />
+          <Grid container justifyContent="center" flexDirection="column" alignItems="center">
+            <Grid sx={{ mb: 1 }}>
+              <DisplayPlayer1Turn
+                playerTurn={isPlayer1Next}
+                players={props.players}
+                playerColor1={props.colors[0]}
+                gameMode={props.gameMode}
+                item
+              />
             </Grid>
-            <Grid flexDirection="column">
-              <Typography variant="h5" component="h5" sx={{ textAlign: "right" }}>
-                Next Player
-              </Typography>
-              <DisplayPlayerTurn playerTurn={isPlayer1Next} players={props.players} gameMode={props.gameMode} item />
-              <Grid>
-                {displayTimer(count1)}/{displayTimer(count2)}
-              </Grid>
+            <Grid>{displayTimer(count1)}</Grid>
+          </Grid>
+        </Card>
+
+        <Card className={classes.infoCard} sx={{ mx: 5 }}>
+          <Grid container justifyContent="center" flexDirection="column" alignItems="center">
+            <Grid sx={{ mb: 2 }}>
+              <InitButton onClick={initGame} item />
             </Grid>
             <Grid>
               <Button variant="contained" color="success" onClick={handleHistoryDrawerOpen}>
                 {props.openHistory ? "Close" : "History"}
               </Button>
             </Grid>
+          </Grid>
+        </Card>
+
+        <Card className={classes.infoCard}>
+          <Grid container justifyContent="center" flexDirection="column" alignItems="center">
+            <Grid sx={{ mb: 1 }}>
+              <DisplayPlayer2Turn
+                playerTurn={isPlayer1Next}
+                players={props.players}
+                playerColor1={props.colors[1]}
+                gameMode={props.gameMode}
+                item
+              />
+            </Grid>
+            <Grid>{displayTimer(count2)}</Grid>
           </Grid>
         </Card>
       </Grid>

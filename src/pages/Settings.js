@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import {
@@ -43,6 +43,11 @@ const useStyles = makeStyles({
 });
 
 const Settings = (props) => {
+  const pageName = "Settings";
+  useEffect(() => {
+    document.title = `Connect4 - ${pageName}`;
+  });
+
   const victoryConditionMax = props.boardSize[1] <= props.boardSize[0] ? props.boardSize[1] : props.boardSize[0];
 
   const classes = useStyles();

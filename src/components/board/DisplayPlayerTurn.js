@@ -14,29 +14,30 @@ const playerTurnStyle = {
   color: "white",
 };
 
-const DisplayPlayerTurn = (props) => {
-  let playerTurn = "";
-  let backgroundColor = "";
-  if (props.playerTurn) {
-    playerTurn = props.players[0];
-    backgroundColor = "red";
-  } else {
-    backgroundColor = "yellow";
-    if (props.gameMode === "player") {
-      playerTurn = props.players[1];
-    } else if (props.gameMode === "cpu") {
-      playerTurn = "CPU";
-    }
-  }
-
+const DisplayPlayer1Turn = (props) => {
+  const playerTurn1 = props.players[0];
+  const playerColor1 = props.playerColor1;
   return (
-    <Grid sx={{ ml: 3 }}>
+    <Grid sx={{ opacity: props.playerTurn ? 1 : 0.2 }}>
       <Grid sx={playerTurnStyle}>
-        {playerTurn}
-        <Box sx={{ borderRadius: "100%", background: backgroundColor, height: "2em", width: "2em", ml: 2 }} />
+        {playerTurn1}
+        <Box sx={{ borderRadius: "100%", background: playerColor1, height: "2em", width: "2em", ml: 2 }} />
       </Grid>
     </Grid>
   );
 };
 
-export default DisplayPlayerTurn;
+const DisplayPlayer2Turn = (props) => {
+  const playerTurn2 = props.gameMode === "player" ? props.players[1] : "CPU";
+  const playerColor2 = props.playerColor1;
+  return (
+    <Grid sx={{ opacity: props.playerTurn ? 0.2 : 1 }}>
+      <Grid sx={playerTurnStyle}>
+        {playerTurn2}
+        <Box sx={{ borderRadius: "100%", background: playerColor2, height: "2em", width: "2em", ml: 2 }} />
+      </Grid>
+    </Grid>
+  );
+};
+
+export { DisplayPlayer1Turn, DisplayPlayer2Turn };
