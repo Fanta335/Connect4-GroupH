@@ -137,15 +137,13 @@ const Header = (props) => {
             </div>
           ) : (
             <div className={classes.headerOptions}>
-              {location.pathname === "/game" &&
-                <Button
-                  variant="contained"
-                  color="success"
-                  onClick={props.handleHowToPlayModalOpen}
-                >
-                  How to play?
-                </Button>
-              }
+              <Button
+                variant="contained"
+                color="success"
+                onClick={props.handleHowToPlayModalOpen}
+              >
+                How to play?
+              </Button>
               {menuItems.map((menuItem, index) => {
                 const { menuTitle, pageURL } = menuItem;
                 return (

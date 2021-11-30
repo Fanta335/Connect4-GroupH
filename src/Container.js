@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import Header from "./components/Header";
+import { HowToPlayModal } from "./components/Modal";
 import GameDisplayPage from "./pages/GameDisplayPage";
 import Home from "./pages/Home";
 import Settings from "./pages/Settings";
@@ -86,6 +87,7 @@ const Container = (props) => {
         timeSecControl={timeSecControl}
         handleHowToPlayModalOpen={handleHowToPlayModalOpen}
       />
+      <HowToPlayModal handleClose={handleHowToPlayModalClose} open={howToPlayModalOpen}/>
       <Routes>
         <Route
           path="/"

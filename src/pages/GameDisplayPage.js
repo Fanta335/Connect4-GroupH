@@ -8,7 +8,7 @@ import { makeStyles } from "@mui/styles";
 import Board from "../components/board/Board";
 import DisplayPlayerTurn from "../components/board/DisplayPlayerTurn";
 import InitButton from "../components/board/InitButton";
-import { GameStartModal, GameFinishModal, HowToPlayModal } from "../components/Modal";
+import { GameStartModal, GameFinishModal } from "../components/Modal";
 
 import calculateWinner from "../utils/calculateWinner";
 import canPutStone from "../utils/canPutStone";
@@ -336,7 +336,6 @@ const GameDisplayPage = (props) => {
           )}
         </Grid>
       </Grid>
-      <HowToPlayModal handleClose={props.handleHowToPlayModalClose} open={props.howToPlayModalOpen}/>
 
       <GameStartModal handleClose={handleGameStartModalClose} handleStart={initGame} open={gameStartModalOpen} />
 
