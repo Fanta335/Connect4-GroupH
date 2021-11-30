@@ -8,6 +8,8 @@ import Column from "./Column";
 const useStyles = makeStyles((theme) => ({
   board: {
     boxShadow: "inset 0 10px 0 rgba(255,255,255,0.2), 0 10px 10px rgba(0, 0, 0, 0.19)",
+    border: "10px solid #1565c0",
+    borderRadius: "4%",
   },
 }));
 
