@@ -4,7 +4,6 @@ import { Box } from "@mui/material";
 
 import "./Board.css";
 
-// import { createTheme } from "@mui/material";
 import "../../animation.css";
 
 const styles = {
@@ -32,6 +31,7 @@ const styles = {
     left: "0",
     top: "0",
     zIndex: "10",
+    background: "transparent"
   },
 };
 
