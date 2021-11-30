@@ -3,18 +3,10 @@ import React from "react";
 import { Box } from "@mui/material";
 
 import "./Board.css";
-<<<<<<< HEAD
 
-=======
->>>>>>> develop
 // import { createTheme } from "@mui/material";
 import "../../animation.css";
 
-<<<<<<< HEAD
-// const theme = createTheme();
-
-=======
->>>>>>> develop
 const styles = {
   cell: {
     width: "100%",
@@ -30,36 +22,25 @@ const styles = {
     width: "75%",
     background: "white",
     borderRadius: "100%",
-    position: "relative"
+    position: "relative",
   },
-  red: {
+  disc: {
     width: "100%",
     paddingTop: "100%",
-    background: "red",
     borderRadius: "100%",
     position: "absolute",
-    left : "0",
+    left: "0",
     top: "0",
-    zIndex: "10"
-  },
-  yellow: {
-    width: "100%",
-    paddingTop: "100%",
-    background: "yellow",
-    borderRadius: "100%",
-    position: "absolute",
-    left : "0",
-    top: "0",
-    zIndex: "10"
+    zIndex: "10",
   },
 };
 
 const Cell = (props) => {
-  let color = styles.white;
+  const discStyle = styles.disc;
   if (props.value === "Player1") {
-    color = styles.red;
+    discStyle.background = props.playerColor1;
   } else if (props.value === "Player2") {
-    color = styles.yellow;
+    discStyle.background = props.playerColor2;
   }
   return (
     <Box
@@ -70,11 +51,9 @@ const Cell = (props) => {
       data-x={props.x}
       data-y={props.y}
       onClick={props.onClick}
-      style={{
-
-      }}
+      style={{}}
     >
-      <Box sx={styles.white}>{props.value !== null && <Box sx={color} className="drop" />}</Box>
+      <Box sx={styles.white}>{props.value !== null && <Box sx={discStyle} className="drop" />}</Box>
     </Box>
   );
 };
