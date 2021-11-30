@@ -1,8 +1,13 @@
 import React from "react";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
 import { Typography, Grid, TextField, createTheme, Paper, InputAdornment } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+
+
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 
 import Form from "../components/Form";
 import TransitionButton from "../components/TransitionButton";
@@ -35,7 +40,7 @@ const Settings = (props) => {
   const victoryConditionMax = props.boardSize[1] <= props.boardSize[0] ? props.boardSize[1] : props.boardSize[0];
 
   const classes = useStyles();
-  
+
   const buttons = [
     {
       name: "Back",
@@ -44,6 +49,21 @@ const Settings = (props) => {
       name: "Confirm",
     },
   ];
+
+  const basicSchema = Yup.object().shape();
+  const { control, handleSubmit } = useForm({
+    mode: "onBlur",
+    defaultValues: {
+      playerName1: "Player1",
+      playerName2: "Player2",
+      boardSizeHeight: 6,
+      boardSizeWidth: 7,
+      victoryCondition: 4,
+      timeMinControl: 20,
+      timeSecControl: 0
+    },
+    resolver: yupResolver(basicSchema)
+  });
 
   return (
     <Grid container alignItems="center" justifyContent="center" className={classes.root}>
