@@ -77,7 +77,7 @@ const Settings = (props) => {
         label: "Height",
         name: "boardSizeHeight",
         inputProps: {
-          max: 100,
+          max: 10,
           min: 6,
         },
       },
@@ -85,7 +85,7 @@ const Settings = (props) => {
         label: "Width",
         name: "boardSizeWidth",
         inputProps: {
-          max: 100,
+          max: 10,
           min: 7,
         },
       },
@@ -193,12 +193,12 @@ const Settings = (props) => {
             }
           />
         </Grid>
-        <div className={classes.formBlock}>
-          <Grid container item alignItems="center" justifyContent="center" xs={8} sm={3}>
-            <Form
-              label="Victory Condition"
-              input={
-                <Grid item>
+        <Grid container item alignItems="center" justifyContent="center">
+          <Form
+            label="Victory Condition"
+            input={
+              <Grid container alignItems="center" justifyContent="flex-start" spacing={3} className={classes.formBlock}>
+                <Grid item xs={12} md={6}>
                   <TextField
                     variant="outlined"
                     type="number"
@@ -218,10 +218,10 @@ const Settings = (props) => {
                     style={{ width: "100%" }}
                   />
                 </Grid>
-              }
-            />
-          </Grid>
-        </div>
+              </Grid>
+            }
+          />
+        </Grid>
         <Grid container item alignItems="center" justifyContent="center">
           <Form
             label="Time Control"
@@ -275,7 +275,7 @@ const Settings = (props) => {
             }
           />
         </Grid>
-        <Grid container item alignItems="center" justifyContent="center" spacing={3}>
+        <Grid container item alignItems="center" justifyContent="center" spacing={3} pt={2}>
           {buttons.map((button, index) => (
             <Grid item xs={12} md={6} key={index}>
               <Link to="/" style={{ textDecoration: "none" }}>
