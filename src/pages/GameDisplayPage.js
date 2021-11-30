@@ -6,7 +6,7 @@ import { Button, Grid, List, Card, Paper, Typography, createTheme } from "@mui/m
 import { makeStyles } from "@mui/styles";
 
 import Board from "../components/board/Board";
-import DisplayPlayerTurn from "../components/board/DisplayPlayerTurn";
+import { DisplayPlayer1Turn, DisplayPlayer2Turn } from "../components/board/DisplayPlayerTurn";
 import InitButton from "../components/board/InitButton";
 import { GameStartModal, GameFinishModal } from "../components/Modal";
 
@@ -340,18 +340,24 @@ const GameDisplayPage = (props) => {
         xs={10}
       >
         <Card className={classes.infoCard}>
-          <Grid container justifyContent="center" alignItems="flex-end">
-            <Grid flexDirection="column">
-              <InitButton onClick={initGame} item />
+          <Grid container justifyContent="center" flexDirection="column" alignItems="center">
+            <Grid sx={{ mb: 1 }}>
+              <DisplayPlayer1Turn
+                playerTurn={isPlayer1Next}
+                players={props.players}
+                playerColor1={props.colors[0]}
+                gameMode={props.gameMode}
+                item
+              />
             </Grid>
-            <Grid flexDirection="column">
-              <Typography variant="h5" component="h5" sx={{ textAlign: "right" }}>
-                Next Player
-              </Typography>
-              <DisplayPlayerTurn playerTurn={isPlayer1Next} players={props.players} gameMode={props.gameMode} item />
-              <Grid>
-                {displayTimer(count1)}/{displayTimer(count2)}
-              </Grid>
+            <Grid>{displayTimer(count1)}</Grid>
+          </Grid>
+        </Card>
+
+        <Card className={classes.infoCard} sx={{ mx: 5 }}>
+          <Grid container justifyContent="center" flexDirection="column" alignItems="center">
+            <Grid sx={{ mb: 2 }}>
+              <InitButton onClick={initGame} item />
             </Grid>
             <Grid>
               <Button
@@ -364,6 +370,21 @@ const GameDisplayPage = (props) => {
                 {props.openHistory ? "Close" : "History"}
               </Button>
             </Grid>
+          </Grid>
+        </Card>
+
+        <Card className={classes.infoCard}>
+          <Grid container justifyContent="center" flexDirection="column" alignItems="center">
+            <Grid sx={{ mb: 1 }}>
+              <DisplayPlayer2Turn
+                playerTurn={isPlayer1Next}
+                players={props.players}
+                playerColor1={props.colors[1]}
+                gameMode={props.gameMode}
+                item
+              />
+            </Grid>
+            <Grid>{displayTimer(count2)}</Grid>
           </Grid>
         </Card>
       </Grid>
