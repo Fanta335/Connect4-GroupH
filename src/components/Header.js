@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate,useLocation, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import {
@@ -63,7 +63,7 @@ const Header = (props) => {
     setAnchorEl(null);
   };
   const handleButtonClick = (pageURL) => {
-    if(location.pathname !== "/game"){
+    if (location.pathname !== "/game") {
       stopTimer1();
       stopTimer2();
     }
@@ -97,43 +97,43 @@ const Header = (props) => {
               {props.gameMode === "cpu" ? "vsCPU" : "vsPlayer"}
             </Typography>
           </Grid>
-            {isMobile ? (
-              <div className={classes.headerOptions}>
-                <IconButton
-                  edge="start"
-                  color="inherit"
-                  aria-label="menu"
-                  className={classes.menuButton}
-                  onClick={handleMenu}
-                >
-                  <MenuIcon />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={open}
-                  onClose={() => setAnchorEl(null)}
-                >
-                  {menuItems.map((menuItem, index) => {
-                    const { menuTitle, pageURL } = menuItem;
-                    return (
-                      <MenuItem key={index} onClick={() => handleMenuClick(pageURL)}>
-                        {menuTitle}
-                      </MenuItem>
-                    );
-                  })}
-                </Menu>
-              </div>
-            ) : (
+          {isMobile ? (
+            <div className={classes.headerOptions}>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                className={classes.menuButton}
+                onClick={handleMenu}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={open}
+                onClose={() => setAnchorEl(null)}
+              >
+                {menuItems.map((menuItem, index) => {
+                  const { menuTitle, pageURL } = menuItem;
+                  return (
+                    <MenuItem key={index} onClick={() => handleMenuClick(pageURL)}>
+                      {menuTitle}
+                    </MenuItem>
+                  );
+                })}
+              </Menu>
+            </div>
+          ) : (
             <div className={classes.headerOptions}>
               {menuItems.map((menuItem, index) => {
                 const { menuTitle, pageURL } = menuItem;

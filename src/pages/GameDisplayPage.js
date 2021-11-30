@@ -30,11 +30,11 @@ const useStyles = makeStyles({
   history: {
     padding: theme.spacing(3),
     marginTop: "40px",
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up("md")]: {
       marginLeft: "40px",
     },
-    [theme.breakpoints.down('md')]: {
-      marginLeft: "0"
+    [theme.breakpoints.down("md")]: {
+      marginLeft: "0",
     },
   },
   historyCard: {
@@ -315,14 +315,12 @@ const GameDisplayPage = (props) => {
           </Grid>
         </Card>
       </Grid>
-      <Grid container justifyContent="center" style={{marginBottom: "200px"}}>
-        <Grid
-          item
-          xs={10}
-          md={6}
-        >
+      <Grid container justifyContent="center" style={{ marginBottom: "200px" }}>
+        <Grid item xs={10} md={6}>
           <Board
             board={currentBoard}
+            playerColor1={props.colors[0]}
+            playerColor2={props.colors[1]}
             onClick={canStartGame ? handleClick : null}
           />
         </Grid>
