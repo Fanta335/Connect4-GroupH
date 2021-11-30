@@ -8,7 +8,6 @@ import "./Board.css";
 import "../../animation.css";
 // const theme = createTheme();
 
-// const theme = createTheme();
 const styles = {
   cell: {
     width: "100%",
