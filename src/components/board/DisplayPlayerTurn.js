@@ -28,7 +28,7 @@ const DisplayPlayer1Turn = (props) => {
 };
 
 const DisplayPlayer2Turn = (props) => {
-  const playerTurn2 = props.players[1];
+  const playerTurn2 = props.gameMode === "player" ? props.players[1] : "CPU";
   const playerColor2 = props.playerColor1;
   return (
     <Grid sx={{ opacity: props.playerTurn ? 0.2 : 1 }}>
