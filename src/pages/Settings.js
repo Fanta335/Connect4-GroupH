@@ -90,20 +90,20 @@ const Settings = (props) => {
             input={
               <Grid container alignItems="center" justifyContent="center" spacing={3} className={classes.formBlock}>
                 {formItems[0].players.map((player, index) => (
-                  <Grid item xs={12} md={6} key={index}>
-                    <TextField
-                      label={player.label}
-                      variant="outlined"
-                      name={player.name}
-                      value={props.players[index]}
-                      onChange={props.onPlayerNameChange}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      style={{ textAlign: "right", width: "100%" }}
-                    />
-                  </Grid>
-                ))}
+                    <Grid item xs={12} md={6} key={index}>
+                      <TextField
+                        label={player.label}
+                        variant="outlined"
+                        name={player.name}
+                        value={props.players[index]}
+                        onChange={props.onPlayerNameChange}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        style={{ textAlign: "right", width: "100%" }}
+                      />
+                    </Grid>
+                  ))}
               </Grid>
             }
           />
