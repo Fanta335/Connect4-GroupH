@@ -69,7 +69,13 @@ const Container = (props) => {
 
   return (
     <>
-      <Header darkMode={props.darkMode} setDarkMode={props.setDarkMode} gameMode={gameMode} />
+      <Header
+        darkMode={props.darkMode}
+        setDarkMode={props.setDarkMode}
+        gameMode={gameMode}
+        timeMinControl={timeMinControl}
+        timeSecControl={timeSecControl}
+      />
       <Routes>
         <Route
           path="/"

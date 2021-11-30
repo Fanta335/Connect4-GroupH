@@ -175,7 +175,12 @@ const Settings = (props) => {
                         shrink: true,
                       }}
                       style={{ textAlign: "right", width: "100%" }}
-                      InputProps={formItem.inputProps}
+                      InputProps={{
+                        inputProps: {
+                          min: formItem.inputProps.min,
+                          max: formItem.inputProps.max,
+                        },
+                      }}
                     />
                   </Grid>
                 ))}
