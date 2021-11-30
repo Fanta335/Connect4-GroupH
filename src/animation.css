@@ -2,7 +2,7 @@
   animation: drop 1.2s linear;
 }
 @keyframes drop {
-  0% { transform: translateY(-800px); }
+  0% { transform: translateY(-100vh); }
   60% { transform: translateY(0px); }
   80% { transform: translateY(-60px); }
   100% { transform: translateY(0px); }
@@ -10,5 +10,5 @@
 
 @keyframes clearboard {
   0% { transform: translateY(0px); }
-  100% { transform: translateY(700px); }
+  100% { transform: translateY(100vh); }
 }
