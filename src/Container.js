@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import Header from "./components/Header";
+import { HowToPlayModal } from "./components/Modal";
 import GameDisplayPage from "./pages/GameDisplayPage";
 import Home from "./pages/Home";
 import Settings from "./pages/Settings";
@@ -18,6 +19,17 @@ const Container = (props) => {
   const [timeSecControl, setTimeSecControl] = useState(0);
   const [playerName1, setPlayerName1] = useState("Player1");
   const [playerName2, setPlayerName2] = useState("Player2");
+  const [playerColor1, setPlayerColor1] = useState("red");
+  const [playerColor2, setPlayerColor2] = useState("yellow");
+  const [howToPlayModalOpen, setHowToPlayModalOpen] = useState(false);
+
+  const handleHowToPlayModalOpen = () => {
+    setHowToPlayModalOpen(true);
+  }
+
+  const handleHowToPlayModalClose = () => {
+    setHowToPlayModalOpen(false);
+  }
 
   const handleInputGameModeAndCpuStrengthChange = (event) => {
     const name = event.target.name;
@@ -28,12 +40,16 @@ const Container = (props) => {
     }
   };
 
-  const handleInputPlayerNameChange = (event) => {
+  const handleInputChange = (event) => {
     const name = event.target.name;
     if (name === "playerName1") {
       setPlayerName1(event.target.value);
     } else if (name === "playerName2") {
       setPlayerName2(event.target.value);
+    } else if (name === "playerColor1") {
+      setPlayerColor1(event.target.value);
+    } else if (name === "playerColor2") {
+      setPlayerColor2(event.target.value);
     }
   };
 
@@ -69,7 +85,9 @@ const Container = (props) => {
         gameMode={gameMode}
         timeMinControl={timeMinControl}
         timeSecControl={timeSecControl}
+        handleHowToPlayModalOpen={handleHowToPlayModalOpen}
       />
+      <HowToPlayModal handleClose={handleHowToPlayModalClose} open={howToPlayModalOpen}/>
       <Routes>
         <Route
           path="/"
@@ -84,9 +102,10 @@ const Container = (props) => {
               boardSize={[boardSizeHeight, boardSizeWidth]}
               victoryCondition={victoryCondition}
               players={[playerName1, playerName2]}
+              colors={[playerColor1, playerColor2]}
               timeMinControl={timeMinControl}
               timeSecControl={timeSecControl}
-              onPlayerNameChange={handleInputPlayerNameChange}
+              handleInputChange={handleInputChange}
               onNumberChange={handleInputNumberChange}
             />
           }
@@ -98,10 +117,13 @@ const Container = (props) => {
               boardSize={[boardSizeWidth, boardSizeHeight]}
               victoryCondition={victoryCondition}
               players={[playerName1, playerName2]}
+              colors={[playerColor1, playerColor2]}
               timeMinControl={timeMinControl}
               timeSecControl={timeSecControl}
               gameMode={gameMode}
               cpuStrength={cpuStrength}
+              howToPlayModalOpen={howToPlayModalOpen}
+              handleHowToPlayModalClose={handleHowToPlayModalClose}
             />
           }
         />
