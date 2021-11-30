@@ -164,7 +164,7 @@ const HowToPlayModal = (props) => {
       onClose={() => {
         props.handleClose();
         handleReset();
-      }
+      }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
