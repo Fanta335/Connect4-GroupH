@@ -147,7 +147,7 @@ const GameDisplayPage = (props) => {
 
   const jumpTo = (step) => {
     setStepNumber(step);
-    let tempIsPlayer1Next = true;
+    let tempIsPlayer1Next;
     if (props.gameMode === "player") {
       tempIsPlayer1Next = step % 2 === 0;
       setIsPlayer1Next(tempIsPlayer1Next);
