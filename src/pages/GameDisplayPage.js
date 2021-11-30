@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useCallback, useState } from "react";
 import "./GameDisplayPage.css";
+import "../font.css";
 
 import { Button, Grid, List, Card, Paper, Typography, createTheme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
