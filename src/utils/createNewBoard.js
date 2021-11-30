@@ -1,5 +1,3 @@
-import isPlayerFirst from "./isPlayerFirst";
-
 /**
  * Boardを新規作成する
  * @param {number} x - boardの幅
@@ -8,17 +6,10 @@ import isPlayerFirst from "./isPlayerFirst";
  * @return {string[][]} - 新規作成したboard
  */
 
-function createNewBoard(x, y, gameMode) {
+function createNewBoard(x, y) {
   const board = new Array(x);
   for (let i = 0; i < x; i++) {
     board[i] = new Array(y).fill(null);
-  }
-  // cpu対戦の時、プレイヤーが後攻だったら、ボードの初期状態をcpuが一石置いた状態にしておく。
-  if (gameMode === "cpu") {
-    if (isPlayerFirst() === false) {
-      const randomNumber = Math.floor(Math.random() * x);
-      board[randomNumber][0] = "Player2";
-    }
   }
   return board;
 }
