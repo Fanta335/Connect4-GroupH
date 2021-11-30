@@ -23,6 +23,7 @@ const styles = {
     background: "white",
     borderRadius: "100%",
     position: "relative",
+    boxShadow: "8px 8px 10px 4px #444 inset",
   },
   disc: {
     width: "100%",
