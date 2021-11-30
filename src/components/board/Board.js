@@ -6,11 +6,11 @@ import { makeStyles } from "@mui/styles";
 import Column from "./Column";
 
 const useStyles = makeStyles((theme) => ({
-  board : {
+  board: {
     boxShadow: "inset 0 10px 0 rgba(255,255,255,0.2), 0 10px 10px rgba(0, 0, 0, 0.19)",
     border: "10px solid #1565c0",
-    borderRadius: "4%"
-  }
+    borderRadius: "4%",
+  },
 }));
 
 const Board = (props) => {
@@ -18,17 +18,18 @@ const Board = (props) => {
 
   return (
     <Grid item sx={{ display: "flex", flexDirection: "row" }} xs={12} className={classes.board}>
-    {props.board.map((x, i) => (
-      <Column
-        column={x}
-        key={i}
-        x={i}
-        playerColor1={props.playerColor1}
-        playerColor2={props.playerColor2}
-        onClick={props.onClick}
-      />
-    ))}
-  </Grid>);
+      {props.board.map((x, i) => (
+        <Column
+          column={x}
+          key={i}
+          x={i}
+          playerColor1={props.playerColor1}
+          playerColor2={props.playerColor2}
+          onClick={props.onClick}
+        />
+      ))}
+    </Grid>
+  );
 };
 
 export default Board;

@@ -113,6 +113,7 @@ const HowToPlayModal = (props) => {
     setActiveStep(0);
   };
 
+  // TODO: Yuki Ueno: 絵文字を表示させる
   const getStepContent = (stepIndex) => {
     switch (stepIndex) {
       case 0:
@@ -121,12 +122,12 @@ const HowToPlayModal = (props) => {
             <Typography variant="h5" component="h5" style={{ textAlign: "center", padding: "20px 0" }}>
               基本ルール
             </Typography>
-            <Typography style={betweenParagraphSpace}>1:ホーム画面からゲームモードを選択します</Typography>
+            <Typography style={betweenParagraphSpace}>1:ホーム画面からゲームモードを選択します。</Typography>
             <Typography style={betweenParagraphSpace}>
-              2:石を置きたい列をクリックし、Player1とPlayer2もしくはCPUで交互に石を置いていきます
+              2:石を置きたい列をクリックし、Player1とPlayer2もしくはCPUで交互に石を置いていきます。
             </Typography>
             <Typography style={betweenParagraphSpace}>
-              3:先に縦・横・斜めのいずれかで4つ連続で石を並べた方が勝ちです
+              3:先に縦・横・斜めのいずれかで4つ連続で石を並べた方が勝ちです。
             </Typography>
           </Grid>
         );
@@ -137,10 +138,10 @@ const HowToPlayModal = (props) => {
               選べる対戦モード
             </Typography>
             <Typography>・vs Player</Typography>
-            <Typography style={betweenParagraphSpace}>プレイヤー同士で対戦できます</Typography>
+            <Typography style={betweenParagraphSpace}>プレイヤー同士で対戦できます。</Typography>
             <Typography>・vs CPU</Typography>
             <Typography style={betweenParagraphSpace}>
-              CPUとの対戦ができます。強さはEasy/Medium/Hardから選べます
+              CPUとの対戦ができます。強さはEasy/Medium/Hardから選べます。
             </Typography>
           </Grid>
         );
@@ -154,10 +155,10 @@ const HowToPlayModal = (props) => {
               Settingsボタンをクリックすると設定を変更できます。好みの設定で遊んでみましょう！
             </Typography>
             <Typography style={betweenParagraphSpace}>
-              Playerの名前、ゲームボードの大きさ、勝利条件、持ち時間を変更できます
+              Playerの名前、石の色、ゲームボードの大きさ、勝利条件、持ち時間を変更できます
             </Typography>
             <Typography style={{ paddingBottom: "20px" }}>
-              左上のスイッチでダークモードとライトモードを切り替えられます。
+              右上のスイッチでダークモードとライトモードを切り替えられます。
             </Typography>
           </Grid>
         );
@@ -167,9 +168,9 @@ const HowToPlayModal = (props) => {
             <Typography variant="h5" component="h5" style={{ textAlign: "center", padding: "20px 0" }}>
               History機能で手番を記録！
             </Typography>
-            <Typography style={betweenParagraphSpace}>historyボタンを押すと、対戦の履歴を確認できます。</Typography>
+            <Typography style={betweenParagraphSpace}>Historyボタンを押すと、対戦の履歴を確認できます。</Typography>
             <Typography style={{ paddingBottom: "20px" }}>
-              好きな手番に戻り、その手番から試合をし直すこともできます
+              好きな手番に戻り、その手番から試合を再開することもできます。
             </Typography>
           </Grid>
         );

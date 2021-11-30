@@ -57,7 +57,6 @@ const Cell = (props) => {
       data-x={props.x}
       data-y={props.y}
       onClick={props.onClick}
-
     >
       <Box sx={styles.white}>{props.value !== null && <Box sx={discStyle} className="drop" />}</Box>
     </Box>

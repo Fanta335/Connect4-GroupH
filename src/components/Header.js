@@ -1,19 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 import MenuIcon from "@mui/icons-material/Menu";
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  useMediaQuery,
-  Button,
-  IconButton,
-  MenuItem,
-  Menu,
-  Switch,
-  Grid,
-} from "@mui/material";
+import { AppBar, Toolbar, Typography, useMediaQuery, Button, IconButton, MenuItem, Menu } from "@mui/material";
 import { useTheme, createTheme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 
@@ -38,8 +29,6 @@ const useStyles = makeStyles({
     justifyContent: "flex-end",
   },
 });
-
-// TODO: Yuki Ueno: ゲーム画面からホーム画面、設定画面に遷移する際にタイマーを停止する処理を追加する（参考：https://weblike-curtaincall.ssl-lolipop.jp/blog/?p=2056）
 
 const Header = (props) => {
   const navigate = useNavigate();
@@ -81,8 +70,6 @@ const Header = (props) => {
     },
   ];
 
-  // TODO: Yuki Ueno: ゲーム画面からホーム画面、設定画面に遷移する際にタイマーを停止する処理を追加する（参考：https://weblike-curtaincall.ssl-lolipop.jp/blog/?p=2056）
-
   return (
     <div className={classes.headerRoot}>
       <AppBar position="static">
@@ -90,12 +77,6 @@ const Header = (props) => {
           <Link to="/" style={{ textDecoration: "none", color: "white" }}>
             <Typography variant="h6">Connect 4</Typography>
           </Link>
-          <Switch checked={props.darkMode} onChange={() => props.setDarkMode(!props.darkMode)} />
-          <Grid>
-            <Typography variant="h6" component="h6">
-              {props.gameMode === "cpu" ? "vsCPU" : "vsPlayer"}
-            </Typography>
-          </Grid>
           {isMobile ? (
             <div className={classes.headerOptions}>
               <IconButton
@@ -122,9 +103,7 @@ const Header = (props) => {
                 open={open}
                 onClose={() => setAnchorEl(null)}
               >
-                {location.pathname === "/game" && (
-                  <MenuItem onClick={props.handleHowToPlayModalOpen}>How to play?</MenuItem>
-                )}
+                <MenuItem onClick={props.handleHowToPlayModalOpen}>How to play?</MenuItem>
                 {menuItems.map((menuItem, index) => {
                   const { menuTitle, pageURL } = menuItem;
                   return (
@@ -137,7 +116,7 @@ const Header = (props) => {
             </div>
           ) : (
             <div className={classes.headerOptions}>
-              <Button variant="contained" color="success" onClick={props.handleHowToPlayModalOpen}>
+              <Button color="inherit" onClick={props.handleHowToPlayModalOpen} style={{ fontSize: "1rem" }}>
                 How to play?
               </Button>
               {menuItems.map((menuItem, index) => {
@@ -145,16 +124,25 @@ const Header = (props) => {
                 return (
                   <Button
                     key={index}
-                    variant="contained"
-                    color="success"
+                    color="inherit"
                     onClick={() => handleButtonClick(pageURL)}
-                    style={{ marginLeft: "20px" }}
+                    style={{ marginLeft: "0.8rem", fontSize: "1rem" }}
                   >
                     {menuTitle}
                   </Button>
                 );
               })}
             </div>
+          )}
+
+          {props.darkMode ? (
+            <IconButton color="inherit" onClick={() => props.setDarkMode(!props.darkMode)}>
+              <Brightness7Icon />
+            </IconButton>
+          ) : (
+            <IconButton color="inherit" onClick={() => props.setDarkMode(!props.darkMode)}>
+              <Brightness4Icon />
+            </IconButton>
           )}
         </Toolbar>
       </AppBar>

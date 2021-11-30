@@ -41,7 +41,7 @@ const Home = (props) => {
     <Grid container alignItems="center" justifyContent="center" flexDirection="column" className={classes.root}>
       <Paper className={classes.inner}>
         <Typography variant="h3" style={{ textAlign: "center", paddingBottom: "24px" }}>
-          Connect4!
+          Connect 4!
         </Typography>
         <Grid container item alignItems="center" justifyContent="center">
           <Grid item xs={7} md={8} style={{ paddingBottom: "24px" }}>
