@@ -2,12 +2,13 @@
 import React, { useEffect, useCallback, useState } from "react";
 import "./GameDisplayPage.css";
 
-import { Button, Grid, List, Card, Paper, Typography, createTheme } from "@mui/material";
+import { Button, Grid, List, Card, createTheme, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 import Board from "../components/board/Board";
 import { DisplayPlayer1Turn, DisplayPlayer2Turn } from "../components/board/DisplayPlayerTurn";
 import InitButton from "../components/board/InitButton";
+import HistoryDrawer from "../components/HistoryDrawer";
 import { GameStartModal, GameFinishModal } from "../components/Modal";
 
 import calculateWinner from "../utils/calculateWinner";
@@ -69,12 +70,21 @@ const GameDisplayPage = (props) => {
   const [openHistory, setOpenHistory] = useState(false);
   const [gameStartModalOpen, setGameStartModalOpen] = useState(true);
   const [gameFinishModalOpen, setGameFinishModalOpen] = useState(false);
+  const [historyDrawerOpen, setHistoryDrawerOpen] = useState(false);
 
   const handleGameStartModalClose = () => setGameStartModalOpen(false);
   const handleGameFinishModalOpen = useCallback(() => {
     setTimeout(() => setGameFinishModalOpen(true), 500);
   }, []);
   const handleGameFinishModalClose = () => setGameFinishModalOpen(false);
+  // const handleHistoryDrawer = (isOpen) => (event) => {
+  //   if (event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
+  //     return;
+  //   }
+  //   setHistoryDrawerOpen(isOpen);
+  // };
+  const handleHistoryDrawerOpen = () => setHistoryDrawerOpen(true);
+  const handleHistoryDrawerClose = () => setHistoryDrawerOpen(false);
 
   const pageName = "Game";
   useEffect(() => {
@@ -363,13 +373,7 @@ const GameDisplayPage = (props) => {
               <InitButton onClick={initGame} item />
             </Grid>
             <Grid>
-              <Button
-                variant="contained"
-                color="success"
-                onClick={() => {
-                  setOpenHistory(!openHistory);
-                }}
-              >
+              <Button variant="contained" color="success" onClick={handleHistoryDrawerOpen}>
                 {props.openHistory ? "Close" : "History"}
               </Button>
             </Grid>
@@ -400,18 +404,20 @@ const GameDisplayPage = (props) => {
             onClick={canStartGame ? handleClick : null}
           />
         </Grid>
-        <Grid item>
-          {/* それぞれの手番の情報を表示する */}
-          {openHistory && (
-            <Grid justifyContent="center" alignItems="center" style={{ width: "100%" }}>
-              <Paper className={classes.history}>
-                <Typography variant="h4">History</Typography>
-                <List>{moves}</List>
-              </Paper>
-            </Grid>
-          )}
-        </Grid>
       </Grid>
+
+      <HistoryDrawer
+        open={historyDrawerOpen}
+        handleClose={handleHistoryDrawerClose}
+        contents={
+          <div>
+            <Typography variant="h4" align="center" pt={2} color="primary">
+              HISTORY
+            </Typography>
+            <List>{moves}</List>
+          </div>
+        }
+      />
 
       <GameStartModal handleClose={handleGameStartModalClose} handleStart={initGame} open={gameStartModalOpen} />
 

@@ -122,9 +122,9 @@ const Header = (props) => {
                 open={open}
                 onClose={() => setAnchorEl(null)}
               >
-                {location.pathname === "/game" &&
+                {location.pathname === "/game" && (
                   <MenuItem onClick={props.handleHowToPlayModalOpen}>How to play?</MenuItem>
-                }
+                )}
                 {menuItems.map((menuItem, index) => {
                   const { menuTitle, pageURL } = menuItem;
                   return (
@@ -137,11 +137,7 @@ const Header = (props) => {
             </div>
           ) : (
             <div className={classes.headerOptions}>
-              <Button
-                variant="contained"
-                color="success"
-                onClick={props.handleHowToPlayModalOpen}
-              >
+              <Button variant="contained" color="success" onClick={props.handleHowToPlayModalOpen}>
                 How to play?
               </Button>
               {menuItems.map((menuItem, index) => {

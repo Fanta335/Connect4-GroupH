@@ -11,7 +11,7 @@ const displayTimer = (count) => {
     const second = count % 60;
     const displaySecond = second >= 10 ? String(second) : `0${String(second)}`;
     return (
-      <Grid sx={{ fontFamily: "MyFont", fontSize: "3em" }}>
+      <Grid sx={{ fontFamily: "MyFont", fontSize: "2em" }}>
         {displayMinute}:{displaySecond}
       </Grid>
     );
