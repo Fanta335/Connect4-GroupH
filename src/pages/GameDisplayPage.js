@@ -78,6 +78,11 @@ const GameDisplayPage = (props) => {
   }, []);
   const handleGameFinishModalClose = () => setGameFinishModalOpen(false);
 
+  const pageName = "Game";
+  useEffect(() => {
+    document.title = `Connect4 - ${pageName}`;
+  });
+
   const controlTimer = (player1IsNext) => {
     if (player1IsNext) {
       startTimer1();

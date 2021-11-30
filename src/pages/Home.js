@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { Typography, Grid, Radio, RadioGroup, FormControlLabel, createTheme } from "@mui/material";
@@ -28,6 +28,10 @@ const Home = (props) => {
   const gameMode = props.gameMode;
   const cpuStrength = props.cpuStrength;
   const classes = useStyles();
+  const pageName = "Home";
+  useEffect(() => {
+    document.title = `Connect4 - ${pageName}`;
+  });
   return (
     <div className={classes.root}>
       <Grid container alignItems="center" justifyContent="center" flexDirection="column" className={classes.inner}>
