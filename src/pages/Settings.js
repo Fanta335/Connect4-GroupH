@@ -35,40 +35,7 @@ const Settings = (props) => {
   const victoryConditionMax = props.boardSize[1] <= props.boardSize[0] ? props.boardSize[1] : props.boardSize[0];
 
   const classes = useStyles();
-  const formItems = [
-    {
-      players: [
-        {
-          label: "Player1",
-          name: "playerName1",
-        },
-        {
-          label: "Player2",
-          name: "playerName2",
-        },
-      ],
-    },
-    {
-      BoardSize: [
-        {
-          label: "Height",
-          name: "boardSizeHeight",
-          inputProps: {
-            max: 100,
-            min: 6,
-          },
-        },
-        {
-          label: "Width",
-          name: "boardSizeWidth",
-          inputProps: {
-            max: 100,
-            min: 7,
-          },
-        },
-      ],
-    },
-  ];
+  
   const buttons = [
     {
       name: "Back",
@@ -89,21 +56,32 @@ const Settings = (props) => {
             label="Player Name"
             input={
               <Grid container alignItems="center" justifyContent="center" spacing={3} className={classes.formBlock}>
-                {formItems[0].players.map((player, index) => (
-                    <Grid item xs={12} md={6} key={index}>
-                      <TextField
-                        label={player.label}
-                        variant="outlined"
-                        name={player.name}
-                        value={props.players[index]}
-                        onChange={props.onPlayerNameChange}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        style={{ textAlign: "right", width: "100%" }}
-                      />
-                    </Grid>
-                  ))}
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    label="Player1"
+                    variant="outlined"
+                    name="playerName1"
+                    value={props.players[0]}
+                    onChange={props.onPlayerNameChange}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    style={{ textAlign: "right", width: "100%" }}
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    label="Player2"
+                    variant="outlined"
+                    name="playerName2"
+                    value={props.players[1]}
+                    onChange={props.onPlayerNameChange}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    style={{ textAlign: "right", width: "100%" }}
+                  />
+                </Grid>
               </Grid>
             }
           />
@@ -111,29 +89,48 @@ const Settings = (props) => {
             label="Board Size"
             input={
               <Grid container alignItems="center" justifyContent="center" spacing={3} className={classes.formBlock}>
-                {formItems[1].BoardSize.map((formItem, index) => (
-                  <Grid item xs={12} md={6} key={index}>
-                    <TextField
-                      label={formItem.label}
-                      variant="outlined"
-                      type="number"
-                      onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
-                      name={formItem.name}
-                      value={props.boardSize[index]}
-                      onChange={props.onNumberChange}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      style={{ textAlign: "right", width: "100%" }}
-                      InputProps={{
-                        inputProps : {
-                          min : formItem.inputProps.min,
-                          max : formItem.inputProps.max
-                        }
-                      }}
-                    />
-                  </Grid>
-                  ))}
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    label="Height"
+                    variant="outlined"
+                    type="number"
+                    onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+                    name="boardSizeHeight"
+                    value={props.boardSize[0]}
+                    onChange={props.onNumberChange}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    style={{ textAlign: "right", width: "100%" }}
+                    InputProps={{
+                      inputProps: {
+                        max: 100,
+                        min: 7,
+                      },
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    label="Width"
+                    variant="outlined"
+                    type="number"
+                    onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+                    name="boardSizeWidth"
+                    value={props.boardSize[1]}
+                    onChange={props.onNumberChange}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    style={{ textAlign: "right", width: "100%" }}
+                    InputProps={{
+                      inputProps: {
+                        max: 100,
+                        min: 6,
+                      },
+                    }}
+                  />
+                </Grid>
               </Grid>
             }
           />
