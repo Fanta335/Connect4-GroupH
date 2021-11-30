@@ -19,7 +19,6 @@ import { makeStyles } from "@mui/styles";
 
 import useTimer from "../utils/useTimer";
 
-
 const createdTheme = createTheme();
 const useStyles = makeStyles({
   headerRoot: {

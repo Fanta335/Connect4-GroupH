@@ -112,28 +112,28 @@ const Settings = (props) => {
             input={
               <Grid container alignItems="center" justifyContent="center" spacing={3} className={classes.formBlock}>
                 {formItems[1].BoardSize.map((formItem, index) => (
-                    <Grid item xs={12} md={6} key={index}>
-                      <TextField
-                        label={formItem.label}
-                        variant="outlined"
-                        type="number"
-                        onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
-                        name={formItem.name}
-                        value={props.boardSize[index]}
-                        onChange={props.onNumberChange}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        style={{ textAlign: "right", width: "100%" }}
-                        InputProps={{
-                          inputProps : {
-                            min : formItem.inputProps.min,
-                            max : formItem.inputProps.max
-                          }
-                        }}
-                      />
-                    </Grid>
-                  ))}
+                  <Grid item xs={12} md={6} key={index}>
+                    <TextField
+                      label={formItem.label}
+                      variant="outlined"
+                      type="number"
+                      onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+                      name={formItem.name}
+                      value={props.boardSize[index]}
+                      onChange={props.onNumberChange}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      style={{ textAlign: "right", width: "100%" }}
+                      InputProps={{
+                        inputProps : {
+                          min : formItem.inputProps.min,
+                          max : formItem.inputProps.max
+                        }
+                      }}
+                    />
+                  </Grid>
+                ))}
               </Grid>
             }
           />
@@ -253,7 +253,7 @@ const Settings = (props) => {
                 <TransitionButton name={button.name} />
               </Link>
             </Grid>
-            ))}
+          ))}
         </Grid>
       </Paper>
     </Grid>
