@@ -23,6 +23,7 @@ const styles = {
     background: "white",
     borderRadius: "100%",
     position: "relative",
+    boxShadow: "4px 4px 5px 4px #444 inset",
   },
   disc: {
     width: "100%",
@@ -52,7 +53,7 @@ const Cell = (props) => {
       data-x={props.x}
       data-y={props.y}
       onClick={props.onClick}
-      style={{}}
+      
     >
       <Box sx={styles.white}>{props.value !== null && <Box sx={discStyle} className="drop" />}</Box>
     </Box>

@@ -22,8 +22,6 @@ import getLowestEmptyYIndex from "../utils/getLowestEmptyYIndex";
 import isPlayerFirst from "../utils/isPlayerFirst";
 import useTimer from "../utils/useTimer";
 
-// import setSnackbarOpen from "../components/Snackbar";
-
 const theme = createTheme();
 const useStyles = makeStyles({
   root: {
