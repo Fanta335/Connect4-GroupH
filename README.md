@@ -2,12 +2,13 @@
 <!-- https://qiita.com/koeri3/items/f85a617dcb6efebb2cab -->
 <!-- https://qiita.com/aocattleya/items/5f836e9c65ba3eb3af03 -->
 
-gifを挿入予定
-
+<p align="center">
+    <img src="document/gif/play_game.gif" width>
+</p>
 <h1 align="center">Connect4</h2>
 
 <p align="center">
-    <a href="https://jp.vuejs.org/index.html"><img src="document/img/react_icon.png" width="120px;" /></a><br>
+    <a href="https://ja.reactjs.org/"><img src="document/img/react_icon.png" width="120px;" /></a><br>
 </p>
 
 # :globe_with_meridians: App URL
@@ -47,6 +48,7 @@ npm start
 | 項目 | 意味 |説明 |
 | --- | --- | --- |
 | Player Name | プレイヤーの名前 | ゲーム画面で表示するプレイヤーの名前 |
+| Disc Color | 石の色 | ゲーム画面で使用する石の色 |
 | Board Size | 盤面のサイズ | デフォルトは Height: 6, Width: 7 |
 | Victory Condition | 勝利条件 | デフォルトは4で、縦・横・斜めに石を4つ揃えると勝ち |
 | Time Control | 持ち時間 | 持ち時間制になっており、各プレイヤーにここで設定した時間が与えられる |
